@@ -1,0 +1,70 @@
+{
+  "name": "wdio-html-format-reporter",
+  "version": "0.0.1",
+  "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
+  "main": "build/reporter.js",
+  "scripts": {
+    "build": "run-s clean compile",
+    "clean": "rm -rf ./build ./coverage",
+    "compile": "babel lib/ -d build/",
+    "eslint": "eslint ./lib test/",
+    "release": "np patch",
+    "release:patch": "np patch",
+    "release:minor": "np minor",
+    "release:major": "np major",
+    "test": "run-s eslint test:unit",
+    "test:ci": "run-s clean eslint test:cover",
+    "test:unit": "mocha --compilers js:babel-core/register test/*.js",
+    "test:cover": "babel-node ./node_modules/.bin/isparta cover --include 'lib/*.js' _mocha",
+    "prepublish": "npm prune",
+    "watch": "npm run compile -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdriverio/wdio-html-format-reporter.git"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "keywords": [
+    "html",
+    "reporter",
+    "webdriverio",
+    "wdio",
+    "wdio-plugin",
+    "wdio-reporter"
+  ],
+  "author": "Adrien Ruiz Gauder <caritsqa@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webdriverio/wdio-html-format-reporter/issues"
+  },
+  "homepage": "https://github.com/webdriverio/wdio-html-format-reporter#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "chai": "^4.1.2",
+    "fs-extra": "^5.0.0",
+    "handlebars": "^4.0.11",
+    "lodash": "^4.17.5",
+    "mocha": "^5.0.1",
+    "moment": "^2.20.1",
+    "moment-duration-format": "^2.2.1",
+    "nightmare": "^2.10.0",
+    "npm-run-all": "^4.1.2",
+    "path": "^0.12.7",
+    "sleep": "^5.1.1"
+  },
+  "devDependencies": {},
+  "contributors": [
+    "Adrien Ruiz Gauder <caritsqa@gmail.com>",
+    "George Crawford <george.crawford@ft.com>",
+    "Christian Bromann <github@christian-bromann.com>",
+    "W. van Kuipers <w.vankuipers@lukkien.com>",
+    "christian-bromann <mail@christian-bromann.com>",
+    "Tim Brust <tim.brust@sinnerschrader.com>",
+    "Tim Brust <ratchet.player@gmx.de>",
+    "George Crawford <g.o.crawford@gmail.com>"
+  ]
+}
