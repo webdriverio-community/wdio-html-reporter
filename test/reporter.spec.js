@@ -19,7 +19,6 @@ const sleep = require('sleep')
 // } from './fixtures'
 const SUITE = require('./fixtures').SUITE
 const RESULTLIST = require('./fixtures').RESULTLIST
-const locus = require('locus')
 
 const baseReporter = {
     _events: {
