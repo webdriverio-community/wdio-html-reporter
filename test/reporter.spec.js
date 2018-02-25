@@ -9,6 +9,7 @@ const nightmare = Nightmare({
   show: true,
 })
 const sleep = require('sleep')
+// const moment = require('moment')
 // import HtmlReporter from '../lib/reporter'
 // import {
 //     SUITE, COLORS, RESULTLIST, SUMMARY, ERRORS, ERRORLIST,
@@ -18,18 +19,20 @@ const sleep = require('sleep')
 // } from './fixtures'
 const SUITE = require('./fixtures').SUITE
 const RESULTLIST = require('./fixtures').RESULTLIST
-
+const locus = require('locus')
 
 const baseReporter = {
-    // symbols: {
-    //     ok: '✓',
-    //     err: '✖',
-    //     dot: '․',
-    //     error: 'F'
-    // },
-    // color (type, str) {
-    //     return `\u001b[${COLORS[type]}m${str}\u001b[0m`
-    // }
+    _events: {
+
+    },
+    stats: {
+      runners: {
+
+      }
+    },
+    reporters: [
+
+    ]
 }
 const reporter = new HtmlReporter(baseReporter)
 
@@ -44,83 +47,199 @@ describe('html reporter', () => {
         }
       })
 
-      reporter.specs['42'].should.eql({
-        a: false,
-        b: 1
-      })
       reporter.results['42'].should.eql({
         passing: 0,
         pending: 0,
         failing: 0
       })
-    })
 
-    reporter.emit('end', {
-      cid: 42,
-      specs: {
+      reporter.specs['42'].should.eql({
         a: false,
         b: 1
-      }      
+      })
     })
   })
 
-  // describe('the test:pending event', () => {
-  //   it('should increase pending tests', () => {
-  //     reporter.emit('test:pending', {
-  //       cid: 42
-  //     })
-  //     reporter.results[42].pending.should.equal(1)
-  //   })
-  // })
-  //
-  // describe('the test:pass event', () => {
-  //   it('should increase passing tests', () => {
-  //     reporter.emit('test:pass', {
-  //       cid: 42
-  //     })
-  //     reporter.results[42].passing.should.equal(1)
-  //   })
-  // })
-  //
-  // describe('the test:fail event', () => {
-  //   it('should increase failing tests', () => {
-  //     reporter.emit('test:fail', {
-  //       cid: 42
-  //     })
-  //     reporter.results[42].failing.should.equal(1)
-  //   })
-  // })
-  //
-  // describe('the end event', () => {
-  //   it('should create a html report', () => {
-  //     reporter.emit('end', {
-  //         cid: 42
-  //     })
-  //
-  //     fs.existsSync('spec-report.html').should.eql(true)
-  //     sleep.sleep(1)
-  //
-  //     // fs.removeSync('spec-report.html')
-  //
-  //     nightmare
-  //       .goto(`file://${__dirname}/../spec-report.html`)
-  //       // .type('#search_form_input_homepage', 'github nightmare')
-  //       // .click('#search_button_homepage')
-  //       // .wait('.result__title a')
-  //       .evaluate(function() {
-  //         return {
-  //           header: document.querySelector('.page-header').innerText
-  //         }
-  //       })
-  //       .end()
-  //       .then(function (result) {
-  //         result.header.should.match(/HTML Report/)
-  //       })
-  //       .catch(function (error) {
-  //         console.error('Search failed:', error);
-  //       })
-  //   })
-  // })
+  describe('the test:pending event', () => {
+    it('should increase pending tests', () => {
+      reporter.emit('test:pending', {
+        cid: 42
+      })
+      reporter.results[42].pending.should.equal(1)
+    })
+  })
+
+  describe('the test:pass event', () => {
+    it('should increase passing tests', () => {
+      reporter.emit('test:pass', {
+        cid: 42
+      })
+      reporter.results[42].passing.should.equal(1)
+    })
+  })
+
+  describe('the test:fail event', () => {
+    it('should increase failing tests', () => {
+      reporter.emit('test:fail', {
+        cid: 42
+      })
+      reporter.results[42].failing.should.equal(1)
+    })
+  })
+
+  describe('the end event', () => {
+    it('should create a html report', () => {
+      const testrunner1 = {
+        type: 'runner',
+        cid: 42,
+        specs: {
+          abcdef123456: {
+            type: 'spec',
+            start: Date.now(),
+            end: Date.now(),
+            _duration: 123456,
+            specHash: 'abcdef123456',
+            files: ['file1.spec'],
+            suites: {
+              'test suite1': {
+                type: 'suite',
+                start: Date.now(),
+                end: Date.now(),
+                _duration: 123456,
+                uid: 'test case1',
+                title: "Test Case 1",
+                tests: {
+                  'First Test': {
+                    type: 'test',
+                    title: 'The first test title',
+                    state: 'pass',
+                    screenshots: [],
+                    logit: [],
+                  },
+                  'Second Test': {
+                    type: 'test',
+                    title: 'The second test title',
+                    state: 'fail',
+                    screenshots: [],
+                    logit: [],
+                  },
+                  'Third Test': {
+                    type: 'test',
+                    title: 'The thried test title',
+                    state: 'pending',
+                    screenshots: [],
+                    logit: [],
+                  },
+                },
+              },
+              'test suite2': {
+                type: 'suite',
+                start: Date.now(),
+                end: Date.now(),
+                _duration: 123456,
+                uid: 'test case2',
+                title: "Test Case 2",
+                tests: {
+                  'First Test': {
+                    type: 'test',
+                    title: 'The first test title',
+                    state: 'pass',
+                    screenshots: [],
+                    logit: [],
+                  },
+                },
+              },
+            },
+          },
+        },
+      }
+
+
+      const testrunner2 = {
+        type: 'runner',
+        cid: 43,
+        specs: {
+          '654321FEDCBA': {
+            type: 'spec',
+            start: Date.now(),
+            end: Date.now(),
+            _duration: 123456,
+            specHash: '654321FEDCBA',
+            files: ['file2.spec'],
+            suites: {
+              'test suite3': {
+                type: 'suite',
+                start: Date.now(),
+                end: Date.now(),
+                _duration: 123456,
+                uid: 'test case1',
+                title: "Test Case 3",
+                tests: {
+                  'First Test': {
+                    type: 'test',
+                    title: 'The first test title',
+                    state: 'pass',
+                    screenshots: [],
+                    logit: [],
+                  },
+                  'Second Test': {
+                    type: 'test',
+                    title: 'The second test title',
+                    state: 'pending',
+                    screenshots: [],
+                    logit: [],
+                  },
+                  'Third Test': {
+                    type: 'test',
+                    title: 'The thried test title',
+                    state: 'pending',
+                    screenshots: [],
+                    logit: [],
+                  },
+                },
+              },
+            },
+          },
+        },
+      }
+
+
+
+      baseReporter.stats.runners['42'] = testrunner1
+      baseReporter.stats.runners['43'] = testrunner2
+      baseReporter.stats.counts = {
+        passes: 2,
+        pending: 1,
+        failures: 1
+      }
+      reporter.emit('runner:start', testrunner1)
+      reporter.emit('runner:start', testrunner2)
+      reporter.emit('end', {})
+
+      fs.existsSync('spec-report.html').should.eql(true)
+      sleep.sleep(1)
+
+      // fs.removeSync('spec-report.html')
+
+      nightmare
+        .goto(`file://${__dirname}/../spec-report.html`)
+        // .type('#search_form_input_homepage', 'github nightmare')
+        // .click('#search_button_homepage')
+        // .wait('.result__title a')
+        .evaluate(function() {
+          return {
+            header: document.querySelector('.page-header').innerText
+          }
+        })
+        .end()
+        .then(function (result) {
+          result.header.should.match(/HTML Report/)
+        })
+        .catch(function (error) {
+          console.error('Search failed:', error);
+        })
+    })
+  })
 
     // describe('getResultList', () => {
     //     it('return a correct result list', () => {
