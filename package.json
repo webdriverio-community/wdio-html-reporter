@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webdriverio/wdio-html-format-reporter.git"
+    "url": "git+https://github.com/aruiz-caritsqa/wdio-html-format-reporter.git"
   },
   "directories": {
     "lib": "./lib"
