@@ -6,11 +6,10 @@ const fs = require('fs-extra')
 const path = require('path');
 const Nightmare = require('nightmare');
 const nightmare = Nightmare({
-  show: true,
+  show: false,
 })
 const sleep = require('sleep')
 // const moment = require('moment')
-// import HtmlReporter from '../lib/reporter'
 // import {
 //     SUITE, COLORS, RESULTLIST, SUMMARY, ERRORS, ERRORLIST,
 //     STATS, STATS_WITH_NO_SPECS, SUITERESULT, JOBLINKRESULT,
@@ -19,7 +18,6 @@ const sleep = require('sleep')
 // } from './fixtures'
 const SUITE = require('./fixtures').SUITE
 const RESULTLIST = require('./fixtures').RESULTLIST
-const locus = require('locus')
 
 const baseReporter = {
     _events: {
