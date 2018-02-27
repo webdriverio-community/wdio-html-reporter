@@ -1,6 +1,6 @@
 {
   "name": "wdio-html-format-reporter",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "lib/reporter.js",
   "scripts": {
@@ -24,9 +24,9 @@
   "author": "Adrien Ruiz Gauder <caritsqa@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webdriverio/wdio-html-format-reporter/issues"
+    "url": "https://github.com/aruiz-caritsqa/wdio-html-format-reporter/issues"
   },
-  "homepage": "https://github.com/webdriverio/wdio-html-format-reporter#readme",
+  "homepage": "https://github.com/aruiz-caritsqa/wdio-html-format-reporter#readme",
   "dependencies": {
     "fs-extra": "^5.0.0",
     "handlebars": "^4.0.11",
@@ -41,6 +41,7 @@
   "devDependencies": {},
   "contributors": [
     "Adrien Ruiz Gauder <caritsqa@gmail.com>",
+    "Gisella Fama <gisella.fama@gmail.com>",
     "George Crawford <george.crawford@ft.com>",
     "Christian Bromann <github@christian-bromann.com>"
   ]

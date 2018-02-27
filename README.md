@@ -4,7 +4,7 @@ Based off the excellent [wdio-spec-reporter](https://www.npmjs.com/package/wdio-
 
 ## Installation
 
-The easiest way is to keep wdio-html-format-reporter as a devDependency in your package.json.
+The easiest way is to keep the `wdio-html-format-reporter` as a devDependency in your package.json:
 
 ```javascript
 {
@@ -14,7 +14,7 @@ The easiest way is to keep wdio-html-format-reporter as a devDependency in your 
 }
 ```
 
-Or, you can simply do it by:
+Or, you can simply do it with:
 
 ```
 npm install wdio-html-format-reporter --save-dev
@@ -22,7 +22,7 @@ npm install wdio-html-format-reporter --save-dev
 
 
 ## Configuration
-Following code shows the default wdio test runner configuration. Just add 'html-format' as reporter to the array.
+The following code shows the default wdio test runner configuration. Just add 'html-format' as another reporter to the array:
 
 ```javascript
 // wdio.conf.js
@@ -56,6 +56,8 @@ describe('some example tests for a readme.md demo', () => {
     })
 
     it('should display some output I want to log on the report', () => {
+      // runner:logit is a custom event listener
+      // It will you to output plain text to the HTML report
       process.send({
         event: 'runner:logit',
         output: 'Do. Or do not. There is no try'
@@ -123,5 +125,8 @@ The hard-coded output is to `wdio-report.html` at the moment
 
 ## TODO:
 - Make the output file configurable
-- Convert images to JPG before inbedding
-- Make sure it works with Jasime tests
+- Convert images to JPG before imbedding
+- Better filtering options
+- Reduce height of suite headers
+- Make sure it works with Jasmine tests
+- Pie chart? 
