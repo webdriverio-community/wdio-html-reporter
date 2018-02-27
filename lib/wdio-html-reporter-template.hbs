@@ -46,12 +46,12 @@
       border-color: #ECEFF1;
     }
 
-    .step-table .step-name { 
-      text-align: left; 
+    .step-table .step-name {
+      text-align: left;
     }
 
-    .step-table .step-result { 
-      text-align: left; 
+    .step-table .step-result {
+      text-align: left;
     }
 
     .step-table .step-line {
@@ -69,12 +69,12 @@
     }
 
     .test-pending, .suite-pending {
-      background-color: #B3E5FC; 
-    }    
+      background-color: #B3E5FC;
+    }
 
     .test-unknown, .suite-unknown {
-      background-color: #ECEFF1; 
-    }    
+      background-color: #ECEFF1;
+    }
 
     .log-output {
       background-color: rgba(255,192,0,0.75);
@@ -105,7 +105,7 @@
    .filter {
       border: 1px solid;
       padding: 4px;
-    }    
+    }
     </style>
   </head>
 
@@ -120,7 +120,7 @@
           <th>Key</th>
           <th>Value</th>
         </thead>
-    
+
         <tbody>
           <tr><td>Start</td><td>{{stats.start}}</td></tr>
           <tr><td>End</td><td>{{stats.end}}</td></tr>
@@ -130,7 +130,7 @@
               <tr>
                 <td class='test-pass'>Passes</td><td class='test-pending'>Pending</td><td class='test-fail'>Failures</td>
               </tr>
-              <tr>  
+              <tr>
                 <td>{{stats.counts.passes}}</td><td>{{stats.counts.pending}}</td><td>{{stats.counts.failures}}</td>
               </tr>
             </table>
@@ -143,10 +143,10 @@
           <td>
             <span class="filter toggleFailingTests"><span>Hide</span> Failing Tests</span>
             <span class="filter togglePassingTests"><span>Hide</span> Passing Tests</span>
-<!--             
+<!--
             <span class="filter">Show/Hide Tests with screenshots</span>
             <span class="filter">Show/Hide Tests with output</span>
- -->          
+ -->
           </td>
         </tr>
       </table>
@@ -165,24 +165,30 @@
                     <h3>{{@key}}:</h3>
                     {{#each runnerStat.specs as |specStat|}}
                      <table class="table table-bordered">
-<!--                       
+<!--
                       <tr><td>Spec Start</td><td>{{specStat.start}}</td></tr>
                       <tr><td>Spec End</td><td>{{specStat.end}}</td></tr>
                       <tr><td>Spec Duration</td><td>{{#humanizeDuration specStat._duration}}{{/humanizeDuration}}</td></tr>
- -->                      
+ -->
                       <tr><td>Spec Files</td><td>{{specStat.files}}</td></tr>
 
                         {{#each specStat.suites as |suiteStat|}}
-                          {{#if suiteStat.title}}
+                          {{#isValidSuite suiteStat}}
                             <table class="table table-bordered table-suite">
-                              <tr class="suite-header"><td colspan="2" class="{{#suiteStateColour suiteStat.tests}}{{/suiteStateColour}}"><h3><span style="margin: 2px; padding: 1px">&nbsp;</span>{{suiteStat.title}}</h3></td></tr>
-                              
-                              {{#ifSuiteHasTests suiteStat.tests}}  
+                              <tr class="suite-header">
+                                <td colspan="2" class="{{#suiteStateColour suiteStat.tests}}{{/suiteStateColour}}">
+                                  <h3>
+                                    <span style="margin: 2px; padding: 1px">&nbsp;</span>{{suiteStat.title}}
+                                  </h3>
+                                </td>
+                              </tr>
+
+                              {{#ifSuiteHasTests suiteStat.tests}}
                                 <tr><td>Suite Start</td><td>{{suiteStat.start}}</td></tr>
                                 <tr><td>Suite End</td><td>{{suiteStat.end}}</td></tr>
                                 <tr><td>Suite Duration</td><td>{{#humanizeDuration suiteStat._duration}}{{/humanizeDuration}}</td></tr>
 
-                                
+
                                 <tr><td colspan="2"><h4>Tests:</h4></td></tr>
                                 <tr>
                                   <td colspan="2">
@@ -223,12 +229,12 @@
                                 </tr>
                               {{/ifSuiteHasTests}}
                             </table>
-                          {{/if}} 
+                          {{/isValidSuite}}
                         {{/each}}
 
    <!--                        </table>
                         </td> -->
-                      </tr>  
+                      </tr>
                     {{/each}}
                   </td>
                 </tr>
@@ -237,13 +243,13 @@
           </tr>
         </table>
       {{/each}}
-    </div> 
+    </div>
 
     <script type="text/javascript">
       // increase/decrease size of screenshot
       $('.screenshot').click(function(){
         $(this).toggleClass('screenshot-large screenshot-small');
-      }); 
+      });
 
       $.each($('.suite-header'), function(){
         if(!$(this).children().hasClass("suite-unknown")) {
@@ -254,7 +260,7 @@
           $(this).nextUntil('.suite-header').slideToggle(100, function(){
           });
         }
-      });   
+      });
 
       //hide the suites/scenarios
       $('.suite-header').click(function(){
@@ -270,8 +276,8 @@
       $('.toggleFailingTests').click(function() {
         $.each($('.suite-fail'), function() {
           if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
-          $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);          
-          $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);    
+          $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+          $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
             $(this).parent().nextUntil('.suite-header').slideUp();
           }
           $(this).slideToggle();
@@ -279,18 +285,18 @@
         $(this).find('span').text(function(_, value){return value=='Show'?'Hide':'Show'});
       });
 
-      $('.togglePassingTests').click(function() {        
+      $('.togglePassingTests').click(function() {
         $.each($('.suite-pass'), function() {
           if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
-            $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);          
-            $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);  
+            $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+            $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
               $(this).parent().nextUntil('.suite-header').slideUp();
           }
           $(this).slideToggle();
         })
-        $(this).find('span').text(function(_, value){return value=='Show'?'Hide':'Show'});        
-      });   
+        $(this).find('span').text(function(_, value){return value=='Show'?'Hide':'Show'});
+      });
 
-    </script>    
+    </script>
   </body>
 </html>
