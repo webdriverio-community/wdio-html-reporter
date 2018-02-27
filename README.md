@@ -113,7 +113,7 @@ describe('Full page screenshot', () => {
 
 ```
 
-[Report Example: wdio-report.html](wdio-report.html)
+[Report Example: wdio-report.html](https://cdn.rawgit.com/aruiz-caritsqa/wdio-html-format-reporter/master/wdio-report.html)
 
 ![Report Screenshot](wdio-report.jpg)
 
