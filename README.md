@@ -29,7 +29,11 @@ The following code shows the default wdio test runner configuration. Just add 'h
 module.exports = {
   // ...
   reporters: ['spec', 'html-format'],
-  // ...
+  reporterOptions: {
+    htmlFormat: {
+      outputDir: './reports/'
+    },  
+  // ...    
 };
 ```
 
@@ -121,12 +125,12 @@ describe('Full page screenshot', () => {
 
 
 ## Output
-The hard-coded output is to `wdio-report.html` at the moment
+The default output is to `./wdio-report.html`
 
 ## TODO:
-- Make the output file configurable
-- Convert images to JPG before imbedding
+- ~~Make the output file configurable~~
+- Convert images to JPG before embedding
 - Better filtering options
 - Reduce height of suite headers
 - Make sure it works with Jasmine tests
-- Pie chart? 
+- Pie chart?
