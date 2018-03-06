@@ -9,7 +9,7 @@ The easiest way is to keep the `wdio-html-format-reporter` as a devDependency in
 ```javascript
 {
   "devDependencies": {
-    "wdio-html-format-reporter": "~0.2.3"
+    "wdio-html-format-reporter": "~0.2.7"
   }
 }
 ```
@@ -32,7 +32,9 @@ module.exports = {
   reporterOptions: {
     htmlFormat: {
       outputDir: './reports/'
-    },  
+    },
+  },
+  screenshotPath: `./screenShots`,     
   // ...    
 };
 ```
@@ -129,7 +131,7 @@ The default output is to `./wdio-report.html`
 
 ## TODO:
 - ~~Make the output file configurable~~
-- Convert images to JPG before embedding
+- ~~Convert images to JPG before embedding~~
 - Better filtering options
 - Reduce height of suite headers
 - Make sure it works with Jasmine tests

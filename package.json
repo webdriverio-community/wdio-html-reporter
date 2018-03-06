@@ -1,6 +1,6 @@
 {
   "name": "wdio-html-format-reporter",
-  "version": "0.2.5",
+  "version": "0.2.7",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "lib/reporter.js",
   "scripts": {
@@ -30,19 +30,20 @@
   "dependencies": {
     "fs-extra": "^5.0.0",
     "handlebars": "^4.0.11",
+    "jpeg-js": "^0.3.3",
     "lodash": "^4.17.5",
     "mocha": "^5.0.1",
     "moment": "^2.20.1",
     "moment-duration-format": "^2.2.1",
     "nightmare": "^2.10.0",
-    "path": "^0.12.7",
-    "sleep": "^5.1.1"
+    "path": "^0.12.7"
   },
   "devDependencies": {},
   "contributors": [
     "Adrien Ruiz Gauder <caritsqa@gmail.com>",
     "Gisella Fama <gisella.fama@gmail.com>",
     "George Crawford <george.crawford@ft.com>",
-    "Christian Bromann <github@christian-bromann.com>"
+    "Christian Bromann <github@christian-bromann.com>",
+    "Markus Benning <ich@markusbenning.de>"
   ]
 }
