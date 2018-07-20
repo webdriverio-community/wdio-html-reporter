@@ -39,7 +39,9 @@
     "nightmare": "^2.10.0",
     "path": "^0.12.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "pngjs": "^3.3.3"
+  },
   "contributors": [
     "Adrien Ruiz Gauder <caritsqa@gmail.com>",
     "Gisella Fama <gisella.fama@gmail.com>",
