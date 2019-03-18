@@ -1,6 +1,7 @@
 .node_modules
 .yarnclean
 build
+build-test
 dist
 .idea
 reports

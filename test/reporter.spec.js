@@ -1,7 +1,7 @@
  // import sinon from 'sinon'
 // import expect from 'chai'
 const should = require('chai').should()
-const HtmlReporter = require('../src/reporter')
+
 const fs = require('fs-extra')
 const path = require('path');
 const Nightmare = require('nightmare');
@@ -17,27 +17,21 @@ const sleep = require('sleep')
 //     STATS_WITH_MULTIPLE_RUNNERS
 // } from './fixtures'
 const SUITE = require('./fixtures').SUITE
-const RESULTLIST = require('./fixtures').RESULTLIST
+const RESULTLIST = require('./fixtures').RESULTLIST;
 
-const baseReporter = {
-    _events: {
+const HtmlReporter = require('../build/reporter') ;
 
-    },
-    stats: {
-      runners: {
-
-      }
-    },
-    reporters: [
-
-    ]
-}
-const reporter = new HtmlReporter(baseReporter)
-
+ var htmlReporter = new HtmlReporter({
+   debug: true,
+   outputDir: './reports/html-results/',
+   filename: 'report.html',
+   reportTitle: 'Test Report Title',
+   showInBrowser:true
+ }) ;
 describe('html reporter', () => {
   describe('the runner:start event', () => {
     it('should setup an initial state', () => {
-      reporter.emit('runner:start', {
+      htmlReporter.onRunnerStart({
         cid: 42,
         specs: {
           a: false,
@@ -45,13 +39,13 @@ describe('html reporter', () => {
         }
       })
 
-      reporter.results['42'].should.eql({
+      htmlReporter.results['42'].should.eql({
         passing: 0,
         pending: 0,
         failing: 0
       })
 
-      reporter.specs['42'].should.eql({
+      htmlReporter.specs['42'].should.eql({
         a: false,
         b: 1
       })
@@ -60,28 +54,28 @@ describe('html reporter', () => {
 
   describe('the test:pending event', () => {
     it('should increase pending tests', () => {
-      reporter.emit('test:pending', {
+      htmlReporter.onTestPending({
         cid: 42
       })
-      reporter.results[42].pending.should.equal(1)
+      htmlReporter.results[42].pending.should.equal(1)
     })
   })
 
   describe('the test:pass event', () => {
     it('should increase passing tests', () => {
-      reporter.emit('test:pass', {
+      htmlReporter.onTestPass({
         cid: 42
       })
-      reporter.results[42].passing.should.equal(1)
+      htmlReporter.results[42].passing.should.equal(1)
     })
   })
 
   describe('the test:fail event', () => {
     it('should increase failing tests', () => {
-      reporter.emit('test:fail', {
+      htmlReporter.onTestFail({
         cid: 42
       })
-      reporter.results[42].failing.should.equal(1)
+      htmlReporter.results[42].failing.should.equal(1)
     })
   })
 
@@ -203,16 +197,16 @@ describe('html reporter', () => {
 
 
 
-      baseReporter.stats.runners['42'] = testrunner1
-      baseReporter.stats.runners['43'] = testrunner2
-      baseReporter.stats.counts = {
+      htmlReporter.stats.runners['42'] = testrunner1
+      htmlReporter.stats.runners['43'] = testrunner2
+      htmlReporter.stats.counts = {
         passes: 2,
         pending: 1,
         failures: 1
       }
-      reporter.emit('runner:start', testrunner1)
-      reporter.emit('runner:start', testrunner2)
-      reporter.emit('end', {})
+      htmlReporter.onRunnerStart( testrunner1)
+      htmlReporter.onRunnerStart( testrunner2)
+      htmlReporter.onRunnerEnd({})
 
       fs.existsSync('spec-report.html').should.eql(true)
       sleep.sleep(1)
