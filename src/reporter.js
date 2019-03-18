@@ -116,7 +116,7 @@ class HtmlReporter extends WDIOReporter {
 
     htmlOutput(stats) {
         try {
-            let templateFile = fs.readFileSync(path.resolve(__dirname, '../lib/wdio-html-reporter-template.hbs'), 'utf8')
+            let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8')
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, options) {
                 // occurs when there is an error file

@@ -8,7 +8,6 @@ const Nightmare = require('nightmare');
 const nightmare = Nightmare({
   show: false,
 })
-const sleep = require('sleep')
 // const moment = require('moment')
 // import {
 //     SUITE, COLORS, RESULTLIST, SUMMARY, ERRORS, ERRORLIST,
