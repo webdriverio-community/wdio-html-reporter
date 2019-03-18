@@ -42,12 +42,12 @@ module.exports = {
         }
         ]
     ]
-  screenshotPath: `./screenShots`,     
+    
   // ...    
 };
 ```
 
-## Example test
+## Example test  (Not up to date, ignore)
 ```javascript
 const assert = require('chai').assert
 const fs = require('fs-extra')

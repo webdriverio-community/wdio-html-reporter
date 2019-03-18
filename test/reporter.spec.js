@@ -1,7 +1,7 @@
  // import sinon from 'sinon'
 // import expect from 'chai'
 const should = require('chai').should()
-const HtmlReporter = require('../lib/reporter')
+const HtmlReporter = require('../src/reporter')
 const fs = require('fs-extra')
 const path = require('path');
 const Nightmare = require('nightmare');
