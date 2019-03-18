@@ -247,26 +247,29 @@
                                                                         </tr>
                                                                     {{/each}}
 
-                                                                    {{#each test.screenshots as |screenshot|}}
+                                                                    {{#each test.events as |event|}}
+                                                                        {{#ifEventisScreenshot event}}
                                                                         <tr class="test-row">
                                                                             <td colspan="2">
                                                                                 <div class="screenshotWrapper">
                                                                                     <img class="toggle screenshot screenshot-small"
                                                                                          src="{{#imageAsBase64
-                                                                                                 screenshot
+                                                                                                 event.value
                                                                                                  runnerStat.config.screenshotPath}}{{/imageAsBase64}}"/>
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
+                                                                        {{/ifEventisScreenshot}}}
+                                                                        {{#ifEventiLogMessage event}}
+                                                                            <tr class="test-row">
+                                                                                <td colspan="2">
+                                                                                    <pre class='log-output'>{{event.value}}</pre>
+                                                                                </td>
+                                                                            </tr>
+                                                                        {{/ifEventiLogMessage}}
                                                                     {{/each}}
 
-                                                                    <tr class="test-row">
-                                                                        {{#each test.logit as |output|}}
-                                                                            <td colspan="2">
-                                                                                <pre class='log-output'>{{output}}</pre>
-                                                                            </td>
-                                                                        {{/each}}
-                                                                    </tr>
+
 
                                                                 </table>
                                                             </td>
