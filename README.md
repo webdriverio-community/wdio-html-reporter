@@ -1,15 +1,18 @@
-# wdio-html-format-reporter
+# wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.
-Based off the excellent [wdio-spec-reporter](https://www.npmjs.com/package/wdio-spec-reporter)
+A fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
+
+That project has not been updated and doesnt work with the latest webdriverio.
+
 
 ## Installation
 
-The easiest way is to keep the `wdio-html-format-reporter` as a devDependency in your package.json:
+The easiest way is to keep the `wdio-html-reporter` as a devDependency in your package.json:
 
 ```javascript
 {
   "devDependencies": {
-    "wdio-html-format-reporter": "~0.2.7"
+    "wdio-html-reporter": "~0.5.0"
   }
 }
 ```
@@ -17,7 +20,7 @@ The easiest way is to keep the `wdio-html-format-reporter` as a devDependency in
 Or, you can simply do it with:
 
 ```
-npm install wdio-html-format-reporter --save-dev
+yarn add wdio-html-reporter --dev
 ```
 
 
@@ -28,12 +31,17 @@ The following code shows the default wdio test runner configuration. Just add 'h
 // wdio.conf.js
 module.exports = {
   // ...
-  reporters: ['spec', 'html-format'],
-  reporterOptions: {
-    htmlFormat: {
-      outputDir: './reports/'
-    },
-  },
+  
+  reporters: ['spec',
+        ['html', {
+            debug: true,
+            outputDir: './reports/html-results/',
+            filename: 'report.html',
+            reportTitle: 'Test Report Title',
+            showInBrowser:true
+        }
+        ]
+    ]
   screenshotPath: `./screenShots`,     
   // ...    
 };
@@ -121,18 +129,15 @@ describe('Full page screenshot', () => {
 
 ```
 
-[Report Example: wdio-report.html](https://cdn.rawgit.com/aruiz-caritsqa/wdio-html-format-reporter/master/wdio-report.html)
+[Report Example: report.html](https://cdn.rawgit.com/aruiz-caritsqa/wdio-html-format-reporter/master/wdio-report.html)
 
 ![Report Screenshot](wdio-report.jpg)
 
 
 ## Output
-The default output is to `./wdio-report.html`
+The default output is to `./report.html`
 
 ## TODO:
-- ~~Make the output file configurable~~
-- ~~Convert images to JPG before embedding~~
-- Better filtering options
-- Reduce height of suite headers
-- Make sure it works with Jasmine tests
-- Pie chart?
+- ~~Make the tests work~~
+
+

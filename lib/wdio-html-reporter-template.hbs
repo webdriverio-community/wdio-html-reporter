@@ -1,302 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="[% title %]">
 
-    <title>HTML Report</title>
+    <title>{{title}}</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <style type="text/css">
-    body {
-      background-color: #fafafa;
-      font-weight: 200;
-    }
-    h1, .h1, h2, .h2, h3, .h3 {
-      margin: 10px;
-      font-weight: 200;
-    }
-    h1, .h1 {
-      font-size: 30px;
-    }
-    h2, .h2 {
-      font-size: 24px;
-    }
-    h3, .h3 {
-      font-size: 20px;
-    }
-    table {
-      width: 100%;
-    }
-    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
-      /*border-color: #ECEFF1;*/
-    }
-    .table-bordered>tbody>tr, .table-bordered>tfoot>tr {
-      background-color: white;
-    }
-    .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {
-      padding-left: 20px;
-      padding-right: 20px;
-      padding-bottom: 10px;
-      padding-top: 10px;
-      border-color: #ECEFF1;
-    }
+        body {
+            background-color: #fafafa;
+            font-weight: 200;
+        }
 
-    .step-table .step-name {
-      text-align: left;
-    }
+        h1, .h1, h2, .h2, h3, .h3 {
+            margin: 10px;
+            font-weight: 200;
+        }
 
-    .step-table .step-result {
-      text-align: left;
-    }
+        h1, .h1 {
+            font-size: 30px;
+        }
 
-    .step-table .step-line {
-      color: grey;
-      text-align: right;
-      display: inline;
-    }
+        h2, .h2 {
+            font-size: 24px;
+        }
 
-    .test-pass, .suite-pass {
-      background-color: #C8E6C9;
-    }
+        h3, .h3 {
+            font-size: 20px;
+        }
 
-    .test-fail, .suite-fail {
-      background-color: #FFCDD2;
-    }
+        table {
+            width: 100%;
+        }
 
-    .test-pending, .suite-pending {
-      background-color: #B3E5FC;
-    }
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+            /*border-color: #ECEFF1;*/
+        }
 
-    .test-unknown, .suite-unknown {
-      background-color: #ECEFF1;
-    }
+        .table-bordered > tbody > tr, .table-bordered > tfoot > tr {
+            background-color: white;
+        }
 
-    .log-output {
-      background-color: rgba(255,192,0,0.75);
-    }
+        .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            border-color: #ECEFF1;
+        }
 
-    .screenshot-small {
-      height: 20%;
-      width: 20%;
-    }
+        .step-table .step-name {
+            text-align: left;
+        }
 
-    .screenshot-large {
-      height: 100%;
-      width: 100%;
-    }
+        .step-table .step-result {
+            text-align: left;
+        }
 
-    .table-test {
-      margin: 0px;
-    }
+        .step-table .step-line {
+            color: grey;
+            text-align: right;
+            display: inline;
+        }
 
-    tr.test-row {
-      border-top: 2px solid white;
-    }
+        .test-pass, .suite-pass {
+            background-color: #C8E6C9;
+        }
 
-    .screenshotWrapper {
-      max-width: 1024px;
-    }
+        .test-fail, .suite-fail {
+            background-color: #FFCDD2;
+        }
 
-   .filter {
-      border: 1px solid;
-      padding: 4px;
-    }
+        .test-pending, .suite-pending {
+            background-color: #B3E5FC;
+        }
+
+        .test-unknown, .suite-unknown {
+            background-color: #ECEFF1;
+        }
+
+        .log-output {
+            background-color: rgba(255, 192, 0, 0.75);
+        }
+
+        .screenshot-small {
+            height: 20%;
+            width: 20%;
+        }
+
+        .screenshot-large {
+            height: 100%;
+            width: 100%;
+        }
+
+        .table-test {
+            margin: 0px;
+        }
+
+        tr.test-row {
+            border-top: 2px solid white;
+        }
+
+        .screenshotWrapper {
+            max-width: 1024px;
+        }
+
+        .filter {
+            border: 1px solid;
+            padding: 4px;
+        }
     </style>
-  </head>
+</head>
 
-  <body>
-    <div class="container">
+<body>
+<div class="container">
 
-      <div class="page-header"><h1>HTML Report</h1></div>
+    <div class="page-header"><h1>{{title}}</h1></div>
 
-      <h2>Summary</h2>
-      <table class="table">
+    <h2>Summary</h2>
+    <table class="table">
         <thead>
-          <th>Key</th>
-          <th>Value</th>
+        <th>Key</th>
+        <th>Value</th>
         </thead>
 
         <tbody>
-          <tr><td>Start</td><td>{{stats.start}}</td></tr>
-          <tr><td>End</td><td>{{stats.end}}</td></tr>
-          <tr><td>Duration</td><td>{{#humanizeDuration stats._duration}}{{/humanizeDuration}}</td></tr>
-          <tr><td>Breakdown</td><td>
-            <table class="table table-bordered">
-              <tr>
-                <td class='test-pass'>Passes</td><td class='test-pending'>Pending</td><td class='test-fail'>Failures</td>
-              </tr>
-              <tr>
-                <td>{{stats.counts.passes}}</td><td>{{stats.counts.pending}}</td><td>{{stats.counts.failures}}</td>
-              </tr>
-            </table>
-          </td></tr>
-        </tbody>
-      </table>
-
-      <table class="table table-bordered">
         <tr>
-          <td>
-            <span class="filter toggleFailingTests"><span>Hide</span> Failing Tests</span>
-            <span class="filter togglePassingTests"><span>Hide</span> Passing Tests</span>
-<!--
-            <span class="filter">Show/Hide Tests with screenshots</span>
-            <span class="filter">Show/Hide Tests with output</span>
- -->
-          </td>
+            <td>Start</td>
+            <td>{{stats.start}}</td>
         </tr>
-      </table>
-
-
-      <h2>Results</h2>
-
-      {{#each stats.runners as |runnerStat|}}
-        <table>
-          <tr>
+        <tr>
+            <td>End</td>
+            <td>{{stats.end}}</td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td>{{#humanizeDuration stats._duration}}{{/humanizeDuration}}</td>
+        </tr>
+        <tr>
+            <td>Breakdown</td>
             <td>
-              <table class="table table-bordered">
-                <tr>
-                  <td colspan="2">
-
-                    <h3>{{@key}}:</h3>
-                    {{#each runnerStat.specs as |specStat|}}
-                     <table class="table table-bordered">
-<!--
-                      <tr><td>Spec Start</td><td>{{specStat.start}}</td></tr>
-                      <tr><td>Spec End</td><td>{{specStat.end}}</td></tr>
-                      <tr><td>Spec Duration</td><td>{{#humanizeDuration specStat._duration}}{{/humanizeDuration}}</td></tr>
- -->
-                      <tr><td>Spec Files</td><td>{{specStat.files}}</td></tr>
-
-                        {{#each specStat.suites as |suiteStat|}}
-                          {{#isValidSuite suiteStat}}
-                            <table class="table table-bordered table-suite">
-                              <tr class="suite-header">
-                                <td colspan="2" class="{{#suiteStateColour suiteStat.tests}}{{/suiteStateColour}}">
-                                  <h3>
-                                    <span style="margin: 2px; padding: 1px">&nbsp;</span>{{suiteStat.title}}
-                                  </h3>
-                                </td>
-                              </tr>
-
-                              {{#ifSuiteHasTests suiteStat.tests}}
-                                <tr><td>Suite Start</td><td>{{suiteStat.start}}</td></tr>
-                                <tr><td>Suite End</td><td>{{suiteStat.end}}</td></tr>
-                                <tr><td>Suite Duration</td><td>{{#humanizeDuration suiteStat._duration}}{{/humanizeDuration}}</td></tr>
-
-
-                                <tr><td colspan="2"><h4>Tests:</h4></td></tr>
-                                <tr>
-                                  <td colspan="2">
-                                    <table>
-                                      {{#each suiteStat.tests as |test|}}
-                                        <tr><td>
-                                          <table class="table table-test">
-                                            <tr><td colspan="2" class="{{#testStateColour test.state}}{{/testStateColour}}">{{test.title}}</td></tr>
-                                            <!-- <tr><td>Test Start</td><td>{{test.start}}</td></tr> -->
-
-                                            {{#each test.error as |error|}}
-                                              <tr class="test-row"><td colspan="2"><pre>{{error}}</pre></td></tr>
-                                            {{/each}}
-
-                                            {{#each test.screenshots as |screenshot|}}
-                                              <tr class="test-row">
-                                                <td colspan="2">
-                                                  <div class="screenshotWrapper">
-                                                    <img class="toggle screenshot screenshot-small" src="{{#imageAsBase64 screenshot runnerStat.config.screenshotPath}}{{/imageAsBase64}}"/>
-                                                  </div>
-                                                </td>
-                                              </tr>
-                                            {{/each}}
-
-                                            <tr class="test-row">
-                                              {{#each test.logit as |output|}}
-                                                <td colspan="2">
-                                                  <pre class='log-output'>{{output}}</pre>
-                                                </td>
-                                              {{/each}}
-                                            </tr>
-
-                                          </table>
-                                        </td><tr>
-                                      {{/each}}
-                                    </table>
-                                  </td>
-                                </tr>
-                              {{/ifSuiteHasTests}}
-                            </table>
-                          {{/isValidSuite}}
-                        {{/each}}
-
-   <!--                        </table>
-                        </td> -->
-                      </tr>
-                    {{/each}}
-                  </td>
-                </tr>
-              </table>
+                <table class="table table-bordered">
+                    <tr>
+                        <td class='test-pass'>Passed</td>
+                        <td class='test-pending'>Pending</td>
+                        <td class='test-fail'>Failures</td>
+                    </tr>
+                    <tr>
+                        <td>{{accessCid results (access stats.cid) 'passing'}}</td>
+                        <td>{{accessCid results (access stats.cid) 'pending'}}</td>
+                        <td>{{accessCid results (access stats.cid) 'failing'}}</td>
+                    </tr>
+                </table>
             </td>
-          </tr>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <span class="filter toggleFailingTests"><span>Hide</span> Failing Tests</span>
+                <span class="filter togglePassingTests"><span>Hide</span> Passing Tests</span>
+            </td>
+        </tr>
+    </table>
+
+
+    <h2>Results</h2>
+
+    {{#each stats.specs as | spec|}}
+    <table>
+    <tr>
+    <td>
+        <table class="table table-bordered">
+            <tr>
+                <td colspan="2">
+
+                    <h3>{{stats.cid}}:</h3>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Spec Files</td>
+                            <td>{{spec}}</td>
+                        </tr>
+
+                        {{#each ../suites as |suiteStat| }}
+                            {{#isValidSuite suiteStat}}
+                                <table class="table table-bordered table-suite">
+                                    <tr class="suite-header">
+                                        <td colspan="2"
+                                            class="{{#suiteStateColour suiteStat.tests}}{{/suiteStateColour}}">
+                                            <h3>
+                                                <span style="margin: 2px; padding: 1px">&nbsp;</span>{{suiteStat.title}}
+                                            </h3>
+                                        </td>
+                                    </tr>
+
+                                    {{#ifSuiteHasTests suiteStat.tests}}
+                                        <tr>
+                                            <td>Suite Start</td>
+                                            <td>{{suiteStat.start}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Suite End</td>
+                                            <td>{{suiteStat.end}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Suite Duration</td>
+                                            <td>{{#humanizeDuration suiteStat._duration}}{{/humanizeDuration}}</td>
+                                        </tr>
+
+
+                                        <tr>
+                                            <td colspan="2"><h4>Tests:</h4></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <table>
+                                                    {{#each suiteStat.tests as |test|}}
+                                                        <tr>
+                                                            <td>
+                                                                <table class="table table-test">
+                                                                    <tr>
+                                                                        <td colspan="2" class="{{#testStateColour
+                                                                                test.state}}{{/testStateColour}}">{{test.title}}</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                         <td>Test Start</td>
+                                                                         <td>{{test.start}}</td>
+                                                                     </tr>
+                                                                    <tr>
+                                                                        <td>Test End</td>
+                                                                        <td>{{test.end}}</td>
+                                                                    </tr>
+
+                                                                    {{#each test.error as |error|}}
+                                                                        <tr class="test-row">
+                                                                            <td colspan="2">
+                                                                                <pre>{{error}}</pre>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {{/each}}
+
+                                                                    {{#each test.screenshots as |screenshot|}}
+                                                                        <tr class="test-row">
+                                                                            <td colspan="2">
+                                                                                <div class="screenshotWrapper">
+                                                                                    <img class="toggle screenshot screenshot-small"
+                                                                                         src="{{#imageAsBase64
+                                                                                                 screenshot
+                                                                                                 runnerStat.config.screenshotPath}}{{/imageAsBase64}}"/>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {{/each}}
+
+                                                                    <tr class="test-row">
+                                                                        {{#each test.logit as |output|}}
+                                                                            <td colspan="2">
+                                                                                <pre class='log-output'>{{output}}</pre>
+                                                                            </td>
+                                                                        {{/each}}
+                                                                    </tr>
+
+                                                                </table>
+                                                            </td>
+                                                        <tr>
+                                                    {{/each}}
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    {{/ifSuiteHasTests}}
+                                </table>
+                            {{/isValidSuite}}
+                        {{/each}}
+                    </table>
+                </td>
+            </tr>
         </table>
-      {{/each}}
-    </div>
+    </table>
+    {{/each}}
+</div>
 
-    <script type="text/javascript">
-      // increase/decrease size of screenshot
-      $('.screenshot').click(function(){
+<script type="text/javascript">
+    // increase/decrease size of screenshot
+    $('.screenshot').click(function () {
         $(this).toggleClass('screenshot-large screenshot-small');
-      });
+    });
 
-      $.each($('.suite-header'), function(){
-        if(!$(this).children().hasClass("suite-unknown")) {
-          // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
-          // $(this).find('span').toggleClass(function(_, value){return value=='glyphicon glyphicon-chevron-down'?'glyphicon glyphicon-chevron-up':'glyphicon glyphicon-chevron-down'});
-          $(this).find('span').addClass('glyphicon glyphicon-chevron-down');
+    $.each($('.suite-header'), function () {
+        if (!$(this).children().hasClass("suite-unknown")) {
+            // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
+            // $(this).find('span').toggleClass(function(_, value){return value=='glyphicon glyphicon-chevron-down'?'glyphicon glyphicon-chevron-up':'glyphicon glyphicon-chevron-down'});
+            $(this).find('span').addClass('glyphicon glyphicon-chevron-down');
 
-          $(this).nextUntil('.suite-header').slideToggle(100, function(){
-          });
+            $(this).nextUntil('.suite-header').slideToggle(100, function () {
+            });
         }
-      });
+    });
 
-      //hide the suites/scenarios
-      $('.suite-header').click(function(){
-        if(!$(this).children().hasClass("suite-unknown")) {
-          // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
-          $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
-          $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
-          $(this).nextUntil('.suite-header').slideToggle(100, function(){
-          });
+    //hide the suites/scenarios
+    $('.suite-header').click(function () {
+        if (!$(this).children().hasClass("suite-unknown")) {
+            // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
+            $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+            $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+            $(this).nextUntil('.suite-header').slideToggle(100, function () {
+            });
         }
-      });
+    });
 
-      $('.toggleFailingTests').click(function() {
-        $.each($('.suite-fail'), function() {
-          if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
-          $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
-          $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
-            $(this).parent().nextUntil('.suite-header').slideUp();
-          }
-          $(this).slideToggle();
+    $('.toggleFailingTests').click(function () {
+        $.each($('.suite-fail'), function () {
+            if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+                $(this).parent().nextUntil('.suite-header').slideUp();
+            }
+            $(this).slideToggle();
         })
-        $(this).find('span').text(function(_, value){return value=='Show'?'Hide':'Show'});
-      });
+        $(this).find('span').text(function (_, value) {
+            return value == 'Show' ? 'Hide' : 'Show'
+        });
+    });
 
-      $('.togglePassingTests').click(function() {
-        $.each($('.suite-pass'), function() {
-          if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
-            $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
-            $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
-              $(this).parent().nextUntil('.suite-header').slideUp();
-          }
-          $(this).slideToggle();
+    $('.togglePassingTests').click(function () {
+        $.each($('.suite-pass'), function () {
+            if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+                $(this).parent().nextUntil('.suite-header').slideUp();
+            }
+            $(this).slideToggle();
         })
-        $(this).find('span').text(function(_, value){return value=='Show'?'Hide':'Show'});
-      });
+        $(this).find('span').text(function (_, value) {
+            return value == 'Show' ? 'Hide' : 'Show'
+        });
+    });
 
-    </script>
-  </body>
+</script>
+</body>
 </html>

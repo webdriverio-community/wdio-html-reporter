@@ -1,14 +1,15 @@
 {
-  "name": "wdio-html-format-reporter",
-  "version": "0.2.9",
+  "name": "wdio-html-reporter",
+  "version": "0.5.0",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
-  "main": "lib/reporter.js",
+  "main": "dist/reporter.js",
   "scripts": {
-    "test": "mocha test/"
+    "build": "babel lib/* -d dist",
+    "test": "mocha \"test/**/*.js\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aruiz-caritsqa/wdio-html-format-reporter.git"
+    "url": "git@github.com:rpii/wdio-html-reporter.git"
   },
   "directories": {
     "lib": "./lib"
@@ -19,15 +20,22 @@
     "webdriverio",
     "wdio",
     "wdio-plugin",
-    "wdio-reporter"
+    "wdio-reporter",
+    "wdio-html-reporter",
+    "wdio-html-format-reporter"
   ],
   "author": "Adrien Ruiz Gauder <caritsqa@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aruiz-caritsqa/wdio-html-format-reporter/issues"
+    "url": "https://github.com/rpii/wdio-html-reporter/issues"
   },
-  "homepage": "https://github.com/aruiz-caritsqa/wdio-html-format-reporter#readme",
+  "homepage": "https://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "@wdio/reporter": "^5.7.2",
     "escape-string-regexp": "^1.0.5",
     "fs-extra": "^5.0.0",
     "handlebars": "^4.0.11",
@@ -40,13 +48,17 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "pngjs": "^3.3.3"
+    "chai": "^4.2.0",
+    "opn": "^5.5.0",
+    "pngjs": "^3.3.3",
+    "wdio-screenshot": "^0.6.0"
   },
   "contributors": [
     "Adrien Ruiz Gauder <caritsqa@gmail.com>",
     "Gisella Fama <gisella.fama@gmail.com>",
     "George Crawford <george.crawford@ft.com>",
     "Christian Bromann <github@christian-bromann.com>",
-    "Markus Benning <ich@markusbenning.de>"
+    "Markus Benning <ich@markusbenning.de>",
+    "Rich Peters <16782353+rpii@users.noreply.github.com>"
   ]
 }
