@@ -125,7 +125,7 @@
 <body>
 <div class="container">
 
-    <div class="page-header"><h1>{{title}}</h1></div>
+    <div id="wdio-html-report" class="page-header"><h1>{{title}}</h1></div>
 
     <h2>Summary</h2>
     <table class="table">
@@ -255,7 +255,7 @@
                                                                     {{/each}}
 
                                                                     {{#each test.events as |event|}}
-                                                                        {{#ifEventisScreenshot event}}
+                                                                        {{#ifEventIsScreenshot event}}
                                                                         <tr class="test-row">
                                                                             <td colspan="2">
                                                                                 <div class="screenshotWrapper">
@@ -266,14 +266,14 @@
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
-                                                                        {{/ifEventisScreenshot}}
-                                                                        {{#ifEventiLogMessage event}}
+                                                                        {{/ifEventIsScreenshot}}
+                                                                        {{#ifEventIsLogMessage event}}
                                                                             <tr class="test-row">
                                                                                 <td colspan="2">
                                                                                     <pre class='log-output'>{{event.value}}</pre>
                                                                                 </td>
                                                                             </tr>
-                                                                        {{/ifEventiLogMessage}}
+                                                                        {{/ifEventIsLogMessage}}
                                                                     {{/each}}
 
 

@@ -116,7 +116,7 @@ class HtmlReporter extends WDIOReporter {
 
     htmlOutput(stats) {
         try {
-            let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8')
+            let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8');
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, options) {
                 // occurs when there is an error file
@@ -200,14 +200,14 @@ class HtmlReporter extends WDIOReporter {
                 return cid;
             });
 
-            Handlebars.registerHelper('ifEventisScreenshot', function (event) {
+            Handlebars.registerHelper('ifEventIsScreenshot', function (event) {
                 if (event.type === 'screenshot') {
                     return options.fn(this);
                 }
                 return options.inverse(this);
             });
 
-            Handlebars.registerHelper('ifEventiLogMessage', function (event) {
+            Handlebars.registerHelper('ifEventIsLogMessage', function (event) {
                 if (event.type === 'log') {
                     return options.fn(this);
                 }
