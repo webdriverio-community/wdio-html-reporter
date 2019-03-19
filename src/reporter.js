@@ -143,6 +143,16 @@ class HtmlReporter extends WDIOReporter {
                 }
             });
 
+            Handlebars.registerHelper('testStateIcon', function (state, options) {
+                if (state === 'passed') {
+                    return '<span class="success">&#10004;</span>' ;
+                } else if (state === 'failed') {
+                    return '<span class="error">&#10006;</span>' ;
+                } else if (state === 'pending') {
+                    return '<span class="success">&#10004;</span>' ;
+                }
+            });
+
             Handlebars.registerHelper('suiteStateColour', function (tests, options) {
                 let numTests = Object.keys(tests).length
 
@@ -229,7 +239,8 @@ class HtmlReporter extends WDIOReporter {
                         reportfile = path.join(this.options.outputDir, this.options.filename);
                         fs.outputFileSync(reportfile, html);
                         if (this.options.showInBrowser) {
-                            open(reportfile);
+                            open(reportfile).then(
+                                console.log("launched browser with " + reportfile));
                         }
                     }
                 } else {

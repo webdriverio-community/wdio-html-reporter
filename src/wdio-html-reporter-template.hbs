@@ -67,7 +67,12 @@
             text-align: right;
             display: inline;
         }
-
+        span.error      {
+            color: #AD2B2B;
+        }
+        span.success    {
+            color: #53891E;
+        }
         .test-pass, .suite-pass {
             background-color: #C8E6C9;
         }
@@ -81,7 +86,7 @@
         }
 
         .test-unknown, .suite-unknown {
-            background-color: #ECEFF1;
+            background-color: #5EA3D1;;
         }
 
         .log-output {
@@ -182,7 +187,7 @@
             <tr>
                 <td colspan="2">
 
-                    <h3>{{stats.cid}}:</h3>
+                    <h3>{{../stats.cid}}:</h3>
                     <table class="table table-bordered">
                         <tr>
                             <td>Spec Files</td>
@@ -217,7 +222,7 @@
 
 
                                         <tr>
-                                            <td colspan="2"><h4>Tests:</h4></td>
+                                            <td colspan="2"><h4>{{suiteStat.tests.length}}&nbsp;Test(s):</h4></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">
@@ -227,17 +232,19 @@
                                                             <td>
                                                                 <table class="table table-test">
                                                                     <tr>
-                                                                        <td colspan="2" class="{{#testStateColour
-                                                                                test.state}}{{/testStateColour}}">{{test.title}}</td>
+                                                                        <td colspan="2" class="{{#testStateColour test.state}}{{/testStateColour}}">
+                                                                            {{#testStateIcon test.state}}{{/testStateIcon}}
+                                                                            {{test.title}}</td>
                                                                     </tr>
-                                                                     <tr>
-                                                                         <td>Test Start</td>
-                                                                         <td>{{test.start}}</td>
-                                                                     </tr>
-                                                                    <tr>
-                                                                        <td>Test End</td>
-                                                                        <td>{{test.end}}</td>
-                                                                    </tr>
+                                                                    <!--tooooo verbose-->
+                                                                     <!--<tr>-->
+                                                                         <!--<td>Test Start</td>-->
+                                                                         <!--<td>{{test.start}}</td>-->
+                                                                     <!--</tr>-->
+                                                                    <!--<tr>-->
+                                                                        <!--<td>Test End</td>-->
+                                                                        <!--<td>{{test.end}}</td>-->
+                                                                    <!--</tr>-->
 
                                                                     {{#each test.error as |error|}}
                                                                         <tr class="test-row">
