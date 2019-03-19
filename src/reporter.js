@@ -28,7 +28,7 @@ class HtmlReporter extends WDIOReporter {
 
         this.errorCount = 0;
         this.specs = {};
-        this.results = {};
+        this.results = [];
 
         this.on('screenshot:fullpage', function (data) {
             // if the filename isn't defined, it cannot find the file and cannot be added to the report
@@ -77,17 +77,19 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onTestStart(test) {
-        this.results[test.cid].pending++
+        this.results[test.cid].passing = 0;
+        this.results[test.cid].pending = 0;
+        this.results[test.cid].failing = 0;
     }
 
     onTestPass(test) {
-        this.results[test.cid].passing++
+        this.results[test.cid].passing++;
     }
 
     onScreenshot(runner) {
         // if the filename isn't defined, it cannot find the file and cannot be added to the report
         if (!runner.filename) {
-            return
+            return ;
         }
         const cid = runner.cid;
         const results = stats.runners[cid];

@@ -78,25 +78,18 @@ describe('html reporter', () => {
         it('should create a html report', () => {
 
             let testrunner1 = fs.readFileSync(path.resolve(__dirname, '../test/test1.json'), 'utf8');
-
-
-            htmlReporter.stats.runners['0:0'] = testrunner1;
-
-            htmlReporter.stats.counts = {
-                passes: 2,
-                pending: 1,
-                failures: 1
-            };
+            htmlReporter.stats.runners[testrunner1.cid] = testrunner1;
             htmlReporter.onRunnerStart(testrunner1);
+            htmlReporter.onTestPass({cid: testrunner1.cid}) ;
+            htmlReporter.onTestPass({cid: testrunner1.cid}) ;
+            htmlReporter.onTestPass({cid: testrunner1.cid}) ;
+            htmlReporter.onTestFail({cid: testrunner1.cid}) ;
             htmlReporter.onRunnerEnd(htmlReporter.stats);
             let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.options.filename);
             fs.existsSync(reportfile).should.eql(true)
 
             nightmare
                 .goto(`file://${reportfile}`)
-                // .type('#search_form_input_homepage', 'github nightmare')
-                // .click('#search_button_homepage')
-                // .wait('.result__title a')
                 .evaluate(function () {
                     return {
                         header: document.querySelector('.page-header').innerText
