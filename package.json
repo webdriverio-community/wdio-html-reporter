@@ -8,7 +8,7 @@
     "build": "babel src/* -d build/ --config-file ./babel.config.js",
     "clean:build": "rimraf ./build",
     "clean:reports": "rimraf ./reports",
-    "test": "mocha build-test/**/*.js --compilers js:@babel/register --config-file ./babel.config.js"
+    "test": "mocha build-test/**/*.js --require @babel/register --config-file ./babel.config.js"
   },
   "repository": {
     "type": "git",
