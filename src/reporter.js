@@ -31,6 +31,7 @@ class HtmlReporter extends WDIOReporter {
         this.results = [];
 
         this.on('screenshot:fullpage', function (data) {
+            this.log("screenshot:fullpage: " , JSON.stringify(data));
             // if the filename isn't defined, it cannot find the file and cannot be added to the report
             if (!data.filename) {
                 return
@@ -45,6 +46,7 @@ class HtmlReporter extends WDIOReporter {
         });
 
         this.on('runner:logit', function (data) {
+            this.log("runner:logit: " , JSON.stringify(data));
             const results = stats.runners[this.cid];
             const specHash = Object.keys(results.specs)[Object.keys(results.specs).length - 1];
             const spec = results.specs[specHash];
@@ -62,6 +64,7 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onRunnerStart(runner) {
+        this.log("onRunnerStart: " , JSON.stringify(runner));
         //todo look at fix, not async safe
         this.cid = runner.cid;
         this.specs[runner.cid] = runner.specs
@@ -73,20 +76,23 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onSuiteStart(suite) {
-
+        this.log("onSuiteStart: " , JSON.stringify(suite));
     }
 
     onTestStart(test) {
+        this.log("onTestStart: " , JSON.stringify(test));
         this.results[test.cid].passing = 0;
         this.results[test.cid].pending = 0;
         this.results[test.cid].failing = 0;
     }
 
     onTestPass(test) {
+        this.log("onTestPass: " , JSON.stringify(test));
         this.results[test.cid].passing++;
     }
 
     onScreenshot(runner) {
+        this.log("onScreenshot: " , JSON.stringify(runner));
         // if the filename isn't defined, it cannot find the file and cannot be added to the report
         if (!runner.filename) {
             return ;
@@ -101,20 +107,29 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onTestFail(test) {
+        this.log("onTestFail: " , JSON.stringify(test));
         this.results[test.cid].failing++
     }
 
     onTestEnd(suite) {
-
+        this.log("onTestEnd: " , JSON.stringify(suite));
     }
 
     onRunnerEnd(runner) {
+        this.log("onRunnerEnd: " , JSON.stringify(runner));
         this.htmlOutput(runner);
     }
 
-    onTestEnd() {
+    onTestEnd(param) {
+        this.log("onTestEnd: " , JSON.stringify(param));
     }
 
+    log(message,object) {
+        if (this.options.debug) {
+            console.log(message) ;
+            console.log(object) ;
+        }
+    }
 
     htmlOutput(stats) {
         try {
@@ -229,7 +244,7 @@ class HtmlReporter extends WDIOReporter {
 
             if (this.options && this.options.debug) {
                 if (fs.pathExistsSync(this.options.outputDir)) {
-                    let reportfile = `${this.options.outputDir}/raw-input.json`;
+                    let reportfile = path.join(this.options.outputDir, this.cid,this.options.filename + '.json');
                     fs.outputFileSync(reportfile, JSON.stringify(data));
                 }
             }
@@ -238,7 +253,7 @@ class HtmlReporter extends WDIOReporter {
                 let reportfile;
                 if (this.options.outputDir) {
                     if (fs.pathExistsSync(this.options.outputDir)) {
-                        reportfile = path.join(this.options.outputDir, this.options.filename);
+                        reportfile = path.join(this.options.outputDir, this.cid,this.options.filename);
                         fs.outputFileSync(reportfile, html);
                         if (this.options.showInBrowser) {
                             open(reportfile).then(
