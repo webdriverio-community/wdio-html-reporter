@@ -30,23 +30,8 @@ class HtmlReporter extends WDIOReporter {
         this.specs = {};
         this.results = [];
 
-        this.on('screenshot:fullpage', function (data) {
-            this.log("screenshot:fullpage: " , JSON.stringify(data));
-            // if the filename isn't defined, it cannot find the file and cannot be added to the report
-            if (!data.filename) {
-                return
-            }
-            const cid = data.cid;
-            const results = stats.runners[cid];
-            const specHash = Object.keys(results.specs)[Object.keys(results.specs).length - 1];
-            const spec = results.specs[specHash];
-            const lastKey = Object.keys(spec.suites)[Object.keys(spec.suites).length - 1];
-            const currentTestKey = Object.keys(spec.suites[lastKey].tests)[Object.keys(spec.suites[lastKey].tests).length - 1]
-            spec.suites[lastKey].tests[currentTestKey].events({ type: 'screenshot', value: data.filename});
-        });
-
-        this.on('runner:logit', function (data) {
-            this.log("runner:logit: " , JSON.stringify(data));
+        this.on('runner:log', function (data) {
+            this.log("runner:log: " , JSON.stringify(data));
             const results = stats.runners[this.cid];
             const specHash = Object.keys(results.specs)[Object.keys(results.specs).length - 1];
             const spec = results.specs[specHash];
@@ -58,9 +43,15 @@ class HtmlReporter extends WDIOReporter {
             }
             spec.suites[lastKey].tests[currentTestKey].events.push({ type: 'log', value: data.output});
         });
+
         this.on('runner:screenshot', function (runner) {
-            onScreenshot(runner) ;
-        })
+            this.onScreenshot(runner) ;
+        });
+
+        this.on('screenshot', function (data) {
+            this.log("screenshot: " , JSON.stringify(data));
+            // this.onScreenshot(runner) ;
+        });
     }
 
     onRunnerStart(runner) {
@@ -70,7 +61,7 @@ class HtmlReporter extends WDIOReporter {
         this.specs[runner.cid] = runner.specs
         this.results[runner.cid] = {
             passing: 0,
-            pending: 0,
+            skipped: 0,
             failing: 0
         }
     }
@@ -82,13 +73,19 @@ class HtmlReporter extends WDIOReporter {
     onTestStart(test) {
         this.log("onTestStart: " , JSON.stringify(test));
         this.results[test.cid].passing = 0;
-        this.results[test.cid].pending = 0;
+        this.results[test.cid].skipped = 0;
         this.results[test.cid].failing = 0;
     }
 
     onTestPass(test) {
         this.log("onTestPass: " , JSON.stringify(test));
         this.results[test.cid].passing++;
+    }
+
+
+    onTestSkip(test) {
+        this.log("onTestSkip: " , JSON.stringify(test));
+        this.results[test.cid].skipped++;
     }
 
     onScreenshot(runner) {
@@ -120,14 +117,9 @@ class HtmlReporter extends WDIOReporter {
         this.htmlOutput(runner);
     }
 
-    onTestEnd(param) {
-        this.log("onTestEnd: " , JSON.stringify(param));
-    }
-
     log(message,object) {
         if (this.options.debug) {
-            console.log(message) ;
-            console.log(object) ;
+            console.log(message + object) ;
         }
     }
 
@@ -152,12 +144,14 @@ class HtmlReporter extends WDIOReporter {
 
             Handlebars.registerHelper('testStateColour', function (state, options) {
                 if (state === 'passed') {
-                    return 'test-pass'
+                    return 'test-pass';
                 } else if (state === 'failed') {
-                    return 'test-fail'
+                    return 'test-fail';
                 } else if (state === 'pending') {
-                    return 'test-pending'
-                }
+                    return 'test-pending';
+                } else if (state === 'skipped') {
+                return 'test-skipped';
+            }
             });
 
             Handlebars.registerHelper('testStateIcon', function (state, options) {
@@ -166,7 +160,9 @@ class HtmlReporter extends WDIOReporter {
                 } else if (state === 'failed') {
                     return '<span class="error">&#10006;</span>' ;
                 } else if (state === 'pending') {
-                    return '<span class="success">&#10004;</span>' ;
+                    return '<span class="pending">&#10004;</span>' ;
+                } else if (state === 'skipped') {
+                    return '<span class="skipped">&#10034;</span>' ;
                 }
             });
 
@@ -244,7 +240,8 @@ class HtmlReporter extends WDIOReporter {
 
             if (this.options && this.options.debug) {
                 if (fs.pathExistsSync(this.options.outputDir)) {
-                    let reportfile = path.join(this.options.outputDir, this.cid,this.options.filename + '.json');
+                    let basename = this.options.filename.replace('.html' , '.json') ;
+                    let reportfile = path.join(this.options.outputDir, this.cid, basename);
                     fs.outputFileSync(reportfile, JSON.stringify(data));
                 }
             }
