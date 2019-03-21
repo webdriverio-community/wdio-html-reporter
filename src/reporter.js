@@ -65,7 +65,7 @@ class HtmlReporter extends WDIOReporter {
 
     onRunnerStart(runner) {
         this.log("onRunnerStart: " , JSON.stringify(runner));
-        //todo look at fix, not async safe
+        //todo look at fix, not async safe. but one cid per report file
         this.cid = runner.cid;
         this.specs[runner.cid] = runner.specs
         this.results[runner.cid] = {
