@@ -20,7 +20,8 @@ class HtmlReporter extends WDIOReporter {
             outputDir: 'reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
-            showInBrowser: false
+            showInBrowser: false,
+            useOnAfterCommandForScreenshot: true,
         }, opts);
         super(opts);
         this.options = opts;
@@ -28,7 +29,8 @@ class HtmlReporter extends WDIOReporter {
         fs.ensureDirSync(dir) ;
 
         process.on('test:log', this.saveMessage.bind(this));
-    }
+        process.on('test:screenshot', this.saveScreenshot.bind(this));
+            }
 
     onRunnerStart(runner) {
         this.log("onRunnerStart: " , JSON.stringify(runner));
@@ -84,14 +86,18 @@ class HtmlReporter extends WDIOReporter {
         const isScreenshotEndpoint = /\/session\/[^/]*\/screenshot/
         return isScreenshotEndpoint.test(command.endpoint)
     }
-    onAfterCommand(command) {
-        if (this.isScreenshotCommand(command) && command.result.value) {
-            const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
-            const filepath = path.join(this.options.outputDir, '/screenshots/', this.cid, timestamp, this.options.filename + '.png');
-            fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
 
-            let test = this.getTest(this.testUid) ;
-            test.events.push({type: 'screenshot', value: filepath}) ;
+    //this is a hack to get around lack of onScreenshot event
+    onAfterCommand(command) {
+        if (this.options.useOnAfterCommandForScreenshot) {
+            if (this.isScreenshotCommand(command) && command.result.value) {
+                const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
+                const filepath = path.join(this.options.outputDir, '/screenshots/', this.cid, timestamp, this.options.filename + '.png');
+                fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
+
+                let test = this.getTest(this.testUid);
+                test.events.push({type: 'screenshot', value: filepath});
+            }
         }
     }
 
@@ -117,6 +123,11 @@ class HtmlReporter extends WDIOReporter {
             }
         }
         return null;
+    }
+
+    saveScreenshot(filepath) {
+        let test = this.getTest(this.testUid) ;
+        test.events.push({type: 'screenshot', value: filepath}) ;
     }
 
     saveMessage(message) {
