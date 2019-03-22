@@ -27,27 +27,17 @@ class HtmlReporter extends WDIOReporter {
         const dir = this.options.outputDir + 'screenshots' ;
         fs.ensureDirSync(dir) ;
 
-
-        this.errorCount = 0;
-
-        this.on('runner:log', function (data) {
-            const results = this.getTest(this.testUid);
-            results.events.push({type: 'log', value: data.output}) ;
-        });
+        process.on('test:log', this.saveMessage.bind(this));
     }
 
     onRunnerStart(runner) {
         this.log("onRunnerStart: " , JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this.cid = runner.cid;
-        runner.passing = 0;
-        runner.skipped = 0;
-        runner.failing = 0;
-        process.send({
-            event: '"reporter:starting',
-            origin : "reporter",
-            content: { reporter:this}
-        })  ;
+        this.runner = runner;
+        this.runner.passing = 0;
+        this.runner.skipped = 0;
+        this.runner.failing = 0;
     }
 
     onSuiteStart(suite) {
@@ -69,18 +59,21 @@ class HtmlReporter extends WDIOReporter {
         this.log("onTestPass: " , JSON.stringify(data));
         let test = this.getTest(data.uid) ;
         test.passing++;
+        this.runner.passing++;
     }
 
     onTestSkip(data) {
         this.log("onTestSkip: " , JSON.stringify(data));
         let test = this.getTest(data.uid) ;
         test.skipped++;
+        this.runner.skipped++;
     }
 
     onTestFail(data) {
         this.log("onTestFail: " , JSON.stringify(data));
         let test = this.getTest(data.uid) ;
         test.failing++;
+        this.runner.failing++;
     }
 
     onTestEnd(suite) {
@@ -125,6 +118,12 @@ class HtmlReporter extends WDIOReporter {
         }
         return null;
     }
+
+    saveMessage(message) {
+        const test = this.getTest(this.testUid);
+        test.events.push({type: 'log', value: message}) ;
+    }
+
 
     htmlOutput(stats) {
         try {
