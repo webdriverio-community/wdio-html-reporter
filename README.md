@@ -54,8 +54,8 @@ module.exports = {
     }
 
 ```
-to be fixed:
-hide /show on report esctions doesnt work
+##to be fixed:
+hide /show on report sections doesnt work
 
 [Report Example: report.html](https://cdn.rawgit.com/aruiz-caritsqa/wdio-html-format-reporter/master/wdio-report.html)
 
