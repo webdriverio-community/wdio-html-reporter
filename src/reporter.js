@@ -8,7 +8,6 @@ const path = require('path');
 const moment = require('moment');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
-const escapeStringRegexp = require('escape-string-regexp');
 const Png = require("pngjs").PNG;
 const Jpeg = require("jpeg-js");
 const open = require('opn');
@@ -25,32 +24,15 @@ class HtmlReporter extends WDIOReporter {
         }, opts);
         super(opts);
         this.options = opts;
+        const dir = this.options.outputDir + 'screenshots' ;
+        fs.ensureDirSync(dir) ;
+
 
         this.errorCount = 0;
-        this.specs = {};
-        this.results = [];
 
         this.on('runner:log', function (data) {
-            this.log("runner:log: " , JSON.stringify(data));
-            const results = stats.runners[this.cid];
-            const specHash = Object.keys(results.specs)[Object.keys(results.specs).length - 1];
-            const spec = results.specs[specHash];
-            const lastKey = Object.keys(spec.suites)[Object.keys(spec.suites).length - 1];
-            const currentTestKey = Object.keys(spec.suites[lastKey].tests)[Object.keys(spec.suites[lastKey].tests).length - 1];
-
-            if (spec.suites[lastKey].tests[currentTestKey].logit == null) {
-                spec.suites[lastKey].tests[currentTestKey].logit = []
-            }
-            spec.suites[lastKey].tests[currentTestKey].events.push({ type: 'log', value: data.output});
-        });
-
-        this.on('runner:screenshot', function (runner) {
-            this.onScreenshot(runner) ;
-        });
-
-        this.on('screenshot', function (data) {
-            this.log("screenshot: " , JSON.stringify(data));
-            // this.onScreenshot(runner) ;
+            const results = this.getTest(this.testUid);
+            results.events.push({type: 'log', value: data.output}) ;
         });
     }
 
@@ -58,58 +40,66 @@ class HtmlReporter extends WDIOReporter {
         this.log("onRunnerStart: " , JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this.cid = runner.cid;
-        this.specs[runner.cid] = runner.specs
-        this.results[runner.cid] = {
-            passing: 0,
-            skipped: 0,
-            failing: 0
-        }
+        runner.passing = 0;
+        runner.skipped = 0;
+        runner.failing = 0;
+        process.send({
+            event: '"reporter:starting',
+            origin : "reporter",
+            content: { reporter:this}
+        })  ;
     }
 
     onSuiteStart(suite) {
+        this.suiteUid = suite.uid ;
         this.log("onSuiteStart: " , JSON.stringify(suite));
     }
 
-    onTestStart(test) {
-        this.log("onTestStart: " , JSON.stringify(test));
-        this.results[test.cid].passing = 0;
-        this.results[test.cid].skipped = 0;
-        this.results[test.cid].failing = 0;
+    onTestStart(data) {
+        this.log("onTestStart: " , JSON.stringify(data));
+        this.testUid = data.uid ;
+        let test = this.getTest(this.testUid) ;
+        test.passing = 0;
+        test.skipped = 0;
+        test.failing = 0;
+        test.events = [];
     }
 
-    onTestPass(test) {
-        this.log("onTestPass: " , JSON.stringify(test));
-        this.results[test.cid].passing++;
+    onTestPass(data) {
+        this.log("onTestPass: " , JSON.stringify(data));
+        let test = this.getTest(data.uid) ;
+        test.passing++;
     }
 
-
-    onTestSkip(test) {
-        this.log("onTestSkip: " , JSON.stringify(test));
-        this.results[test.cid].skipped++;
+    onTestSkip(data) {
+        this.log("onTestSkip: " , JSON.stringify(data));
+        let test = this.getTest(data.uid) ;
+        test.skipped++;
     }
 
-    onScreenshot(runner) {
-        this.log("onScreenshot: " , JSON.stringify(runner));
-        // if the filename isn't defined, it cannot find the file and cannot be added to the report
-        if (!runner.filename) {
-            return ;
-        }
-        const cid = runner.cid;
-        const results = stats.runners[cid];
-        const specHash = stats.getSpecHash(runner);
-        const spec = results.specs[specHash];
-        const lastKey = Object.keys(spec.suites)[Object.keys(spec.suites).length - 1];
-        const currentTestKey = Object.keys(spec.suites[lastKey].tests)[Object.keys(spec.suites[lastKey].tests).length - 1];
-        spec.suites[lastKey].tests[currentTestKey].events({ type: 'screenshot', value: runner.filename});
-    }
-
-    onTestFail(test) {
-        this.log("onTestFail: " , JSON.stringify(test));
-        this.results[test.cid].failing++
+    onTestFail(data) {
+        this.log("onTestFail: " , JSON.stringify(data));
+        let test = this.getTest(data.uid) ;
+        test.failing++;
     }
 
     onTestEnd(suite) {
         this.log("onTestEnd: " , JSON.stringify(suite));
+    }
+
+    isScreenshotCommand(command) {
+        const isScreenshotEndpoint = /\/session\/[^/]*\/screenshot/
+        return isScreenshotEndpoint.test(command.endpoint)
+    }
+    onAfterCommand(command) {
+        if (this.isScreenshotCommand(command) && command.result.value) {
+            const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
+            const filepath = path.join(this.options.outputDir, '/screenshots/', this.cid, timestamp, this.options.filename + '.png');
+            fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
+
+            let test = this.getTest(this.testUid) ;
+            test.events.push({type: 'screenshot', value: filepath}) ;
+        }
     }
 
     onRunnerEnd(runner) {
@@ -117,10 +107,23 @@ class HtmlReporter extends WDIOReporter {
         this.htmlOutput(runner);
     }
 
-    log(message,object) {
-        if (this.options.debug) {
+    log(message,object,force) {
+        if (this.options.debug || force) {
             console.log(message + object) ;
         }
+    }
+    getSuite(uid) {
+        return this.suites[uid];
+    }
+
+    getTest(uid) {
+        let suite = this.getSuite(this.suiteUid);
+        for (let i = 0 ; i < suite.tests.length ; i++) {
+            if (uid === suite.tests[i].uid) {
+                return suite.tests[i] ;
+            }
+        }
+        return null;
     }
 
     htmlOutput(stats) {
@@ -213,14 +216,14 @@ class HtmlReporter extends WDIOReporter {
                 return cid;
             });
 
-            Handlebars.registerHelper('ifEventIsScreenshot', function (event) {
+            Handlebars.registerHelper('ifEventIsScreenshot', function (event, options) {
                 if (event.type === 'screenshot') {
                     return options.fn(this);
                 }
                 return options.inverse(this);
             });
 
-            Handlebars.registerHelper('ifEventIsLogMessage', function (event) {
+            Handlebars.registerHelper('ifEventIsLogMessage', function (event, options) {
                 if (event.type === 'log') {
                     return options.fn(this);
                 }
@@ -228,41 +231,39 @@ class HtmlReporter extends WDIOReporter {
             });
 
 
-            const data = {
-                stats: stats,
+            const reportData = {
+                info: stats,
                 suites: this.suites,
-                results: this.results,
                 title: this.options.reportTitle
             };
 
-            let template = Handlebars.compile(templateFile)
-            let html = template(data);
-
-            if (this.options && this.options.debug) {
+            if (true) {
+                // if (this.options.debug) {
                 if (fs.pathExistsSync(this.options.outputDir)) {
                     let basename = this.options.filename.replace('.html' , '.json') ;
                     let reportfile = path.join(this.options.outputDir, this.cid, basename);
-                    fs.outputFileSync(reportfile, JSON.stringify(data));
+                    fs.outputFileSync(reportfile, JSON.stringify(reportData));
                 }
             }
 
-            if (this.options) {
-                let reportfile;
-                if (this.options.outputDir) {
-                    if (fs.pathExistsSync(this.options.outputDir)) {
-                        reportfile = path.join(this.options.outputDir, this.cid,this.options.filename);
-                        fs.outputFileSync(reportfile, html);
-                        if (this.options.showInBrowser) {
-                            open(reportfile).then(
-                                console.log("launched browser with " + reportfile));
-                        }
+            let template = Handlebars.compile(templateFile)
+            let html = template(reportData);
+
+            let reportfile;
+            if (this.options.outputDir) {
+                if (fs.pathExistsSync(this.options.outputDir)) {
+                    reportfile = path.join(this.options.outputDir, this.cid,this.options.filename);
+                    fs.outputFileSync(reportfile, html);
+                    if (this.options.showInBrowser) {
+                        open(reportfile).then(
+                            console.log("launched browser with " + reportfile));
                     }
-                } else {
-                    console.log(`View HTML Report at: ${reportfile}`);
                 }
+            } else {
+                console.log(`View HTML Report at: ${reportfile}`);
             }
         } catch(ex) {
-            console.error('Error generating report:' + ex);
+            console.error('Error processing report template:' + ex);
         }
     }
 }

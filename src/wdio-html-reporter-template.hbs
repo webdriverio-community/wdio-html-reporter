@@ -140,15 +140,15 @@
         <tbody>
         <tr>
             <td>Start</td>
-            <td>{{stats.start}}</td>
+            <td>{{info.start}}</td>
         </tr>
         <tr>
             <td>End</td>
-            <td>{{stats.end}}</td>
+            <td>{{info.end}}</td>
         </tr>
         <tr>
             <td>Duration</td>
-            <td>{{#humanizeDuration stats._duration}}{{/humanizeDuration}}</td>
+            <td>{{#humanizeDuration info._duration}}{{/humanizeDuration}}</td>
         </tr>
         <tr>
             <td>Breakdown</td>
@@ -160,9 +160,9 @@
                         <td class='test-fail'>Failures</td>
                     </tr>
                     <tr>
-                        <td>{{accessCid results (access stats.cid) 'passing'}}</td>
-                        <td>{{accessCid results (access stats.cid) 'skipped'}}</td>
-                        <td>{{accessCid results (access stats.cid) 'failing'}}</td>
+                        <td>{{info.passing}}</td>
+                        <td>{{info.skipped}}</td>
+                        <td>{{info.failing}}</td>
                     </tr>
                 </table>
             </td>
@@ -182,7 +182,6 @@
 
     <h2>Results</h2>
 
-    {{#each stats.specs as | spec|}}
     <table>
     <tr>
     <td>
@@ -190,47 +189,48 @@
             <tr>
                 <td colspan="2">
 
-                    <h3>{{../stats.cid}}:</h3>
+                    <h3>{{info.cid}}</h3>
                     <table class="table table-bordered">
-                        <tr>
-                            <td>Spec Files</td>
-                            <td>{{spec}}</td>
-                        </tr>
+                        {{#each info.specs as | spec|}}
+                            <tr>
+                                <td>Spec Files</td>
+                                <td>{{spec}}</td>
+                        {{/each}}
 
-                        {{#each ../suites as |suiteStat| }}
-                            {{#isValidSuite suiteStat}}
+                        {{#each suites as |suite| }}
+                            {{#isValidSuite suite}}
                                 <table class="table table-bordered table-suite">
                                     <tr class="suite-header">
                                         <td colspan="2"
-                                            class="{{#suiteStateColour suiteStat.tests}}{{/suiteStateColour}}">
+                                            class="{{#suiteStateColour suite.tests}}{{/suiteStateColour}}">
                                             <h3>
-                                                <span style="margin: 2px; padding: 1px">&nbsp;</span>{{suiteStat.title}}
+                                                <span style="margin: 2px; padding: 1px">&nbsp;</span>{{suite.title}}
                                             </h3>
                                         </td>
                                     </tr>
 
-                                    {{#ifSuiteHasTests suiteStat.tests}}
+                                    {{#ifSuiteHasTests suite.tests}}
                                         <tr>
                                             <td>Suite Start</td>
-                                            <td>{{suiteStat.start}}</td>
+                                            <td>{{suite.start}}</td>
                                         </tr>
                                         <tr>
                                             <td>Suite End</td>
-                                            <td>{{suiteStat.end}}</td>
+                                            <td>{{suite.end}}</td>
                                         </tr>
                                         <tr>
                                             <td>Suite Duration</td>
-                                            <td>{{#humanizeDuration suiteStat._duration}}{{/humanizeDuration}}</td>
+                                            <td>{{#humanizeDuration suite._duration}}{{/humanizeDuration}}</td>
                                         </tr>
 
 
                                         <tr>
-                                            <td colspan="2"><h4>{{suiteStat.tests.length}}&nbsp;Test(s):</h4></td>
+                                            <td colspan="2"><h4>{{suite.tests.length}}&nbsp;Test(s):</h4></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">
                                                 <table>
-                                                    {{#each suiteStat.tests as |test|}}
+                                                    {{#each suite.tests as |test|}}
                                                         <tr>
                                                             <td>
                                                                 <table class="table table-test">
@@ -278,9 +278,6 @@
                                                                             </tr>
                                                                         {{/ifEventIsLogMessage}}
                                                                     {{/each}}
-
-
-
                                                                 </table>
                                                             </td>
                                                         <tr>
@@ -297,7 +294,6 @@
             </tr>
         </table>
     </table>
-    {{/each}}
 </div>
 
 <script type="text/javascript">
