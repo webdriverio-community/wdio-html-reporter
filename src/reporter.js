@@ -30,7 +30,7 @@ class HtmlReporter extends WDIOReporter {
 
         process.on('test:log', this.saveMessage.bind(this));
         process.on('test:screenshot', this.saveScreenshot.bind(this));
-            }
+    }
 
     onRunnerStart(runner) {
         this.log("onRunnerStart: " , JSON.stringify(runner));

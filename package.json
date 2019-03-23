@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
-    "launch-browser": "^1.0.0",
+    "fs-extra": "^7.0.1",
     "rimraf": "^2.6.3"
   },
   "devDependencies": {
