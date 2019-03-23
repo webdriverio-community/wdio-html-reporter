@@ -7,12 +7,12 @@ That project has not been updated and doesnt work with the latest webdriverio.
 
 ## Installation
 
-The easiest way is to keep the `wdio-html-reporter` as a devDependency in your package.json:
+The easiest way is to keep the `@richpetersii/wdio-html-reporter` as a devDependency in your package.json:
 
 ```javascript
 {
   "devDependencies": {
-    "wdio-html-reporter": "~0.5.0"
+    "@richpetersii/wdio-html-reporter": "~0.5.0"
   }
 }
 ```
@@ -20,7 +20,7 @@ The easiest way is to keep the `wdio-html-reporter` as a devDependency in your p
 Or, you can simply do it with:
 
 ```
-yarn add wdio-html-reporter --dev
+yarn add @richpetersii/wdio-html-reporter --dev
 ```
 
 
