@@ -54,7 +54,7 @@ class HtmlReporter extends WDIOReporter {
         test.passing = 0;
         test.skipped = 0;
         test.failing = 0;
-        test.events = [];
+        test.errors = [];
     }
 
     onTestPass(data) {
@@ -127,12 +127,12 @@ class HtmlReporter extends WDIOReporter {
 
     saveScreenshot(filepath) {
         let test = this.getTest(this.testUid) ;
-        test.events.push({type: 'screenshot', value: filepath}) ;
+        test.errors.push({type: 'screenshot', value: filepath}) ;
     }
 
     saveMessage(message) {
         const test = this.getTest(this.testUid);
-        test.events.push({type: 'log', value: message}) ;
+        test.errors.push({type: 'log', value: message}) ;
     }
 
 
@@ -224,6 +224,13 @@ class HtmlReporter extends WDIOReporter {
 
             Handlebars.registerHelper('access', function (cid) {
                 return cid;
+            });
+
+            Handlebars.registerHelper('ifEventIsError', function (event, options) {
+                if (event.type === 'Error') {
+                    return options.fn(this);
+                }
+                return options.inverse(this);
             });
 
             Handlebars.registerHelper('ifEventIsScreenshot', function (event, options) {

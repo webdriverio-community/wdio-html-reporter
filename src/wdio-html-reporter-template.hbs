@@ -249,15 +249,15 @@
                                                                         <!--<td>{{test.end}}</td>-->
                                                                     <!--</tr>-->
 
-                                                                    {{#each test.error as |error|}}
+                                                                    {{#each test.errors as |event|}}
+                                                                        {{#ifEventIsError event}}
                                                                         <tr class="test-row">
                                                                             <td colspan="2">
-                                                                                <pre>{{error}}</pre>
+                                                                                <pre>{{event}}</pre>
                                                                             </td>
                                                                         </tr>
-                                                                    {{/each}}
+                                                                        {{/ifEventIsError}}
 
-                                                                    {{#each test.events as |event|}}
                                                                         {{#ifEventIsScreenshot event}}
                                                                         <tr class="test-row">
                                                                             <td colspan="2">
@@ -270,6 +270,7 @@
                                                                             </td>
                                                                         </tr>
                                                                         {{/ifEventIsScreenshot}}
+
                                                                         {{#ifEventIsLogMessage event}}
                                                                             <tr class="test-row">
                                                                                 <td colspan="2">
