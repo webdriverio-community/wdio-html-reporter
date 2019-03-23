@@ -3,16 +3,16 @@ A reporter for webdriver.io which generates a HTML report.
 A fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
 
 That project has not been updated and doesnt work with the latest webdriverio.
-
+Due to name conflict issues,  this package had to be put in my user namespace. it is now in npm.
 
 ## Installation
 
-The easiest way is to keep the `@richpetersii/wdio-html-reporter` as a devDependency in your package.json:
+The easiest way is to keep the `@rpii/wdio-html-reporter` as a devDependency in your package.json:
 
 ```javascript
 {
   "devDependencies": {
-    "@richpetersii/wdio-html-reporter": "~0.5.0"
+    "@rpii/wdio-html-reporter": "~0.5.0"
   }
 }
 ```
@@ -20,7 +20,7 @@ The easiest way is to keep the `@richpetersii/wdio-html-reporter` as a devDepend
 Or, you can simply do it with:
 
 ```
-yarn add @richpetersii/wdio-html-reporter --dev
+yarn add @rpii/wdio-html-reporter --dev
 ```
 
 
@@ -33,7 +33,7 @@ module.exports = {
   // ...
   
   reporters: ['spec',
-        ['html', {
+        ['@rpii/wdio-html-reporter', {
             debug: true,
             outputDir: './reports/html-results/',
             filename: 'report.html',
