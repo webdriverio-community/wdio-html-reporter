@@ -54,7 +54,8 @@ class HtmlReporter extends WDIOReporter {
         test.passing = 0;
         test.skipped = 0;
         test.failing = 0;
-        test.errors = [];
+        test.events = [];
+        test.errorIndex = 0 ;
     }
 
     onTestPass(data) {
@@ -78,8 +79,10 @@ class HtmlReporter extends WDIOReporter {
         this.runner.failing++;
     }
 
-    onTestEnd(suite) {
+    onTestEnd(data) {
         this.log("onTestEnd: " , JSON.stringify(suite));
+        let test = this.getTest(data.uid) ;
+        this.moveErrorsToEvents(test) ;
     }
 
     isScreenshotCommand(command) {
@@ -125,19 +128,33 @@ class HtmlReporter extends WDIOReporter {
         return null;
     }
 
+    //this is a hack.  we have to move all the things in test.errors before they get blown away
+
+    moveErrorsToEvents(test) {
+        if (test.errors) {
+            for (let i = test.errorIndex; i < test.errors.length; i++) {
+                test.events.push(test.errors[i]);
+            }
+            test.errorIndex = test.errors.length;
+        }
+    }
+
     saveScreenshot(filepath) {
         let test = this.getTest(this.testUid) ;
-        test.errors.push({type: 'screenshot', value: filepath}) ;
+        this.moveErrorsToEvents(test) ;
+        test.events.push({type: 'screenshot', value: filepath}) ;
     }
 
     saveMessage(message) {
         const test = this.getTest(this.testUid);
-        test.errors.push({type: 'log', value: message}) ;
+        this.moveErrorsToEvents(test) ;
+        test.events.push({type: 'log', value: message}) ;
     }
 
 
     htmlOutput(stats) {
         try {
+
             let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8');
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, options) {

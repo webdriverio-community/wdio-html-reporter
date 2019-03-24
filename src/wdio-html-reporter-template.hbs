@@ -249,11 +249,11 @@
                                                                         <!--<td>{{test.end}}</td>-->
                                                                     <!--</tr>-->
 
-                                                                    {{#each test.errors as |event|}}
+                                                                    {{#each test.events as |event|}}
                                                                         {{#ifEventIsError event}}
                                                                         <tr class="test-row">
                                                                             <td colspan="2">
-                                                                                <pre>{{event}}</pre>
+                                                                                <pre>{{event.message}}</pre>
                                                                             </td>
                                                                         </tr>
                                                                         {{/ifEventIsError}}
