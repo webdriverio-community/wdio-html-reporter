@@ -114,6 +114,14 @@
             border-top: 2px solid white;
         }
 
+        .assert {
+            background-color: rgba(155, 105, 255, 0.36);
+        }
+
+        .stack {
+            background-color: rgba(156, 135, 255, 0.36);
+        }
+
         .screenshotWrapper {
             max-width: 1024px;
         }
@@ -253,13 +261,18 @@
                                                                         {{#ifEventIsError event}}
                                                                         <tr class="test-row">
                                                                             <td colspan="2">
-                                                                                <pre>{{event.message}}</pre>
+                                                                                <pre class='assert'>Assertion: {{event.message}}</pre>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="test-row">
+                                                                            <td colspan="2">
+                                                                                <pre class='stack'>Stack: {{event.stack}}</pre>
                                                                             </td>
                                                                         </tr>
                                                                         {{/ifEventIsError}}
 
                                                                         {{#ifEventIsScreenshot event}}
-                                                                        <tr class="test-row">
+                                                                        <tr class="test-row screenshot">
                                                                             <td colspan="2">
                                                                                 <div class="screenshotWrapper">
                                                                                     <img class="toggle screenshot screenshot-small"
@@ -272,7 +285,7 @@
                                                                         {{/ifEventIsScreenshot}}
 
                                                                         {{#ifEventIsLogMessage event}}
-                                                                            <tr class="test-row">
+                                                                            <tr class="test-row log">
                                                                                 <td colspan="2">
                                                                                     <pre class='log-output'>{{event.value}}</pre>
                                                                                 </td>
