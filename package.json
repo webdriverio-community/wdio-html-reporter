@@ -1,6 +1,6 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "build/reporter.js",
   "scripts": {
@@ -34,6 +34,9 @@
   },
   "homepage": "https://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
+    "@wdio/reporter": "^5.7.2",
+    "chai": "^4.2.0",
+    "fs-extra": "^7.0.1",
     "handlebars": "^4.0.11",
     "jpeg-js": "^0.3.3",
     "loadash": "^1.0.0",
@@ -45,10 +48,7 @@
     "opn": "^5.5.0",
     "path": "^0.12.7",
     "pngjs": "^3.3.3",
-    "fs-extra": "^7.0.1",
-    "rimraf": "^2.6.3",
-    "chai": "^4.2.0",
-    "@wdio/reporter": "^5.7.2"
+    "rimraf": "^2.6.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -67,7 +67,6 @@
     "babel-plugin-source-map-support": "^2.0.1",
     "eslint": "^4.7.2",
     "eslint-plugin-import": "^2.8.0"
-
   },
   "contributors": [
     "Adrien Ruiz Gauder <caritsqa@gmail.com>",
