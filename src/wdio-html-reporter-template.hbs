@@ -122,7 +122,9 @@
             background-color: rgba(155, 105, 255, 0.36);
             margin-left:24px;
         }
-
+        .assert-color {
+            background-color: rgba(155, 105, 255, 0.36);
+        }
         .stack {
             background-color: rgba(156, 135, 255, 0.36);
             margin-left:24px;
@@ -135,6 +137,39 @@
         .filter {
             border: 1px solid;
             padding: 4px;
+        }
+        /* Style the buttons that are used to open and close the accordion panel */
+        .accordion {
+            padding: 8px;
+            margin-left:-80px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: 0.4s;
+        }
+
+        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+        .active, .accordion:hover {
+            background-color: #ccc;
+        }
+
+        /* Style the accordion panel. Note: hidden by default */
+        .panel {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+        }
+        .accordion:after {
+            content: '\02795'; /* Unicode character for "plus" sign (+) */
+            font-size: 15px;
+            float: left;
+            margin-left: 5px;
+            margin-right: 8px;
+        }
+
+        .active:after {
+            content: "\2796"; /* Unicode character for "minus" sign (-) */
         }
     </style>
 </head>
@@ -266,15 +301,20 @@
                                                                     {{#each test.events as |event|}}
                                                                         {{#ifEventIsError event}}
                                                                         <tr class="test-row">
-                                                                            <td colspan="2">
+                                                                            <td colspan="2" >
                                                                                 <pre class='assert'>Assertion: {{event.message}}</pre>
                                                                             </td>
-                                                                        </tr>
-                                                                        <tr class="test-row">
-                                                                            <td colspan="2">
-                                                                                <pre class='stack'>Stack: {{event.stack}}</pre>
+                                                                            <td>
+                                                                                <button class="assert-color accordion"></button>
                                                                             </td>
                                                                         </tr>
+                                                                        {{#if event.stack }}
+                                                                            <tr class="test-row">
+                                                                                <td colspan="2">
+                                                                                   <pre class='stack panel'>{{event.stack}}</pre>
+                                                                                </td>
+                                                                            </tr>
+                                                                        {{/if}}
                                                                         {{/ifEventIsError}}
 
                                                                         {{#ifEventIsScreenshot event}}
@@ -371,7 +411,12 @@
             return value == 'Show' ? 'Hide' : 'Show'
         });
     });
-
+    $.each($('.accordion').on('click', function () {
+        $(this).toggleClass('active') ;
+        let panel = $(this).parents('.test-row').next().find('.stack.panel');
+        panel.toggle() ;
+        })
+    );
 </script>
 </body>
 </html>
