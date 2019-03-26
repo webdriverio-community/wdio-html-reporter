@@ -52,10 +52,20 @@ module.exports = {
     logMessage(message) {
         process.emit('test:log', message);
     }
+    afterTest: function (test) {
+        const path = require('path');
+        const moment = require('moment');
 
+        // if test passed, ignore, else take and save screenshot.
+        if (test.passed) {
+            return;
+        }
+        const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
+        const filepath = path.join('reports/html-reports/screenshots/', timestamp + '.png');
+        browser.saveScreenshot(filepath);
+        process.emit('test:screenshot', filepath);
+    },
 ```
-##to be fixed:
-hide /show on report sections doesnt work
 
 [Report Example: report.html](https://cdn.rawgit.com/aruiz-caritsqa/wdio-html-format-reporter/master/wdio-report.html)
 
