@@ -197,28 +197,30 @@ class HtmlReporter extends WDIOReporter {
             });
 
             Handlebars.registerHelper('suiteStateColour', function (tests, options) {
-                let numTests = Object.keys(tests).length
+                let numTests = Object.keys(tests).length;
 
                 let fail = _.values(tests).find((test) => {
-                    return test.state === 'fail'
+                    return test.state === 'failed';
                 })
                 if (fail != null) {
-                    return 'suite-fail'
-                }
-
-                let pending = _.values(tests).find((test) => {
-                    return test.state === 'pending'
-                })
-                if (pending != null) {
-                    return 'suite-pending'
+                    return 'suite-fail';
                 }
 
                 let passes = _.values(tests).filter((test) => {
-                    return test.state === 'pass'
+                    return test.state === 'passed';
                 })
                 if (passes.length === numTests && numTests > 0) {
-                    return 'suite-pass'
+                    return 'suite-pass';
                 }
+
+                //skipped is the lowest priority check
+                let skipped = _.values(tests).find((test) => {
+                    return test.state === 'skipped';
+                })
+                if (skipped != null) {
+                    return 'suite-pending';
+                }
+
                 return 'suite-unknown'
             });
 

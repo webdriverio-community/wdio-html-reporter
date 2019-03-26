@@ -76,6 +76,12 @@
         span.pending    {
             color: grey;
         }
+        .suite-header {
+            cursor: pointer;
+        }
+        .expandable-control {
+            cursor: pointer;
+        }
         .test-pass, .suite-pass {
             background-color: #C8E6C9;
         }
@@ -90,6 +96,20 @@
 
         .test-unknown, .suite-unknown {
             background-color: #5EA3D1;;
+        }
+        .pre {
+            display: block;
+            padding: 9.5px;
+            margin: 0 0 10px;
+            margin-left: 0px;
+            font-size: 13px;
+            line-height: 1.42857143;
+            color: #333;
+            word-break: break-all;
+            word-wrap: break-word;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
         .log-output {
@@ -121,10 +141,9 @@
         .assert {
             background-color: #a39eff;
             margin-left:24px;
+            font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
         }
-        .assert-color {
-            background-color: #a39eff;
-        }
+
         .stack {
             background-color: rgba(156, 135, 255, 0.36);
             margin-left:24px;
@@ -138,38 +157,11 @@
             border: 1px solid;
             padding: 4px;
         }
-        /* Style the buttons that are used to open and close the accordion panel */
-        .accordion {
-            padding: 8px;
-            margin-left:-80px;
-            border: 1px solid #ccc;
-            cursor: pointer;
-            border: none;
-            outline: none;
-            transition: 0.4s;
-        }
-
-        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-        .accordion:hover {
-            background-color: #ccc;
-        }
-
         /* Style the accordion panel. Note: hidden by default */
         .panel {
             padding: 0 18px;
             display: none;
             overflow: hidden;
-        }
-        .accordion:after {
-            content: '\02795'; /* Unicode character for "plus" sign (+) */
-            font-size: 15px;
-            float: left;
-            margin-left: 5px;
-            margin-right: 8px;
-        }
-
-        .active:after {
-            content: "\2796"; /* Unicode character for "minus" sign (-) */
         }
     </style>
 </head>
@@ -300,18 +292,18 @@
 
                                                                     {{#each test.events as |event|}}
                                                                         {{#ifEventIsError event}}
-                                                                        <tr class="test-row">
-                                                                            <td colspan="2" >
-                                                                                <pre class='assert'>Assertion: {{event.message}}</pre>
-                                                                            </td>
-                                                                            <td>
-                                                                                <button class="assert-color accordion"></button>
-                                                                            </td>
-                                                                        </tr>
+                                                                            <tr class="test-row ">
+                                                                                <td colspan="2" >
+                                                                                    <p class="pre assert expandable-control">
+                                                                                        <span style="margin: 2px; padding: 1px" class='glyphicon glyphicon-chevron-down'>&nbsp;</span>
+                                                                                        Assertion: {{event.message}}
+                                                                                    </p>
+                                                                                </td>
+                                                                            </tr>
                                                                         {{#if event.stack }}
                                                                             <tr class="test-row">
                                                                                 <td colspan="2">
-                                                                                   <pre class='stack panel'>{{event.stack}}</pre>
+                                                                                   <pre class='pre stack panel'>{{event.stack}}</pre>
                                                                                 </td>
                                                                             </tr>
                                                                         {{/if}}
@@ -333,7 +325,7 @@
                                                                         {{#ifEventIsLogMessage event}}
                                                                             <tr class="test-row log">
                                                                                 <td colspan="2">
-                                                                                    <pre class='log-output'>{{event.value}}</pre>
+                                                                                    <pre class='pre log-output'>{{event.value}}</pre>
                                                                                 </td>
                                                                             </tr>
                                                                         {{/ifEventIsLogMessage}}
@@ -367,7 +359,6 @@
             // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
             // $(this).find('span').toggleClass(function(_, value){return value=='glyphicon glyphicon-chevron-down'?'glyphicon glyphicon-chevron-up':'glyphicon glyphicon-chevron-down'});
             $(this).find('span').addClass('glyphicon glyphicon-chevron-down');
-
             $(this).nextUntil('.suite-header').slideToggle(100, function () {
             });
         }
@@ -376,11 +367,9 @@
     //hide the suites/scenarios
     $('.suite-header').click(function () {
         if (!$(this).children().hasClass("suite-unknown")) {
-            // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
             $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
             $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
-            $(this).nextUntil('.suite-header').slideToggle(100, function () {
-            });
+            $(this).nextUntil('.suite-header').slideToggle(100, function () {});
         }
     });
 
@@ -411,10 +400,13 @@
             return value == 'Show' ? 'Hide' : 'Show'
         });
     });
-    $.each($('.accordion').on('click', function () {
-        $(this).toggleClass('active') ;
-        let panel = $(this).parents('.test-row').next().find('.stack.panel');
-        panel.toggle() ;
+
+
+    $.each($('.expandable-control').on('click', function () {
+        $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+        $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+        let panel = $(this).parents('.test-row').next().find('.pre.stack.panel');
+        panel.slideToggle(100, function () {});
         })
     );
 </script>
