@@ -53,8 +53,10 @@ module.exports = {
         process.emit('test:log', message);
     }
 ```
-## To show take a screenshot after test assert  
+## To take a screenshot after test assert:   
 ```  
+wdio.conf.js
+
     afterTest: function (test) {
         const path = require('path');
         const moment = require('moment');
@@ -70,9 +72,7 @@ module.exports = {
     },
 ```
 
-[Report Example: report.html](https://cdn.rawgit.com/aruiz-caritsqa/wdio-html-format-reporter/master/wdio-report.html)
-
-![Report Screenshot](wdio-report.jpg)
+![Report Screenshot](TestReport.png)
 
 
 
