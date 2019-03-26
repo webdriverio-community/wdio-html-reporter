@@ -52,6 +52,9 @@ module.exports = {
     logMessage(message) {
         process.emit('test:log', message);
     }
+```
+## To show take a screenshot after test assert  
+```  
     afterTest: function (test) {
         const path = require('path');
         const moment = require('moment');
