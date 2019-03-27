@@ -138,6 +138,10 @@
             border-top: 2px solid white;
         }
 
+        .test-iteration{
+            background-color: rgba(255, 192, 0, 0.36);
+        }
+
         .assert {
             background-color: #a39eff;
             margin-left:24px;
@@ -325,7 +329,7 @@
                                                                         {{#ifEventIsLogMessage event}}
                                                                             <tr class="test-row log">
                                                                                 <td colspan="2">
-                                                                                    <pre class='pre log-output'>{{event.value}}</pre>
+                                                                                    <pre class='pre {{logClass event.value}}'>{{event.value}}</pre>
                                                                                 </td>
                                                                             </tr>
                                                                         {{/ifEventIsLogMessage}}

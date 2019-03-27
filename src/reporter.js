@@ -266,6 +266,14 @@ class HtmlReporter extends WDIOReporter {
                 return options.inverse(this);
             });
 
+            Handlebars.registerHelper('logClass', function (text , options) {
+                if (text.includes('Test Iteration')) {
+                    return "test-iteration";
+                } else {
+                    return "log-output";
+                }
+            });
+
 
             const reportData = {
                 info: stats,
