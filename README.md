@@ -35,7 +35,7 @@ module.exports = {
   reporters: ['spec',
         ['@rpii/wdio-html-reporter', {
             debug: true,
-            outputDir: './reports/html-results/',
+            outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
             showInBrowser:true

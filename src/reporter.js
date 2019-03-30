@@ -289,7 +289,7 @@ class HtmlReporter extends WDIOReporter {
                 // if (this.options.debug) {
                 if (fs.pathExistsSync(this.options.outputDir)) {
                     let basename = this.options.filename.replace('.html' , '.json') ;
-                    let reportfile = path.join(this.options.outputDir, this.cid, basename);
+                    let reportfile = path.join(this.options.outputDir, this.suiteUid, basename);
                     fs.outputFileSync(reportfile, JSON.stringify(reportData));
                 }
             }
@@ -300,11 +300,10 @@ class HtmlReporter extends WDIOReporter {
             let reportfile;
             if (this.options.outputDir) {
                 if (fs.pathExistsSync(this.options.outputDir)) {
-                    reportfile = path.join(this.options.outputDir, this.cid,this.options.filename);
+                    reportfile = path.join(this.options.outputDir,this.suiteUid ,this.options.filename);
                     fs.outputFileSync(reportfile, html);
                     if (this.options.showInBrowser) {
-                        open(reportfile).then(
-                            console.log("launched browser with " + reportfile));
+                        await open(reportfile);
                     }
                 }
             } else {
