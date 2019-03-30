@@ -10,7 +10,7 @@ const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
 const Png = require("pngjs").PNG;
 const Jpeg = require("jpeg-js");
-const open = require('opn');
+const open = require('open');
 
 class HtmlReporter extends WDIOReporter {
 
@@ -80,9 +80,13 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onTestEnd(data) {
-        this.log("onTestEnd: " , JSON.stringify(suite));
+        this.log("onTestEnd: " , JSON.stringify(data));
         let test = this.getTest(data.uid) ;
         this.moveErrorsToEvents(test) ;
+    }
+
+    onSuiteEnd(suite) {
+        this.log("onSuiteEnd: " , JSON.stringify(suite));
     }
 
     isScreenshotCommand(command) {

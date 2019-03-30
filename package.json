@@ -1,14 +1,14 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "0.6.1",
+  "version": "0.6.3",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "build/reporter.js",
   "scripts": {
-    "build:test": "babel test/* -d build-test --config-file ./babel.config.js",
-    "build": "babel src/* -d build/ --config-file ./babel.config.js",
+    "build:test": "babel test/* -d build-test",
+    "build": "babel src/* -d build/ ",
     "clean:build": "rimraf ./build",
     "clean:reports": "rimraf ./reports",
-    "test": "mocha build-test/**/*.js --require @babel/register --config-file ./babel.config.js"
+    "test": "mocha build-test/**/*.js --require @babel/register"
   },
   "repository": {
     "type": "git",
@@ -44,7 +44,7 @@
     "moment": "^2.20.1",
     "moment-duration-format": "^2.2.1",
     "nightmare": "^2.10.0",
-    "opn": "^5.5.0",
+    "open": "^6.0.0",
     "path": "^0.12.7",
     "pngjs": "^3.3.3",
     "rimraf": "^2.6.3"
