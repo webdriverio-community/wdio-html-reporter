@@ -1,4 +1,5 @@
 import WDIOReporter from '@wdio/reporter'
+import sleep from 'sleep-promise';
 
 const events = require('events');
 const Handlebars = require('handlebars');
@@ -111,6 +112,11 @@ class HtmlReporter extends WDIOReporter {
     onRunnerEnd(runner) {
         this.log("onRunnerEnd: " , JSON.stringify(runner));
         this.htmlOutput(runner);
+        if (this.options.showInBrowser) {
+            (async () => {
+                await sleep(5000);
+            })();
+        }
     }
 
     log(message,object,force) {
@@ -285,30 +291,33 @@ class HtmlReporter extends WDIOReporter {
                 title: this.options.reportTitle
             };
 
+            let reportFile = path.join(process.cwd(), this.options.outputDir,this.suiteUid ,this.options.filename);
+
             if (true) {
-                // if (this.options.debug) {
+            // if (this.options.debug) {
                 if (fs.pathExistsSync(this.options.outputDir)) {
-                    let basename = this.options.filename.replace('.html' , '.json') ;
-                    let reportfile = path.join(this.options.outputDir, this.suiteUid, basename);
-                    fs.outputFileSync(reportfile, JSON.stringify(reportData));
+                    let jsonFile = reportFile.replace('.html' , '.json') ;
+                    fs.outputFileSync(jsonFile, JSON.stringify(reportData));
                 }
             }
 
             let template = Handlebars.compile(templateFile)
             let html = template(reportData);
 
-            let reportfile;
-            if (this.options.outputDir) {
-                if (fs.pathExistsSync(this.options.outputDir)) {
-                    reportfile = path.join(this.options.outputDir,this.suiteUid ,this.options.filename);
-                    fs.outputFileSync(reportfile, html);
-                    if (this.options.showInBrowser) {
-                        open(reportfile);
-                    }
+            if (fs.pathExistsSync(this.options.outputDir)) {
+                fs.outputFileSync(reportFile, html);
+                if (this.options.showInBrowser) {
+                    let childProcess = open(reportFile);
+                    childProcess.then(
+                    (result) => {
+                        console.log('open result:' + result);
+                    },
+                    (error) => {
+                        console.error('open error spawning :' + reportFile + " " + error);
+                    })
                 }
-            } else {
-                console.log(`View HTML Report at: ${reportfile}`);
             }
+
         } catch(ex) {
             console.error('Error processing report template:' + ex);
         }
