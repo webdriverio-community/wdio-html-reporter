@@ -303,7 +303,7 @@ class HtmlReporter extends WDIOReporter {
                     reportfile = path.join(this.options.outputDir,this.suiteUid ,this.options.filename);
                     fs.outputFileSync(reportfile, html);
                     if (this.options.showInBrowser) {
-                        await open(reportfile);
+                        open(reportfile);
                     }
                 }
             } else {
