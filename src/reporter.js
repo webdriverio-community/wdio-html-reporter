@@ -1,5 +1,4 @@
 import WDIOReporter from '@wdio/reporter'
-import sleep from 'sleep-promise';
 
 const events = require('events');
 const Handlebars = require('handlebars');
@@ -27,10 +26,26 @@ class HtmlReporter extends WDIOReporter {
         super(opts);
         this.options = opts;
         const dir = this.options.outputDir + 'screenshots' ;
-        fs.ensureDirSync(dir) ;
 
+        fs.ensureDirSync(dir) ;
+        this.suiteUids = [];
+        this.suites = [];
+        this.indents = 0;
+        this.suiteIndents = {};
+        this.metrics = {
+            passed : 0,
+            skipped : 0,
+            failed : 0
+        };
+        this.openInProgress = false;
+        this.defaultTestIndent = '   ' ;
         process.on('test:log', this.saveMessage.bind(this));
         process.on('test:screenshot', this.saveScreenshot.bind(this));
+
+    }
+
+    get isSynchronised () {
+        return !this.openInProgress ;
     }
 
     onRunnerStart(runner) {
@@ -38,56 +53,56 @@ class HtmlReporter extends WDIOReporter {
         //todo look at fix, not async safe. but one cid per report file
         this.cid = runner.cid;
         this.runner = runner;
-        this.runner.passing = 0;
-        this.runner.skipped = 0;
-        this.runner.failing = 0;
+        this.metrics.passed = 0;
+        this.metrics.skipped = 0;
+        this.metrics.failed = 0;
     }
 
     onSuiteStart(suite) {
-        this.suiteUid = suite.uid ;
+        this.suiteUids.push(suite.uid);
+        this.suiteIndents[suite.uid] = ++this.indents;
+        this.suiteUid = suite.uid;
         this.log("onSuiteStart: " , JSON.stringify(suite));
     }
 
-    onTestStart(data) {
-        this.log("onTestStart: " , JSON.stringify(data));
-        this.testUid = data.uid ;
-        let test = this.getTest(this.testUid) ;
-        test.passing = 0;
-        test.skipped = 0;
-        test.failing = 0;
+    onTestStart(theTest) {
+        this.log("onTestStart: " , JSON.stringify(theTest));
+        this.testUid = theTest.uid ;
+        let test = this.getTest(theTest.uid) ;
         test.events = [];
         test.errorIndex = 0 ;
     }
 
-    onTestPass(data) {
-        this.log("onTestPass: " , JSON.stringify(data));
-        let test = this.getTest(data.uid) ;
-        test.passing++;
-        this.runner.passing++;
+    onTestPass(test) {
+        this.log("onTestPass: " , JSON.stringify(test));
+        this.metrics.passed++;
     }
 
-    onTestSkip(data) {
-        this.log("onTestSkip: " , JSON.stringify(data));
-        let test = this.getTest(data.uid) ;
-        test.skipped++;
-        this.runner.skipped++;
+    onTestSkip(test) {
+        this.log("onTestSkip: " , JSON.stringify(test));
+        this.metrics.skipped++;
     }
 
-    onTestFail(data) {
-        this.log("onTestFail: " , JSON.stringify(data));
-        let test = this.getTest(data.uid) ;
-        test.failing++;
-        this.runner.failing++;
+    onTestFail(test) {
+        this.log("onTestFail: " , JSON.stringify(test));
+        this.metrics.failed++;
     }
 
-    onTestEnd(data) {
-        this.log("onTestEnd: " , JSON.stringify(data));
-        let test = this.getTest(data.uid) ;
+    onHookEnd(hook) {
+        if (hook.error) {
+            this.metrics.failed++;
+        }
+    }
+    onTestEnd(test) {
+        this.log("onTestEnd: " , JSON.stringify(test));
+        // let test = this.getTest(test.uid) ;
         this.moveErrorsToEvents(test) ;
     }
 
     onSuiteEnd(suite) {
         this.log("onSuiteEnd: " , JSON.stringify(suite));
+        this.indents--;
+        this.suites.push(suite);
     }
 
     isScreenshotCommand(command) {
@@ -109,15 +124,6 @@ class HtmlReporter extends WDIOReporter {
         }
     }
 
-    onRunnerEnd(runner) {
-        this.log("onRunnerEnd: " , JSON.stringify(runner));
-        this.htmlOutput(runner);
-        if (this.options.showInBrowser) {
-            (async () => {
-                await sleep(5000);
-            })();
-        }
-    }
 
     log(message,object,force) {
         if (this.options.debug || force) {
@@ -161,8 +167,38 @@ class HtmlReporter extends WDIOReporter {
         test.events.push({type: 'log', value: message}) ;
     }
 
+    onRunnerEnd(runner) {
+        this.log("onRunnerEnd: " , JSON.stringify(runner));
+        this.htmlOutput(runner);
+    }
 
-    htmlOutput(stats) {
+    getOrderedSuites() {
+        if (this.orderedSuites) {
+            return this.orderedSuites;
+        }
+
+        this.orderedSuites = [];
+
+        for (const uid of this.suiteUids) {
+            for (const suite of this.suites) {
+                if (suite.uid !== uid) {
+                    continue;
+                }
+
+                this.orderedSuites.push(suite);
+            }
+        }
+
+        return this.orderedSuites;
+    }
+
+// convert to a style class
+    indent(uid) {
+        const indents = this.suiteIndents[uid];
+        return indents === 0 ? '' : Array(indents).join('    ');
+    }
+
+    htmlOutput(runner) {
         try {
 
             let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8');
@@ -177,7 +213,9 @@ class HtmlReporter extends WDIOReporter {
             });
 
             Handlebars.registerHelper('isValidSuite', function (suite, options) {
-                if (suite.title.length > 0 && suite.type === 'suite') {
+                if (suite.title.length > 0 &&
+                    suite.type === 'suite' &&
+                    suite.tests.length > 0 ) {
                     return options.fn(this);
                 }
             });
@@ -246,15 +284,6 @@ class HtmlReporter extends WDIOReporter {
             });
 
 
-            Handlebars.registerHelper('accessCid', function (result, cid, prop) {
-                let cidVar = result[cid];
-                return cidVar[prop];
-            });
-
-            Handlebars.registerHelper('access', function (cid) {
-                return cid;
-            });
-
             Handlebars.registerHelper('ifEventIsError', function (event, options) {
                 if (event.type === 'Error') {
                     return options.fn(this);
@@ -286,12 +315,13 @@ class HtmlReporter extends WDIOReporter {
 
 
             const reportData = {
-                info: stats,
-                suites: this.suites,
+                info: runner,
+                metrics: this.metrics,
+                suites: this.getOrderedSuites(),
                 title: this.options.reportTitle
             };
 
-            let reportFile = path.join(process.cwd(), this.options.outputDir,this.suiteUid ,this.options.filename);
+            let reportFile = path.join(process.cwd(), this.options.outputDir,this.suiteUid , this.cid, this.options.filename);
 
             if (true) {
             // if (this.options.debug) {
@@ -306,14 +336,18 @@ class HtmlReporter extends WDIOReporter {
 
             if (fs.pathExistsSync(this.options.outputDir)) {
                 fs.outputFileSync(reportFile, html);
+                fs.outputFileSync(reportFile, html);
                 if (this.options.showInBrowser) {
+                    this.openInProgress = true;
                     let childProcess = open(reportFile);
                     childProcess.then(
                     (result) => {
                         console.log('open result:' + result);
+                        this.openInProgress = false ;
                     },
                     (error) => {
                         console.error('open error spawning :' + reportFile + " " + error);
+                        this.openInProgress = false ;
                     })
                 }
             }

@@ -1,173 +1,133 @@
-// import sinon from 'sinon'
-// import expect from 'chai'
-const should = require('chai').should()
 
-const fs = require('fs-extra')
+const fs = require('fs-extra');
 const path = require('path');
 const Nightmare = require('nightmare');
+import {expect} from 'chai';
 const nightmare = Nightmare({
     show: false,
 })
 
+import {
+    RUNNER,
+    SUITE_UIDS,
+    SUITES,
+    SUITES_NO_TESTS,
+    SUITES_NO_TESTS_WITH_HOOK_ERROR,
+    SUITES_MULTIPLE_ERRORS
+} from './testdata';
 
 const HtmlReporter = require('../build/reporter');
 
-let htmlReporter = new HtmlReporter.default({
-    debug: true,
-    outputDir: './reports/html-reports/',
-    filename: 'report.html',
-    reportTitle: 'Test Report Title',
-    showInBrowser: true
-});
+let htmlReporter = null;
 
-//fill data filled by events
-htmlReporter._events = {};
+describe('HtmlReporter', () => {
 
-htmlReporter.stats = {
-    runners: {}
-};
-htmlReporter.reporters = [];
 
-let testData = {
-    cid: '0-0',
-    passing: 0,
-    failing: 0,
-    skipped: 0,
-    specs: {
-        a: false,
-        b: 1
-    }
-};
-
-describe('html reporter', () => {
-    describe('the runner:start event', () => {
-        it('should setup an initial state', () => {
-            htmlReporter.onRunnerStart({
-                cid: '0-0',
-                specs: {
-                    a: false,
-                    b: 1
-                }
+    beforeEach(function ()  {
+        htmlReporter = new HtmlReporter.default({
+            debug: true,
+            outputDir: './reports/html-reports/',
+            filename: 'report.html',
+            reportTitle: 'Test Report Title',
+            showInBrowser: true
+        });
+ 
+    })
+    
+    describe('on create', function ()  {
+        it('should verify initial properties', function ()  {
+            expect(Array.isArray(htmlReporter.suiteUids)).to.equal(true);
+            expect(htmlReporter.suiteUids.length).to.equal(0);
+            expect(Array.isArray(htmlReporter.suites)).to.equal(true);
+            expect(htmlReporter.suites.length).to.equal(0);
+            expect(htmlReporter.indents).to.equal(0);
+            expect(htmlReporter.suiteIndents).to.equal({});
+            expect(htmlReporter.defaultTestIndent).to.equal('   ');
+            expect(htmlReporter.metrics).to.equal({
+                passed : 0,
+                skipped : 0,
+                failed : 0
             });
-
-            htmlReporter.runner.should.eql(testData)
-
         })
     });
 
-    htmlReporter.suites = {
-        "suite-0-0": {
-            "type": "suite",
-            "start": "2019-03-30T03:45:56.937Z",
-            "_duration": 50783,
-            "end": "2019-03-30T03:46:47.720Z",
-            "uid": "suite-0-0",
-            "cid": "0-0",
-            "title": "login test suite",
-            "fullTitle": "long form login test suite",
-            "tests":
-                [
+    describe('onSuiteStart', function ()  {
+        before(function ()  {
+            htmlReporter.onSuiteStart(SUITES[0])
+        });
 
-                    {
-                        "type": "test",
-                        "start": "2019-03-30T03:46:03.598Z",
-                        "_duration": 13525,
-                        "uid": "test-00-0",
-                        "cid": "0-0",
-                        "title": "user joe can login ",
-                        "fullTitle": "login test suite user joe can login ",
-                        "output": [],
-                        "state": "passed",
-                        "passing": 0,
-                        "skipped": 0,
-                        "failing": 0,
-                        "events": [
-                            {
-                                "type": "log",
-                                "value": "Show Login Screen"
-                            },
-                            {
-                                "type": "screenshot",
-                                "value": "reports\\html-reports\\screenshots\\20190329-204611.940.png"
-                            },
-                            {
-                                "type": "log",
-                                "value": "Login Completed"
-                            },
-                            {
-                                "type": "screenshot",
-                                "value": "reports\\html-reports\\screenshots\\20190329-204616.427.png"
-                            }
-                        ],
-                        "errorIndex": 0,
-                        "end": "2019-03-30T03:46:17.123Z"
-                    },
-                    {
-                        "type": "test",
-                        "start": "2019-03-30T03:46:17.123Z",
-                        "_duration": 4558,
-                        "uid": "test-00-1",
-                        "cid": "0-0",
-                        "title": "user lucia can login",
-                        "fullTitle": "login test suite user hank can login",
-                        "output": [],
-                        "state": "passed",
-                        "passing": 0,
-                        "skipped": 0,
-                        "failing": 0,
-                        "events": [
-                            {
-                                "type": "log",
-                                "value": "Show Login Screen"
-                            },
-                            {
-                                "type": "screenshot",
-                                "value": "reports\\html-reports\\screenshots\\20190329-204618.289.png"
-                            },
-                            {
-                                "type": "log",
-                                "value": "Login Completed"
-                            },
-                            {
-                                "type": "screenshot",
-                                "value": "reports\\html-reports\\screenshots\\20190329-204620.994.png"
-                            }
-                        ],
-                        "errorIndex": 0,
-                        "end": "2019-03-30T03:46:21.681Z"
-                    }
-                ]
-        }
-    }
-    ;
+        it('should add to suiteUids', function ()  {
+            expect(htmlReporter.suiteUids.length).to.equal(1)
+            expect(htmlReporter.suiteUids[0]).to.equal('Foo test1')
+        });
 
-
-    htmlReporter.onSuiteStart(htmlReporter.suites["suite-0-0"]);
-    htmlReporter.onTestStart(htmlReporter.suites["suite-0-0"].tests[0]);
-
-    describe('the test:pass event', () => {
-        it('should increase passing tests', () => {
-            htmlReporter.onTestPass(htmlReporter.suites["suite-0-0"].tests[0]);
-            htmlReporter.suites["suite-0-0"].tests[0].passing.should.equal(1)
+        it('should increase suiteIndents', function ()  {
+            expect(htmlReporter.suiteIndents['Foo test1']).to.equal(1)
         })
     });
 
 
-    describe('the test:fail event', () => {
-        it('should increase failing tests', () => {
-            htmlReporter.onTestFail(htmlReporter.suites["suite-0-0"].tests[1]);
-            htmlReporter.suites["suite-0-0"].tests[1].failing.should.equal(1)
+    describe('onTestPass', function ()  {
+        before(function ()  {
+            htmlReporter.onTestPass(SUITES[0].tests[0])
+        });
+
+        it('should increase metrics.passed by 1', function ()  {
+            expect(htmlReporter.metrics.passed).to.equal(1)
         })
     });
 
-    describe('the end event', () => {
-        it('should create a html report', () => {
+    describe('onTestFail', function ()  {
+        before(function ()  {
+            htmlReporter.onTestFail(SUITES[0].tests[1])
+        });
 
-            htmlReporter.onTestEnd(htmlReporter.suites["suite-0-0"].tests[0]);
-            htmlReporter.onSuiteEnd(htmlReporter.suites["suite-0-0"]);
-            htmlReporter.onRunnerEnd(htmlReporter.stats);
+        it('should increase metrics.failed by 1', function ()  {
+            expect(htmlReporter.metrics.failed).to.equal(1)
+        });
+    });
+
+    describe('onTestSkip', function ()  {
+        before(function ()  {
+            htmlReporter.onTestSkip(SUITES[0].tests[2])
+        });
+
+        it('should increase metrics.skipped by 1', function ()  {
+            expect(htmlReporter.metrics.skipped).to.equal(1)
+        });
+    });
+
+    describe('onTestEnd', function ()  {
+        before(function ()  {
+            htmlReporter.onTestEnd(SUITES[0].tests[0]);
+            htmlReporter.onTestEnd(SUITES[0].tests[1]);
+            htmlReporter.onTestEnd(SUITES[0].tests[2]);            
+        })
+
+    });
+
+    
+    describe('onSuiteEnd', function ()  {
+        before(function ()  {
+            htmlReporter.onSuiteEnd(SUITES[0])
+        });
+
+        it('should decrease indents', function ()  {
+            expect(htmlReporter.indents).to.equal(0)
+        });
+
+        it('should add the suite to the suites array', function ()  {
+            expect(htmlReporter.suites.length).to.equal(1)
+            expect(htmlReporter.suites[0]).to.equal(SUITES[0])
+        })
+    });
+
+
+    describe('onRunnerEnd', function ()  {
+        it('should call printReport method', function ()  {
+            htmlReporter.onRunnerEnd(RUNNER)
             let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.options.filename);
-            fs.existsSync(reportfile).should.eql(true)
+            fs.existsSync(reportfile).should.eql(true);
 
             nightmare
                 .goto(`file://${reportfile}`)
@@ -185,4 +145,4 @@ describe('html reporter', () => {
                 })
         })
     })
-})
+});
