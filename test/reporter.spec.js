@@ -21,9 +21,7 @@ const HtmlReporter = require('../build/reporter');
 let htmlReporter = null;
 
 describe('HtmlReporter', () => {
-
-
-    beforeEach(function ()  {
+    before(function ()  {
         htmlReporter = new HtmlReporter.default({
             debug: true,
             outputDir: './reports/html-reports/',
@@ -39,25 +37,31 @@ describe('HtmlReporter', () => {
             expect(Array.isArray(htmlReporter.suiteUids)).to.equal(true);
             expect(htmlReporter.suiteUids.length).to.equal(0);
             expect(Array.isArray(htmlReporter.suites)).to.equal(true);
-            expect(htmlReporter.suites.length).to.equal(0);
+            expect(htmlReporter.suites.length).to.deep.equal(0);
             expect(htmlReporter.indents).to.equal(0);
-            expect(htmlReporter.suiteIndents).to.equal({});
+            expect(htmlReporter.suiteIndents).to.deep.equal({});
             expect(htmlReporter.defaultTestIndent).to.equal('   ');
-            expect(htmlReporter.metrics).to.equal({
+            expect(htmlReporter.metrics).to.deep.equal({
                 passed : 0,
                 skipped : 0,
                 failed : 0
             });
         })
     });
-
+    describe('onRunnerStart', function ()  {
+        before(function ()  {
+            htmlReporter.onRunnerStart(RUNNER);
+        });
+        it('should set cid', function ()  {
+            expect(htmlReporter.cid).to.equal(RUNNER.cid);
+        });
+    });
     describe('onSuiteStart', function ()  {
         before(function ()  {
             htmlReporter.onSuiteStart(SUITES[0])
         });
-
         it('should add to suiteUids', function ()  {
-            expect(htmlReporter.suiteUids.length).to.equal(1)
+            expect(htmlReporter.suiteUids.length).to.equal(1);
             expect(htmlReporter.suiteUids[0]).to.equal('Foo test1')
         });
 
@@ -124,25 +128,25 @@ describe('HtmlReporter', () => {
 
 
     describe('onRunnerEnd', function ()  {
-        it('should call printReport method', function ()  {
+        it('should call htmlOutput method', function ()  {
             htmlReporter.onRunnerEnd(RUNNER)
-            let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.options.filename);
-            fs.existsSync(reportfile).should.eql(true);
+            let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.cid, htmlReporter.options.filename);
+            expect(fs.existsSync(reportfile)).to.equal(true);
 
-            nightmare
-                .goto(`file://${reportfile}`)
-                .evaluate(function () {
-                    return {
-                        header: document.querySelector('.page-header').innerText
-                    }
-                })
-                .end()
-                .then(function (result) {
-                    result.header.should.match(/Test HTML Report/)
-                })
-                .catch(function (error) {
-                    console.error('Search failed:', error);
-                })
+            // nightmare
+            //     .goto(`file://${reportfile}`)
+            //     .evaluate(function () {
+            //         return {
+            //             header: document.querySelector('.page-header').innerText
+            //         }
+            //     })
+            //     .end()
+            //     .then(function (result) {
+            //         result.header.should.match(/Test HTML Report/)
+            //     })
+            //     .catch(function (error) {
+            //         console.error('Search failed:', error);
+            //     })
         })
     })
 });

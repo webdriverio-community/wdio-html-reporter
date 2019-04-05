@@ -5,11 +5,8 @@ export const RUNNER = {
     capabilities : {
         browserName : 'loremipsum',
     },
-    specs : ['/foo/bar/baz.js'],
-    passed: 0,
-    failed: 0,
-    skipped: 0
-}
+    specs : ['/foo/bar/baz.js']
+};
 
 export const SUITE_UIDS = [
     'Foo test1',

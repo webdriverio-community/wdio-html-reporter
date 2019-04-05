@@ -93,9 +93,9 @@ class HtmlReporter extends WDIOReporter {
             this.metrics.failed++;
         }
     }
-    onTestEnd(test) {
-        this.log("onTestEnd: " , JSON.stringify(test));
-        // let test = this.getTest(test.uid) ;
+    onTestEnd(theTest) {
+        this.log("onTestEnd: " , JSON.stringify(theTest));
+        let test = this.getTest(theTest.uid) ;
         this.moveErrorsToEvents(test) ;
     }
 
@@ -341,12 +341,12 @@ class HtmlReporter extends WDIOReporter {
                     this.openInProgress = true;
                     let childProcess = open(reportFile);
                     childProcess.then(
-                    (result) => {
-                        console.log('open result:' + result);
+                    () => {
+                        console.log('browser launched');
                         this.openInProgress = false ;
                     },
                     (error) => {
-                        console.error('open error spawning :' + reportFile + " " + error);
+                        console.error('showInBrowser error spawning :' + reportFile + " " + error.toString());
                         this.openInProgress = false ;
                     })
                 }
