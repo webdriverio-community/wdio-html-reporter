@@ -62,6 +62,7 @@ class HtmlReporter extends WDIOReporter {
         this.suiteUids.push(suite.uid);
         this.suiteIndents[suite.uid] = ++this.indents;
         this.suiteUid = suite.uid;
+        this.suites.push(suite);
         this.log("onSuiteStart: " , JSON.stringify(suite));
     }
 
@@ -102,7 +103,6 @@ class HtmlReporter extends WDIOReporter {
     onSuiteEnd(suite) {
         this.log("onSuiteEnd: " , JSON.stringify(suite));
         this.indents--;
-        this.suites.push(suite);
     }
 
     isScreenshotCommand(command) {
@@ -131,7 +131,12 @@ class HtmlReporter extends WDIOReporter {
         }
     }
     getSuite(uid) {
-        return this.suites[uid];
+        for (let i = 0 ; i < this.suites.length ; i++) {
+            if (uid === this.suites[i].uid) {
+                return this.suites[i] ;
+            }
+        }
+        return null;
     }
 
     getTest(uid) {

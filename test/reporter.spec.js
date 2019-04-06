@@ -1,11 +1,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const Nightmare = require('nightmare');
 import {expect} from 'chai';
-const nightmare = Nightmare({
-    show: false,
-})
 
 import {
     RUNNER,
@@ -70,7 +66,11 @@ describe('HtmlReporter', () => {
         })
     });
 
-
+    describe('onTestStart', function ()  {
+        before(function ()  {
+            htmlReporter.onTestStart(SUITES[0].tests[0])
+        });
+    });
     describe('onTestPass', function ()  {
         before(function ()  {
             htmlReporter.onTestPass(SUITES[0].tests[0])
@@ -78,9 +78,17 @@ describe('HtmlReporter', () => {
 
         it('should increase metrics.passed by 1', function ()  {
             expect(htmlReporter.metrics.passed).to.equal(1)
-        })
+        });
+        after(function ()  {
+            htmlReporter.onTestEnd(SUITES[0].tests[0])
+        });
     });
 
+    describe('onTestStart', function ()  {
+        before(function ()  {
+            htmlReporter.onTestStart(SUITES[0].tests[1])
+        });
+    });
     describe('onTestFail', function ()  {
         before(function ()  {
             htmlReporter.onTestFail(SUITES[0].tests[1])
@@ -89,8 +97,16 @@ describe('HtmlReporter', () => {
         it('should increase metrics.failed by 1', function ()  {
             expect(htmlReporter.metrics.failed).to.equal(1)
         });
+        after(function ()  {
+            htmlReporter.onTestEnd(SUITES[0].tests[1])
+        });
     });
 
+    describe('onTestStart', function ()  {
+        before(function ()  {
+            htmlReporter.onTestStart(SUITES[0].tests[2])
+        });
+    });
     describe('onTestSkip', function ()  {
         before(function ()  {
             htmlReporter.onTestSkip(SUITES[0].tests[2])
@@ -98,6 +114,9 @@ describe('HtmlReporter', () => {
 
         it('should increase metrics.skipped by 1', function ()  {
             expect(htmlReporter.metrics.skipped).to.equal(1)
+        });
+        after(function ()  {
+            htmlReporter.onTestEnd(SUITES[0].tests[2])
         });
     });
 
@@ -132,21 +151,6 @@ describe('HtmlReporter', () => {
             htmlReporter.onRunnerEnd(RUNNER)
             let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.cid, htmlReporter.options.filename);
             expect(fs.existsSync(reportfile)).to.equal(true);
-
-            // nightmare
-            //     .goto(`file://${reportfile}`)
-            //     .evaluate(function () {
-            //         return {
-            //             header: document.querySelector('.page-header').innerText
-            //         }
-            //     })
-            //     .end()
-            //     .then(function (result) {
-            //         result.header.should.match(/Test HTML Report/)
-            //     })
-            //     .catch(function (error) {
-            //         console.error('Search failed:', error);
-            //     })
         })
     })
 });

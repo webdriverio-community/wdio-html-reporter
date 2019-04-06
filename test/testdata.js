@@ -18,6 +18,7 @@ export const SUITES = [
     {
         uid : SUITE_UIDS[0],
         title : SUITE_UIDS[0].slice(0, -1),
+        type : "suite",
         hooks: [],
         tests : [
             {
@@ -41,6 +42,7 @@ export const SUITES = [
         uid : SUITE_UIDS[1],
         title : SUITE_UIDS[1].slice(0, -1),
         hooks: [],
+        type : "suite",
         tests : [
             {
                 uid : 'some test1',
@@ -61,6 +63,7 @@ export const SUITES = [
     {
         uid : SUITE_UIDS[2],
         title : SUITE_UIDS[2].slice(0, -1),
+        type : "suite",
         hooks: [],
         tests : [
             {
