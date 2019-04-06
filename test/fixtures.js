@@ -165,19 +165,7 @@ module.exports.SUITE = {
 //     'diff removed': 31
 // }
 //
-module.exports.RESULTLIST = `kuckkuck>  some foobar test
-kuckkuck>    \u001b[32m✓\u001b[0m foo
-kuckkuck>    \u001b[36m-\u001b[0m bar
-kuckkuck>
-kuckkuck>  some other foobar test
-kuckkuck>    \u001b[32m✓\u001b[0m that is a test
-kuckkuck>    \u001b[31m28)\u001b[0m and another test
-kuckkuck>
-kuckkuck>  some spec title
-kuckkuck>    \u001b[31m29)\u001b[0m some last test
-kuckkuck>    \u001b[31m30)\u001b[0m really last
-kuckkuck>
-// `
+
 //
 // export const SUMMARY = `kuckkuck>  \u001b[32m3\u001b[0m \u001b[32mpassing\u001b[0m (2m, 19s)
 // kuckkuck>  \u001b[36m1\u001b[0m \u001b[36mpending\u001b[0m
