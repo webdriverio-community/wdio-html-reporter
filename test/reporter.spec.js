@@ -13,16 +13,23 @@ import {
 } from './testdata';
 
 const HtmlReporter = require('../build/reporter');
+const ReportAggregator = require('../build/reportAggregator');
 
 let htmlReporter = null;
+
+let reportAggregator = new ReportAggregator.default({
+    outputDir: './reports/html-reports/',
+    filename: 'master-report.html',
+    reportTitle: 'Master Report'
+});
 
 describe('HtmlReporter', () => {
     before(function ()  {
         htmlReporter = new HtmlReporter.default({
-            debug: true,
+            debug: false,
             outputDir: './reports/html-reports/',
             filename: 'report.html',
-            reportTitle: 'Test Report Title',
+            reportTitle: 'Unit Test Report Title',
             showInBrowser: true
         });
  
@@ -151,6 +158,10 @@ describe('HtmlReporter', () => {
             htmlReporter.onRunnerEnd(RUNNER)
             let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.cid, htmlReporter.options.filename);
             expect(fs.existsSync(reportfile)).to.equal(true);
+        });
+        it('should invoke the reportAggregator', function ()  {
+            reportAggregator.createReport();
+            expect(fs.existsSync(reportAggregator.options.reportFile)).to.equal(true);
         })
     })
 });

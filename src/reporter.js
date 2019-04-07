@@ -1,16 +1,13 @@
 import WDIOReporter from '@wdio/reporter'
+import HtmlGenerator from './htmlGenerator'
 
-const events = require('events');
-const Handlebars = require('handlebars');
 const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
 const moment = require('moment');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
-const Png = require("pngjs").PNG;
-const Jpeg = require("jpeg-js");
-const open = require('open');
+
 
 class HtmlReporter extends WDIOReporter {
 
@@ -172,10 +169,6 @@ class HtmlReporter extends WDIOReporter {
         test.events.push({type: 'log', value: message}) ;
     }
 
-    onRunnerEnd(runner) {
-        this.log("onRunnerEnd: " , JSON.stringify(runner));
-        this.htmlOutput(runner);
-    }
 
     getOrderedSuites() {
         if (this.orderedSuites) {
@@ -203,164 +196,28 @@ class HtmlReporter extends WDIOReporter {
         return indents === 0 ? '' : Array(indents).join('    ');
     }
 
-    htmlOutput(runner) {
-        try {
+    onRunnerEnd(runner) {
+        let self = this ;
+        this.log("onRunnerEnd: " , JSON.stringify(runner));
+        self.openInProgress = true;
 
-            let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8');
-
-            Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, options) {
-                // occurs when there is an error file
-                if (!fs.existsSync(screenshotFile)) {
-                    screenshotFile = `${screenshotPath}/${screenshotFile}`
-                }
-                let png = new Png.sync.read(fs.readFileSync(path.resolve(`${screenshotFile}`)))
-                return `data:image/jpeg;base64,${Jpeg.encode(png, 50).data.toString('base64')}`
-            });
-
-            Handlebars.registerHelper('isValidSuite', function (suite, options) {
-                if (suite.title.length > 0 &&
-                    suite.type === 'suite' &&
-                    suite.tests.length > 0 ) {
-                    return options.fn(this);
-                }
-            });
-
-            Handlebars.registerHelper('testStateColour', function (state, options) {
-                if (state === 'passed') {
-                    return 'test-pass';
-                } else if (state === 'failed') {
-                    return 'test-fail';
-                } else if (state === 'pending') {
-                    return 'test-pending';
-                } else if (state === 'skipped') {
-                return 'test-skipped';
-            }
-            });
-
-            Handlebars.registerHelper('testStateIcon', function (state, options) {
-                if (state === 'passed') {
-                    return '<span class="success">&#10004;</span>' ;
-                } else if (state === 'failed') {
-                    return '<span class="error">&#10006;</span>' ;
-                } else if (state === 'pending') {
-                    return '<span class="pending">&#10004;</span>' ;
-                } else if (state === 'skipped') {
-                    return '<span class="skipped">&#10034;</span>' ;
-                }
-            });
-
-            Handlebars.registerHelper('suiteStateColour', function (tests, options) {
-                let numTests = Object.keys(tests).length;
-
-                let fail = _.values(tests).find((test) => {
-                    return test.state === 'failed';
-                })
-                if (fail != null) {
-                    return 'suite-fail';
-                }
-
-                let passes = _.values(tests).filter((test) => {
-                    return test.state === 'passed';
-                })
-                if (passes.length === numTests && numTests > 0) {
-                    return 'suite-pass';
-                }
-
-                //skipped is the lowest priority check
-                let skipped = _.values(tests).find((test) => {
-                    return test.state === 'skipped';
-                })
-                if (skipped != null) {
-                    return 'suite-pending';
-                }
-
-                return 'suite-unknown'
-            });
-
-            Handlebars.registerHelper('humanizeDuration', function (duration, options) {
-                return moment.duration(duration, "milliseconds").format('hh:mm:ss.SS', {trim: false})
-            });
-
-            Handlebars.registerHelper('ifSuiteHasTests', function (testsHash, options) {
-                if (Object.keys(testsHash).length > 0) {
-                    return options.fn(this)
-                }
-                return options.inverse(this);
-            });
-
-
-            Handlebars.registerHelper('ifEventIsError', function (event, options) {
-                if (event.type === 'Error') {
-                    return options.fn(this);
-                }
-                return options.inverse(this);
-            });
-
-            Handlebars.registerHelper('ifEventIsScreenshot', function (event, options) {
-                if (event.type === 'screenshot') {
-                    return options.fn(this);
-                }
-                return options.inverse(this);
-            });
-
-            Handlebars.registerHelper('ifEventIsLogMessage', function (event, options) {
-                if (event.type === 'log') {
-                    return options.fn(this);
-                }
-                return options.inverse(this);
-            });
-
-            Handlebars.registerHelper('logClass', function (text , options) {
-                if (text.includes('Test Iteration')) {
-                    return "test-iteration";
-                } else {
-                    return "log-output";
-                }
-            });
-
-
-            const reportData = {
+        const reportOptions = {
+            data : {
                 info: runner,
-                metrics: this.metrics,
-                suites: this.getOrderedSuites(),
-                title: this.options.reportTitle
-            };
-
-            let reportFile = path.join(process.cwd(), this.options.outputDir,this.suiteUid , this.cid, this.options.filename);
-
-            if (true) {
-            // if (this.options.debug) {
-                if (fs.pathExistsSync(this.options.outputDir)) {
-                    let jsonFile = reportFile.replace('.html' , '.json') ;
-                    fs.outputFileSync(jsonFile, JSON.stringify(reportData));
-                }
-            }
-
-            let template = Handlebars.compile(templateFile)
-            let html = template(reportData);
-
-            if (fs.pathExistsSync(this.options.outputDir)) {
-                fs.outputFileSync(reportFile, html);
-                fs.outputFileSync(reportFile, html);
-                if (this.options.showInBrowser) {
-                    this.openInProgress = true;
-                    let childProcess = open(reportFile);
-                    childProcess.then(
-                    () => {
-                        console.log('browser launched');
-                        this.openInProgress = false ;
-                    },
-                    (error) => {
-                        console.error('showInBrowser error spawning :' + reportFile + " " + error.toString());
-                        this.openInProgress = false ;
-                    })
-                }
-            }
-
-        } catch(ex) {
-            console.error('Error processing report template:' + ex);
-        }
+                metrics: self.metrics,
+                suites: self.getOrderedSuites(),
+                title: self.options.reportTitle,
+            },
+            showInBrowser : self.options.showInBrowser,
+            outputDir : self.options.outputDir,
+            reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename)
+        };
+        process.emit('test:addSuite', reportOptions.data);
+        HtmlGenerator.htmlOutput(reportOptions,() => {
+            self.openInProgress = false  ;
+        })
     }
+
 }
 
 export default HtmlReporter;
