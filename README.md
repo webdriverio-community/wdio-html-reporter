@@ -30,7 +30,7 @@ The following code shows the default wdio test runner configuration. Just add 'h
 ```javascript
 // wdio.conf.js
 module.exports = {
-  // ...
+
   
   reporters: ['spec',
         ['@rpii/wdio-html-reporter', {
@@ -43,10 +43,38 @@ module.exports = {
         ]
     ]
     
-  // ...    
+ 
 };
-```
+```  
+  
+## To generate a master report for all suites
 
+Add the following event handlers to you wdio.config.js
+
+```javascript
+    onPrepare: function (config, capabilities) {
+
+        let reportAggregator = new ReportAggregator({
+            outputDir: './reports/html-reports/',
+            filename: 'master-report.html',
+            reportTitle: 'Master Report'
+        });
+        reportAggregator.clean() ;
+
+        global.reportAggregator = reportAggregator;
+    },
+    
+    onComplete: function(exitCode, config, capabilities, results) {
+        (async () => {
+            await global.reportAggregator.createReport( {
+                config: config,
+                capabilities: capabilities,
+                results : results
+            });
+        })();
+    },
+    
+``` 
 ## To show log messages in the output
 ```javascript
     logMessage(message) {
