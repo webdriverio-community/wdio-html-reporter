@@ -212,7 +212,6 @@ class HtmlReporter extends WDIOReporter {
             outputDir : self.options.outputDir,
             reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename)
         };
-        process.emit('test:addSuite', reportOptions.data);
         HtmlGenerator.htmlOutput(reportOptions,() => {
             self.openInProgress = false  ;
         })

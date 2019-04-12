@@ -239,12 +239,19 @@
 
                     <h3>{{info.cid}}</h3>
                     <table class="table table-bordered">
-                        {{#each info.specs as | spec|}}
+                        {{#if specs }}
+                            {{#each specs as | spec|}}
                             <tr>
-                                <td>Spec Files</td>
+                                <td>Spec File</td>
                                 <td>{{spec}}</td>
-                        {{/each}}
-
+                            {{/each}}
+                        {{else}}
+                            {{#each info.specs as | spec|}}
+                                <tr>
+                                    <td>Spec File</td>
+                                    <td>{{spec}}</td>
+                            {{/each}}
+                        {{/if}}
                         {{#each suites as |suite| }}
                             {{#isValidSuite suite}}
                                 <table class="table table-bordered table-suite">

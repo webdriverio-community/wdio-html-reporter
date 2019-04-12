@@ -2,7 +2,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 import {expect} from 'chai';
-
+import { ReportAggregator, HtmlReporter} from '../build/index.js';
 import {
     RUNNER,
     SUITE_UIDS,
@@ -12,25 +12,26 @@ import {
     SUITES_MULTIPLE_ERRORS
 } from './testdata';
 
-const HtmlReporter = require('../build/reporter');
-const ReportAggregator = require('../build/reportAggregator');
+
 
 let htmlReporter = null;
 
-let reportAggregator = new ReportAggregator.default({
+let reportAggregator = new ReportAggregator({
     outputDir: './reports/html-reports/',
     filename: 'master-report.html',
-    reportTitle: 'Master Report'
+    reportTitle: 'Master Report',
+    showInBrowser: true
 });
+reportAggregator.clean() ;
 
 describe('HtmlReporter', () => {
     before(function ()  {
-        htmlReporter = new HtmlReporter.default({
+        htmlReporter = new HtmlReporter({
             debug: false,
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Unit Test Report Title',
-            showInBrowser: true
+            showInBrowser: false
         });
  
     })
@@ -160,8 +161,11 @@ describe('HtmlReporter', () => {
             expect(fs.existsSync(reportfile)).to.equal(true);
         });
         it('should invoke the reportAggregator', function ()  {
-            reportAggregator.createReport();
-            expect(fs.existsSync(reportAggregator.options.reportFile)).to.equal(true);
+            (async () => {
+                await reportAggregator.createReport();
+                expect(fs.existsSync(reportAggregator.options.reportFile)).to.equal(true);
+            })() ;
+
         })
     })
 });

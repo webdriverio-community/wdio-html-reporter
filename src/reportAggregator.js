@@ -3,6 +3,26 @@ import HtmlGenerator from "./htmlGenerator";
 const fs = require('fs-extra');
 const path = require('path');
 
+function  walk(dir, extensions , filelist = []) {
+    const files = fs.readdirSync(dir);
+
+    files.forEach(function (file) {
+        const filepath = path.join(dir, file);
+        const stat = fs.statSync(filepath);
+
+        if (stat.isDirectory()) {
+            filelist = walk(filepath, extensions, filelist);
+        } else {
+            extensions.forEach(function (extension) {
+                if (file.indexOf(extension) == file.length - extension.length) {
+                    filelist.push(filepath);
+                }
+            });
+        }
+    });
+
+    return filelist;
+}
 
 class ReportAggregator {
 
@@ -15,45 +35,56 @@ class ReportAggregator {
         this.options = opts;
         this.options.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
         this.reports = [];
-        process.on('test:addSuite', this.addReport.bind(this));
-    }
-
-    before(capabilities, specs) {
-    }
-
-    after(result, capabilities, specs) {
-        createReport(this.options);
     }
 
     clean() {
         fs.emptyDirSync(this.options.outputDir);
     }
 
-    addReport(report) {
-        this.reports.push(report);
+
+
+    readJsonFiles() {
+        return walk(this.options.outputDir, [".json"]);
     }
 
-    createReport(options) {
 
-        let suiteUid = "master-suite";
+    async createReport(results) {
+
         let metrics = {
             passed: 0,
             skipped: 0,
             failed: 0
         };
         let suites = [];
-        for (let k = 0 ; k < this.reports.length ; k++) {
-            let report = this.reports[k] ;
-            metrics.passed += report.metrics.passed;
-            metrics.failed += report.metrics.failed;
-            metrics.skipped += report.metrics.skipped;
-            for (let i = 0 ; i < report.suites.length ; i++) {
-                suites.push(report.suites[i]);
+        let specs = [];
+
+        let files = this.readJsonFiles();
+
+        for (let i = 0; i < files.length; i++) {
+            try {
+                let filename = files[i];
+                let report = JSON.parse(fs.readFileSync(filename));
+                report.info.specs.forEach((spec) => {
+                    specs.push(spec) ;
+                })
+
+                this.reports.push(report);
+                metrics.passed += report.metrics.passed;
+                metrics.failed += report.metrics.failed;
+                metrics.skipped += report.metrics.skipped;
+                for (let k = 0; k < report.suites.length; k++) {
+                    suites.push(report.suites[k]);
+                }
+
+            } catch (ex) {
+                console.error(ex);
             }
+
         }
         const reportOptions = {
             data: {
                 info: this.reports[0].info,
+                specs:specs,
                 metrics: metrics,
                 suites: suites,
                 title: this.options.reportTitle,
@@ -62,8 +93,10 @@ class ReportAggregator {
             reportFile: this.options.reportFile,
             openInBrowser: true
         };
-        HtmlGenerator.htmlOutput(reportOptions) ;
+
+        HtmlGenerator.htmlOutput(reportOptions);
+
     }
 }
 
-export default ReportAggregator;
+    export default ReportAggregator;

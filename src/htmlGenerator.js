@@ -14,48 +14,6 @@ momentDurationFormatSetup(moment);
 
 class HtmlGenerator  {
 
-    reports = [] ;
-
-    static clean(folder) {
-        fs.emptyDirSync(folder) ;
-    }
-
-    addReport(report) {
-        reports.push(report) ;
-    }
-
-    createCompositeReport(options) {
-
-        let suiteUid = "master-suite";
-        let metrics = {
-            passed : 0,
-            skipped : 0,
-            failed : 0
-        } ;
-        let suites = [] ;
-        for( let report in this.reports) {
-            metrics.passed += report.metrics.passed ;
-            metrics.failed += report.metrics.failed ;
-            metrics.skipped += report.metrics.skipped ;
-            for( let suite in report.suites) {
-                suites.push(suites);
-            }
-        }
-        const reportOptions = {
-            data : {
-                info: this.reports[0].info,
-                metrics: metrics,
-                suites: suites,
-                title: options.reportTitle,
-            },
-            outputDir : self.options.outputDir,
-            reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename)
-        };
-
-        this.htmlOutput(reportOptions) ;
-    }
-
-
 
     static htmlOutput(reportOptions, callback = () =>{}) {
         try {
