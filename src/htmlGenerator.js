@@ -135,12 +135,9 @@ class HtmlGenerator  {
 
 
 
-            if (true) {
-            // if (this.reportOptions.debug) {
-                if (fs.pathExistsSync(reportOptions.outputDir)) {
-                    let jsonFile = reportOptions.reportFile.replace('.html' , '.json') ;
+            if (fs.pathExistsSync(reportOptions.outputDir)) {
+               let jsonFile = reportOptions.reportFile.replace('.html' , '.json') ;
                     fs.outputFileSync(jsonFile, JSON.stringify(reportOptions.data));
-                }
             }
 
             let template = Handlebars.compile(templateFile);
@@ -148,23 +145,26 @@ class HtmlGenerator  {
 
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                 fs.outputFileSync(reportOptions.reportFile, html);
-                if (reportOptions.showInBrowser) {
+                try {
+                    if (reportOptions.showInBrowser) {
 
-                    let childProcess = open(reportOptions.reportFile);
-                    childProcess.then(
-                    () => {
-                        console.log('browser launched');
-                        callback(true) ;
-                    },
-                    (error) => {
-                        console.error('showInBrowser error spawning :' + reportOptions.reportFile + " " + error.toString());
-                        callback(false) ;
-                    })
+                        let childProcess = open(reportOptions.reportFile);
+                        childProcess.then(
+                            () => {
+                                console.log('browser launched');
+                            },
+                            (error) => {
+                                console.error('showInBrowser error spawning :' + reportOptions.reportFile + " " + error.toString());
+                            })
+                    }
+                } catch (ex) {
+                    console.error('Error opening browser:' + ex);
                 }
             }
-
+            callback(true);
         } catch(ex) {
             console.error('Error processing report template:' + ex);
+            callback(false);
         }
     }
 }
