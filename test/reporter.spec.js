@@ -48,7 +48,10 @@ describe('HtmlReporter', () => {
             expect(htmlReporter.metrics).to.deep.equal({
                 passed : 0,
                 skipped : 0,
-                failed : 0
+                failed : 0,
+                start:0,
+                end:0,
+                duration:0
             });
         })
     });

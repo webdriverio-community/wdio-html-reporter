@@ -1,6 +1,9 @@
 export const RUNNER = {
+    type: "runner",
+    start: "2019-04-13T00:10:05.191Z",
+    end :  "2019-04-13T00:10:15.191Z",
+    _duration: 34428,
     cid : '0-0',
-    _duration : 5032,
     config: { hostname: 'localhost' },
     capabilities : {
         browserName : 'loremipsum',
@@ -20,6 +23,8 @@ export const SUITES = [
         title : SUITE_UIDS[0].slice(0, -1),
         type : "suite",
         hooks: [],
+        start: "2019-04-13T00:10:05.191Z",
+        end :  "2019-04-13T00:10:15.191Z",
         tests : [
             {
                 uid : 'foo1',

@@ -2,6 +2,7 @@ import HtmlGenerator from "./htmlGenerator";
 
 const fs = require('fs-extra');
 const path = require('path');
+const moment = require('moment');
 
 function  walk(dir, extensions , filelist = []) {
     const files = fs.readdirSync(dir);
@@ -53,7 +54,10 @@ class ReportAggregator {
         let metrics = {
             passed: 0,
             skipped: 0,
-            failed: 0
+            failed: 0,
+            start : moment("2048-01-01T01:00:00-08:00"),
+            end : moment("2000-01-01T01:00:00-08:00"),
+            duration: 0
         };
         let suites = [];
         let specs = [];
@@ -66,21 +70,35 @@ class ReportAggregator {
                 let report = JSON.parse(fs.readFileSync(filename));
                 report.info.specs.forEach((spec) => {
                     specs.push(spec) ;
-                })
+                });
+
 
                 this.reports.push(report);
                 metrics.passed += report.metrics.passed;
                 metrics.failed += report.metrics.failed;
                 metrics.skipped += report.metrics.skipped;
-                for (let k = 0; k < report.suites.length; k++) {
-                    suites.push(report.suites[k]);
-                }
 
+                for (let k = 0; k < report.suites.length; k++) {
+                    let suite = report.suites[k] ;
+                    let start = moment.utc(suite.start) ;
+                    if ( start.isSameOrBefore(metrics.start)) {
+                        metrics.start =  start ;
+                    }
+                    let end = moment.utc(suite.end) ;
+                    if ( end.isAfter(metrics.end)) {
+                        metrics.end =  end ;
+                    }
+                    suites.push(suite);
+                }
             } catch (ex) {
                 console.error(ex);
             }
 
         }
+        metrics.duration = moment.duration(metrics.end.diff(metrics.start), "milliseconds").format('hh:mm:ss.SS', {trim: false});
+        metrics.start = metrics.start.format() ;
+        metrics.end = metrics.end.format() ;
+
         const reportOptions = {
             data: {
                 info: this.reports[0].info,

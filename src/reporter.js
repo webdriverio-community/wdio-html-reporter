@@ -32,7 +32,10 @@ class HtmlReporter extends WDIOReporter {
         this.metrics = {
             passed : 0,
             skipped : 0,
-            failed : 0
+            failed : 0,
+            start: 0,
+            end: 0 ,
+            duration:0
         };
         this.openInProgress = false;
         this.defaultTestIndent = '   ' ;
@@ -200,6 +203,9 @@ class HtmlReporter extends WDIOReporter {
         let self = this ;
         this.log("onRunnerEnd: " , JSON.stringify(runner));
         self.openInProgress = true;
+        self.metrics.start = runner.start ;
+        self.metrics.end = runner.end ;
+        self.metrics.duration = runner._duration;
 
         const reportOptions = {
             data : {
