@@ -154,7 +154,7 @@ class HtmlReporter extends WDIOReporter {
     moveErrorsToEvents(test) {
         if (test.errors) {
             for (let i = test.errorIndex; i < test.errors.length; i++) {
-                test.events.push(test.errors[i]);
+                test.events.push({type: 'Error', ...test.errors[i]});
             }
             test.errorIndex = test.errors.length;
         }
