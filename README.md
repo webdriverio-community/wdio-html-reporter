@@ -1,8 +1,8 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.
-A fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
-
+This project is a fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
 That project has not been updated and doesnt work with the latest webdriverio.
+This project does. A pull request was submitted to that project, but it appears to be inactive.
 Due to name conflict issues,  this package had to be put in my user namespace. it is now in npm.
 
 ## Installation
