@@ -416,13 +416,12 @@
     });
 
 
-    $.each($('.expandable-control').on('click', function () {
+    $('.expandable-control').on('click', function () {
         $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
         $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
         let panel = $(this).parents('.test-row').next().find('.pre.stack.panel');
         panel.slideToggle(100, function () {});
-        })
-    );
+    });
 </script>
 </body>
 </html>
