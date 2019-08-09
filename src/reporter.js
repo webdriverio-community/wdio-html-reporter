@@ -62,8 +62,10 @@ class HtmlReporter extends WDIOReporter {
         this.suiteUids.push(suite.uid);
         this.suiteIndents[suite.uid] = ++this.indents;
         this.suiteUid = suite.uid;
-        this.suites.push(suite);
-        this.log("onSuiteStart: " , JSON.stringify(suite));
+        let thisSuite = Object.assign({}, suite);
+        thisSuite.type = 'suite';
+        this.suites.push(thisSuite);
+        this.log("onSuiteStart: ", JSON.stringify(thisSuite));
     }
 
     onTestStart(theTest) {
