@@ -31,7 +31,7 @@ class HtmlGenerator  {
 
             Handlebars.registerHelper('isValidSuite', function (suite, hbopts) {
                 if (suite.title.length > 0 &&
-                    suite.type === 'suite' &&
+                    suite.type.includes('suite') &&
                     suite.tests.length > 0 ) {
                     return hbopts.fn(this);
                 }
