@@ -102,7 +102,7 @@ class HtmlGenerator  {
 
 
             Handlebars.registerHelper('ifEventIsError', function (event, hbopts) {
-                if (event.type === 'Error') {
+                if (event.type.includes('Error')) {
                     return hbopts.fn(this);
                 }
                 return hbopts.inverse(this);
