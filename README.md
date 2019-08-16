@@ -29,11 +29,12 @@ The following code shows the default wdio test runner configuration. Just add 'h
 
 ```javascript
 // wdio.conf.js
+import { ReportAggregator, HtmlReporter} from '@rpii/wdio-html-reporter' ;
 module.exports = {
 
   
   reporters: ['spec',
-        ['@rpii/wdio-html-reporter', {
+        [HtmlReporter, {
             debug: true,
             outputDir: './reports/html-reports/',
             filename: 'report.html',
