@@ -109,6 +109,7 @@ class ReportAggregator {
             },
             outputDir: this.options.outputDir,
             reportFile: this.options.reportFile,
+            templateFilename: this.options.templateFilename,
             openInBrowser: true
         };
 

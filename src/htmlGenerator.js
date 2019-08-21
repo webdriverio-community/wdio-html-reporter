@@ -11,14 +11,12 @@ const open = require('open');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
 
-
 class HtmlGenerator  {
-
 
     static htmlOutput(reportOptions, callback = () =>{}) {
         try {
 
-            let templateFile = fs.readFileSync(path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'), 'utf8');
+            let templateFile = fs.readFileSync(reportOptions.templateFilename, 'utf8');
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, hbopts) {
                 // occurs when there is an error file
@@ -129,11 +127,6 @@ class HtmlGenerator  {
                     return "log-output";
                 }
             });
-
-
-
-
-
 
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                let jsonFile = reportOptions.reportFile.replace('.html' , '.json') ;

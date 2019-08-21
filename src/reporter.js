@@ -16,6 +16,7 @@ class HtmlReporter extends WDIOReporter {
             stdout: true,
             outputDir: 'reports/html-reports/',
             filename: 'report.html',
+            templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'),
             reportTitle: 'Test Report Title',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: true,
@@ -52,7 +53,6 @@ class HtmlReporter extends WDIOReporter {
         this.log("onRunnerStart: " , JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this.cid = runner.cid;
-        this.runner = runner;
         this.metrics.passed = 0;
         this.metrics.skipped = 0;
         this.metrics.failed = 0;
@@ -214,11 +214,12 @@ class HtmlReporter extends WDIOReporter {
                 info: runner,
                 metrics: self.metrics,
                 suites: self.getOrderedSuites(),
-                title: self.options.reportTitle,
+                title: self.options.reportTitle
             },
             showInBrowser : self.options.showInBrowser,
             outputDir : self.options.outputDir,
-            reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename)
+            reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename),
+            templateFilename: self.options.templateFilename
         };
         HtmlGenerator.htmlOutput(reportOptions,() => {
             self.openInProgress = false  ;

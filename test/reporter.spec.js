@@ -20,6 +20,7 @@ let reportAggregator = new ReportAggregator({
     outputDir: './reports/html-reports/',
     filename: 'master-report.html',
     reportTitle: 'Master Report',
+    templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),
     showInBrowser: true
 });
 reportAggregator.clean() ;
@@ -159,9 +160,9 @@ describe('HtmlReporter', () => {
 
     describe('onRunnerEnd', function ()  {
         it('should call htmlOutput method', function ()  {
-            htmlReporter.onRunnerEnd(RUNNER)
-            let reportfile = path.join(htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.cid, htmlReporter.options.filename);
-            expect(fs.existsSync(reportfile)).to.equal(true);
+            htmlReporter.onRunnerEnd(RUNNER);
+            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir, htmlReporter.suiteUid , htmlReporter.cid, htmlReporter.options.filename)
+            expect(fs.existsSync(reportFile)).to.equal(true);
         });
         it('should invoke the reportAggregator', function ()  {
             (async () => {

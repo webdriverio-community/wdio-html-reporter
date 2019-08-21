@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="[% title %]">
+
+    <title>{{title}}</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            background-color: #fafafa;
+            font-weight: 200;
+        }
+
+        h1, .h1, h2, .h2, h3, .h3 {
+            margin: 10px;
+            font-weight: 200;
+        }
+
+        h1, .h1 {
+            font-size: 30px;
+        }
+
+        h2, .h2 {
+            font-size: 24px;
+        }
+
+        h3, .h3 {
+            font-size: 20px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+            /*border-color: #ECEFF1;*/
+        }
+
+        .table-bordered > tbody > tr, .table-bordered > tfoot > tr {
+            background-color: white;
+        }
+
+        .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            border-color: #ECEFF1;
+        }
+
+        .step-table .step-name {
+            text-align: left;
+        }
+
+        .step-table .step-result {
+            text-align: left;
+        }
+
+        .step-table .step-line {
+            color: grey;
+            text-align: right;
+            display: inline;
+        }
+        span.error      {
+            color: #AD2B2B;
+        }
+        span.success    {
+            color: #53891E;
+        }
+        span.pending    {
+            color: grey;
+        }
+        .suite-header {
+            cursor: pointer;
+        }
+        .expandable-control {
+            cursor: pointer;
+        }
+        .test-pass, .suite-pass {
+            background-color: #C8E6C9;
+        }
+
+        .test-fail, .suite-fail {
+            background-color: #FFCDD2;
+        }
+
+        .test-skipped, .suite-pending {
+            background-color: #B5C8D1;;
+        }
+
+        .test-unknown, .suite-unknown {
+            background-color: #5EA3D1;;
+        }
+        .pre {
+            display: block;
+            padding: 9.5px;
+            margin: 0 0 10px;
+            margin-left: 0px;
+            font-size: 13px;
+            line-height: 1.42857143;
+            color: #333;
+            word-break: break-all;
+            word-wrap: break-word;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .log-output {
+            background-color: rgba(255, 192, 0, 0.36);
+            margin-left:24px;
+        }
+
+        .screenshot {
+            margin-left:24px;
+        }
+        .screenshot-small {
+            height: 20%;
+            width: 20%;
+        }
+
+        .screenshot-large {
+            height: 100%;
+            width: 100%;
+        }
+
+        .table-test {
+            margin: 0px;
+        }
+
+        tr.test-row {
+            border-top: 2px solid white;
+        }
+
+        .test-iteration{
+            background-color: #9bf8ff;
+        }
+
+        .assert {
+            background-color: #a39eff;
+            margin-left:24px;
+            font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+        }
+
+        .stack {
+            background-color: rgba(156, 135, 255, 0.36);
+            margin-left:24px;
+        }
+
+        .screenshotWrapper {
+            max-width: 1024px;
+        }
+
+        .filter {
+            border: 1px solid;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #8ae2db;
+            /*color:white;*/
+        }
+        /* Style the accordion panel. Note: hidden by default */
+        .panel {
+            padding: 0 18px;
+            display: none;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div id="wdio-html-report" class="page-header"><h1>{{title}}</h1></div>
+
+    <h2>Summary</h2>
+    <table class="table">
+        <thead>
+        <th>Key</th>
+        <th>Value</th>
+        </thead>
+
+        <tbody>
+        <tr>
+            <td>Start</td>
+            <td>{{metrics.start}}</td>
+        </tr>
+        <tr>
+            <td>End</td>
+            <td>{{metrics.end}}</td>
+        </tr>
+        <tr>
+            <td>Duration</td>
+            <td>{{#humanizeDuration metrics.duration}}{{/humanizeDuration}}</td>
+        </tr>
+        <tr>
+            <td>Breakdown</td>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td class='test-pass'>Passed</td>
+                        <td class='test-skipped'>Skipped</td>
+                        <td class='test-fail'>Failures</td>
+                    </tr>
+                    <tr>
+                        <td>{{metrics.passed}}</td>
+                        <td>{{metrics.skipped}}</td>
+                        <td>{{metrics.failed}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <span class="filter toggleFailingTests"><span>Hide</span> Failing Tests</span>
+                <span class="filter togglePassingTests"><span>Hide</span> Passing Tests</span>
+            </td>
+        </tr>
+    </table>
+
+
+    <h2>Results</h2>
+
+    <table>
+        <tr>
+            <td>
+                <table class="table table-bordered">
+                    <tr>
+                        <td colspan="2">
+
+                            <h3>{{info.cid}}</h3>
+                            <table class="table table-bordered">
+                                {{#if specs }}
+                                    {{#each specs as | spec|}}
+                                    <tr>
+                                        <td>Spec File</td>
+                                        <td>{{spec}}</td>
+                                    {{/each}}
+                                {{else}}
+                                    {{#each info.specs as | spec|}}
+                                    <tr>
+                                        <td>Spec File</td>
+                                        <td>{{spec}}</td>
+                                    {{/each}}
+                                {{/if}}
+                                {{#each suites as |suite| }}
+                                    {{#isValidSuite suite}}
+                                        <table class="table table-bordered table-suite">
+                                            <tr class="suite-header">
+                                                <td colspan="2"
+                                                    class="{{#suiteStateColour suite.tests}}{{/suiteStateColour}}">
+                                                    <h3>
+                                                        <span style="margin: 2px; padding: 1px">&nbsp;</span>Suite {{suite.title}}
+                                                    </h3>
+                                                </td>
+                                            </tr>
+
+                                            {{#ifSuiteHasTests suite.tests}}
+                                                <tr>
+                                                    <td>Suite Start</td>
+                                                    <td>{{suite.start}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Suite End</td>
+                                                    <td>{{suite.end}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Suite Duration</td>
+                                                    <td>{{#humanizeDuration suite._duration}}{{/humanizeDuration}}</td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td colspan="2"><h4>{{suite.tests.length}}&nbsp;Test(s):</h4></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <table>
+                                                            {{#each suite.tests as |test|}}
+                                                                <tr>
+                                                                    <td>
+                                                                        <table class="table table-test">
+                                                                            <tr>
+                                                                                <td colspan="2" class="{{#testStateColour test.state}}{{/testStateColour}}">
+                                                                                    {{#testStateIcon test.state}}{{/testStateIcon}}
+                                                                                    {{test.title}}</td>
+                                                                            </tr>
+                                                                            <!--tooooo verbose-->
+                                                                            <!--<tr>-->
+                                                                            <!--<td>Test Start</td>-->
+                                                                            <!--<td>{{test.start}}</td>-->
+                                                                            <!--</tr>-->
+                                                                            <!--<tr>-->
+                                                                            <!--<td>Test End</td>-->
+                                                                            <!--<td>{{test.end}}</td>-->
+                                                                            <!--</tr>-->
+
+                                                                            {{#each test.events as |event|}}
+                                                                                {{#ifEventIsError event}}
+                                                                                    <tr class="test-row ">
+                                                                                        <td colspan="2" >
+                                                                                            <p class="pre assert expandable-control">
+                                                                                                <span style="margin: 2px; padding: 1px" class='glyphicon glyphicon-chevron-down'>&nbsp;</span>
+                                                                                                Assertion: {{event.message}}
+                                                                                            </p>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    {{#if event.stack }}
+                                                                                        <tr class="test-row">
+                                                                                            <td colspan="2">
+                                                                                                <pre class='pre stack panel'>{{event.stack}}</pre>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    {{/if}}
+                                                                                {{/ifEventIsError}}
+
+                                                                                {{#ifEventIsScreenshot event}}
+                                                                                    <tr class="test-row screenshot">
+                                                                                        <td colspan="2">
+                                                                                            <div class="screenshotWrapper">
+                                                                                                <img class="toggle screenshot screenshot-small"
+                                                                                                     src="{{#imageAsBase64
+                                                                                                             event.value
+                                                                                                             runnerStat.config.screenshotPath}}{{/imageAsBase64}}"/>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                {{/ifEventIsScreenshot}}
+
+                                                                                {{#ifEventIsLogMessage event}}
+                                                                                    <tr class="test-row log">
+                                                                                        <td colspan="2">
+                                                                                            <pre class='pre {{logClass event.value}}'>{{event.value}}</pre>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                {{/ifEventIsLogMessage}}
+                                                                            {{/each}}
+                                                                        </table>
+                                                                    </td>
+                                                            <tr>
+                                                            {{/each}}
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            {{/ifSuiteHasTests}}
+                                        </table>
+                                    {{/isValidSuite}}
+                                {{/each}}
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+    </table>
+</div>
+
+<script type="text/javascript">
+    // increase/decrease size of screenshot
+    $('.screenshot').click(function () {
+        $(this).toggleClass('screenshot-large screenshot-small');
+    });
+
+    $.each($('.suite-header'), function () {
+        if (!$(this).children().hasClass("suite-unknown")) {
+            // $(this).find('span').text(function(_, value){return value=='-'?'+':'-'});
+            // $(this).find('span').toggleClass(function(_, value){return value=='glyphicon glyphicon-chevron-down'?'glyphicon glyphicon-chevron-up':'glyphicon glyphicon-chevron-down'});
+            $(this).find('span').addClass('glyphicon glyphicon-chevron-down');
+            $(this).nextUntil('.suite-header').slideToggle(100, function () {
+            });
+        }
+    });
+
+    //hide the suites/scenarios
+    $('.suite-header').click(function () {
+        if (!$(this).children().hasClass("suite-unknown")) {
+            $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+            $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+            $(this).nextUntil('.suite-header').slideToggle(100, function () {});
+        }
+    });
+
+    $('.toggleFailingTests').click(function () {
+        $.each($('.suite-fail'), function () {
+            if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+                $(this).parent().nextUntil('.suite-header').slideUp();
+            }
+            $(this).slideToggle();
+        })
+        $(this).find('span').text(function (_, value) {
+            return value == 'Show' ? 'Hide' : 'Show'
+        });
+    });
+
+    $('.togglePassingTests').click(function () {
+        $.each($('.suite-pass'), function () {
+            if ($(this).parent().find('span').hasClass('glyphicon-chevron-up')) {
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+                $(this).parent().find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+                $(this).parent().nextUntil('.suite-header').slideUp();
+            }
+            $(this).slideToggle();
+        })
+        $(this).find('span').text(function (_, value) {
+            return value == 'Show' ? 'Hide' : 'Show'
+        });
+    });
+
+
+    $('.expandable-control').on('click', function () {
+        $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+        $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+        let panel = $(this).parents('.test-row').next().find('.pre.stack.panel');
+        panel.slideToggle(100, function () {});
+    });
+</script>
+</body>
+</html>
