@@ -39,7 +39,8 @@ module.exports = {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
-            showInBrowser:true
+            showInBrowser:true,
+            // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),            
         }
         ]
     ]
@@ -47,7 +48,13 @@ module.exports = {
  
 };
 ```  
-  
+## To use a custom template for reports
+
+Uncomment the templateFilename above.  You must provide an absolute path to the file you can modify the alt-template above if you wish
+The template must be modified from the default template, just change the formatting and css.
+
+
+      
 ## To generate a master report for all suites
 
 Add the following event handlers to you wdio.config.js
