@@ -32,6 +32,7 @@ class ReportAggregator {
             outputDir: 'reports/html-reports/',
             filename: 'master-report.html',
             reportTitle: 'Test Master Report',
+            showInBrowser: false,
             templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'),
         }, opts);
         this.options = opts;
@@ -111,7 +112,7 @@ class ReportAggregator {
             outputDir: this.options.outputDir,
             reportFile: this.options.reportFile,
             templateFilename: this.options.templateFilename,
-            openInBrowser: true
+            showInBrowser: this.options.showInBrowser,
         };
 
         HtmlGenerator.htmlOutput(reportOptions);
