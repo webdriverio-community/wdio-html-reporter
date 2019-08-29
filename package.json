@@ -1,6 +1,6 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "build/index.js",
   "scripts": {

@@ -32,6 +32,7 @@ class ReportAggregator {
             outputDir: 'reports/html-reports/',
             filename: 'master-report.html',
             reportTitle: 'Test Master Report',
+            templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'),
         }, opts);
         this.options = opts;
         this.options.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
