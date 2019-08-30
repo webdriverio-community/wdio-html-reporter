@@ -9,6 +9,7 @@ const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
 
 
+
 class HtmlReporter extends WDIOReporter {
 
     constructor(opts) {
@@ -17,6 +18,7 @@ class HtmlReporter extends WDIOReporter {
             outputDir: 'reports/html-reports/',
             filename: 'report.html',
             templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'),
+            templateFuncs: {},
             reportTitle: 'Test Report Title',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: true,
@@ -219,7 +221,8 @@ class HtmlReporter extends WDIOReporter {
             showInBrowser : self.options.showInBrowser,
             outputDir : self.options.outputDir,
             reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename),
-            templateFilename: self.options.templateFilename
+            templateFilename: self.options.templateFilename,
+            templateFuncs: self.options.templateFuncs,
         };
         HtmlGenerator.htmlOutput(reportOptions,() => {
             self.openInProgress = false  ;

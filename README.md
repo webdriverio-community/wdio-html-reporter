@@ -39,8 +39,13 @@ module.exports = {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
-            showInBrowser:true,
-            // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),            
+            showInBrowser: true,
+            // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),
+            // templateFuncs: {
+            //     addOne: (v) => {
+            //         return v+1;
+            //     },
+            // },
         }
         ]
     ]
@@ -109,6 +114,3 @@ wdio.conf.js
 ```
 
 ![Report Screenshot](TestReport.png)
-
-
-
