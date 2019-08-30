@@ -35,18 +35,15 @@
   "homepage": "https://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@wdio/reporter": "^5.11.0",
-    "chai": "^4.2.0",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.0.11",
     "jpeg-js": "^0.3.3",
     "lodash": "^ 4.17.11",
-    "mocha": "^6.2.0",
     "moment": "^2.20.1",
     "moment-duration-format": "^2.2.1",
     "open": "^6.0.0",
     "path": "^0.12.7",
-    "pngjs": "^3.3.3",
-    "rimraf": "^2.6.3"
+    "pngjs": "^3.3.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
@@ -59,7 +56,10 @@
     "@babel/plugin-proposal-function-bind": "^7.2.0",
     "@babel/plugin-proposal-optional-catch-binding": "^7.2.0",
     "@babel/plugin-syntax-export-default-from": "^7.2.0",
-    "babel-plugin-source-map-support": "^2.1.1"
+    "babel-plugin-source-map-support": "^2.1.1",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "rimraf": "^2.6.3"
   },
   "contributors": [
     "Adrien Ruiz Gauder <caritsqa@gmail.com>",
