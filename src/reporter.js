@@ -7,9 +7,11 @@ const path = require('path');
 const moment = require('moment');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
+const logger = require('log4js');
 
 
 class HtmlReporter extends WDIOReporter {
+
 
     constructor(opts) {
         opts = Object.assign({}, {
@@ -20,6 +22,7 @@ class HtmlReporter extends WDIOReporter {
             reportTitle: 'Test Report Title',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: true,
+            LOG : logger.getLogger("default")
         }, opts);
         super(opts);
         this.options = opts;
@@ -116,8 +119,10 @@ class HtmlReporter extends WDIOReporter {
     onAfterCommand(command) {
         if (this.options.useOnAfterCommandForScreenshot) {
             if (this.isScreenshotCommand(command) && command.result.value) {
+
                 const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
                 const filepath = path.join(this.options.outputDir, '/screenshots/', this.cid, timestamp, this.options.filename + '.png');
+                this.log("onAfterCommand: taking screenshot " + filepath);
                 fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
 
                 let test = this.getTest(this.testUid);
@@ -128,8 +133,8 @@ class HtmlReporter extends WDIOReporter {
 
 
     log(message,object,force) {
-        if (this.options.debug || force) {
-            console.log(message + object) ;
+        if (this.options.LOG || this.options.debug || force) {
+            this.options.LOG.debug(message + object) ;
         }
     }
     getSuite(uid) {

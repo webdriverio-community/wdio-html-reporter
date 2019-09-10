@@ -15,7 +15,9 @@ class HtmlGenerator  {
 
     static htmlOutput(reportOptions, callback = () =>{}) {
         try {
-
+            if (reportOptions.LOG) {
+                reportOptions.LOG.debug("Html Generation started");
+            }
             let templateFile = fs.readFileSync(reportOptions.templateFilename, 'utf8');
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, hbopts) {
@@ -154,9 +156,14 @@ class HtmlGenerator  {
                     console.error('Error opening browser:' + ex);
                 }
             }
+            if (reportOptions.LOG) {
+                reportOptions.LOG.debug("Html Generation completed");
+            }
             callback(true);
         } catch(ex) {
-            console.error('Error processing report template:' + ex);
+            if (reportOptions.LOG) {
+                reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
+            }
             callback(false);
         }
     }
