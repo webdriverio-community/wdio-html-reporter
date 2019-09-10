@@ -130,6 +130,10 @@ class HtmlGenerator  {
                 }
             });
 
+            Object.keys(reportOptions.templateFuncs).forEach((key)=>{
+                Handlebars.registerHelper(key, reportOptions.templateFuncs[key]);
+            });
+
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                let jsonFile = reportOptions.reportFile.replace('.html' , '.json') ;
                     fs.outputFileSync(jsonFile, JSON.stringify(reportOptions.data));
