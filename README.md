@@ -46,13 +46,20 @@ module.exports = {
             //         return v+1;
             //     },
             // },
+            LOG: log4j.getLogger("default")
         }
         ]
     ]
     
  
 };
-```  
+```
+
+## To use a logger for debugging
+
+A new feature for developers is to add a logger to see whats happening.  See the report.test.js for configuration
+ 
+
 ## To use a custom template for reports
 
 Uncomment the templateFilename above.  You must provide an absolute path to the file you can modify the alt-template above if you wish
@@ -88,7 +95,7 @@ Add the following event handlers to you wdio.config.js
     },
     
 ``` 
-## To show log messages in the output
+## To show messages in the html report
 ```javascript
     logMessage(message) {
         process.emit('test:log', message);
