@@ -3,6 +3,7 @@ import HtmlGenerator from "./htmlGenerator";
 const fs = require('fs-extra');
 const path = require('path');
 const moment = require('moment');
+const logger = require('@log4js-node/log4js-api');
 
 function  walk(dir, extensions , filelist = []) {
     const files = fs.readdirSync(dir);
@@ -38,6 +39,9 @@ class ReportAggregator {
             LOG: null
         }, opts);
         this.options = opts;
+        if (!this.options.LOG) {
+            this.options.LOG = logger.getLogger("default")      ;
+        }
         this.options.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
         this.reports = [];
     }

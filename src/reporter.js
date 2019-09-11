@@ -7,8 +7,7 @@ const path = require('path');
 const moment = require('moment');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
-const logger = require('log4js');
-
+const logger = require('log4js');const log4js = require('@log4js-node/log4js-api');
 
 
 class HtmlReporter extends WDIOReporter {
@@ -24,10 +23,13 @@ class HtmlReporter extends WDIOReporter {
             reportTitle: 'Test Report Title',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: true,
-            LOG : logger.getLogger("default")
+            LOG : null
         }, opts);
         super(opts);
         this.options = opts;
+        if (!this.options.LOG) {
+            this.options.LOG = logger.getLogger("default") ;
+        }
         const dir = this.options.outputDir + 'screenshots' ;
 
         fs.ensureDirSync(dir) ;
@@ -133,9 +135,8 @@ class HtmlReporter extends WDIOReporter {
         }
     }
 
-
-    log(message,object,force) {
-        if (this.options.LOG || this.options.debug || force) {
+    log(message,object) {
+        if (this.options.LOG || this.options.debug ) {
             this.options.LOG.debug(message + object) ;
         }
     }

@@ -3,16 +3,37 @@ const path = require('path');
 import {expect} from 'chai';
 import {HtmlReporter, ReportAggregator} from '../build/index.js';
 import {RUNNER, SUITES} from './testdata';
-
+const log4js = require ('log4js') ;
 
 let htmlReporter = null;
+
+log4js.configure({ // configure to use all types in different files.
+    appenders: {
+        fileLog: {
+            type: 'file',
+            filename: "logs/console.log"
+        },
+        'out': {
+            type: 'stdout',
+            layout: {type: 'basic'}
+        }
+    },
+    categories: {
+        file: {appenders: ['fileLog'], level: 'debug'},
+        default: {appenders: ['out', 'fileLog'], level: 'debug'}
+    }
+});
+
+let logger = log4js.getLogger("default") ;
+logger.level = 'debug';
 
 let reportAggregator = new ReportAggregator({
     outputDir: './reports/html-reports/',
     filename: 'master-report.html',
     reportTitle: 'Master Report',
     templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),
-    showInBrowser: true
+    showInBrowser: true,
+    LOG : logger
 });
 reportAggregator.clean();
 
@@ -23,7 +44,8 @@ describe('HtmlReporter', () => {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Unit Test Report Title',
-            showInBrowser: false
+            showInBrowser: false,
+            LOG : logger
         });
 
     });

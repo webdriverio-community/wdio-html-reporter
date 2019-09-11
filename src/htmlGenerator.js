@@ -7,6 +7,7 @@ const moment = require('moment');
 const Png = require("pngjs").PNG;
 const Jpeg = require("jpeg-js");
 const open = require('open');
+const logger = require('@log4js-node/log4js-api');
 
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
