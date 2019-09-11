@@ -25,7 +25,6 @@ log4js.configure({ // configure to use all types in different files.
 });
 
 let logger = log4js.getLogger("default") ;
-logger.level = 'debug';
 
 let reportAggregator = new ReportAggregator({
     outputDir: './reports/html-reports/',
