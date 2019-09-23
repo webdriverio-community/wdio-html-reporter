@@ -23,41 +23,41 @@ class HtmlReporter extends WDIOReporter {
             reportTitle: 'Test Report Title',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: true,
-            LOG : null
+            LOG: null
         }, opts);
         super(opts);
         this.options = opts;
         if (!this.options.LOG) {
-            this.options.LOG = logger.getLogger("default") ;
+            this.options.LOG = logger.getLogger("default");
         }
-        const dir = this.options.outputDir + 'screenshots' ;
+        const dir = this.options.outputDir + 'screenshots';
 
-        fs.ensureDirSync(dir) ;
+        fs.ensureDirSync(dir);
         this.suiteUids = [];
         this.suites = [];
         this.indents = 0;
         this.suiteIndents = {};
         this.metrics = {
-            passed : 0,
-            skipped : 0,
-            failed : 0,
+            passed: 0,
+            skipped: 0,
+            failed: 0,
             start: 0,
-            end: 0 ,
-            duration:0
+            end: 0,
+            duration: 0
         };
         this.openInProgress = false;
-        this.defaultTestIndent = '   ' ;
+        this.defaultTestIndent = '   ';
         process.on('test:log', this.saveMessage.bind(this));
         process.on('test:screenshot', this.saveScreenshot.bind(this));
 
     }
 
-    get isSynchronised () {
-        return !this.openInProgress ;
+    get isSynchronised() {
+        return !this.openInProgress;
     }
 
     onRunnerStart(runner) {
-        this.log("onRunnerStart: " , JSON.stringify(runner));
+        this.log("onRunnerStart: ", JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this.cid = runner.cid;
         this.metrics.passed = 0;
@@ -76,25 +76,26 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onTestStart(theTest) {
-        this.log("onTestStart: " , JSON.stringify(theTest));
-        this.testUid = theTest.uid ;
-        let test = this.getTest(theTest.uid) ;
+        this.log("onTestStart: ", JSON.stringify(theTest));
+        this.testUid = theTest.uid;
+        let test = this.getTest(theTest.uid);
         test.events = [];
-        test.errorIndex = 0 ;
+        test.errorIndex = 0;
     }
 
     onTestPass(test) {
-        this.log("onTestPass: " , JSON.stringify(test));
+        this.log("onTestPass: ", JSON.stringify(test));
         this.metrics.passed++;
     }
 
     onTestSkip(test) {
-        this.log("onTestSkip: " , JSON.stringify(test));
+        this.log("onTestSkip: ", JSON.stringify(test));
         this.metrics.skipped++;
     }
 
     onTestFail(test) {
-        this.log("onTestFail: " , JSON.stringify(test));
+        this.log("onTestFail: ", JSON.stringify(test));
+        this.moveErrorsToEvents(test);
         this.metrics.failed++;
     }
 
@@ -104,13 +105,13 @@ class HtmlReporter extends WDIOReporter {
         }
     }
     onTestEnd(theTest) {
-        this.log("onTestEnd: " , JSON.stringify(theTest));
-        let test = this.getTest(theTest.uid) ;
-        this.moveErrorsToEvents(test) ;
+        this.log("onTestEnd: ", JSON.stringify(theTest));
+        let test = this.getTest(theTest.uid);
+        this.moveErrorsToEvents(test);
     }
 
     onSuiteEnd(suite) {
-        this.log("onSuiteEnd: " , JSON.stringify(suite));
+        this.log("onSuiteEnd: ", JSON.stringify(suite));
         this.indents--;
     }
 
@@ -135,15 +136,15 @@ class HtmlReporter extends WDIOReporter {
         }
     }
 
-    log(message,object) {
-        if (this.options.LOG || this.options.debug ) {
-            this.options.LOG.debug(message + object) ;
+    log(message, object) {
+        if (this.options.LOG || this.options.debug) {
+            this.options.LOG.debug(message + object);
         }
     }
     getSuite(uid) {
-        for (let i = 0 ; i < this.suites.length ; i++) {
+        for (let i = 0; i < this.suites.length; i++) {
             if (uid === this.suites[i].uid) {
-                return this.suites[i] ;
+                return this.suites[i];
             }
         }
         return null;
@@ -151,9 +152,9 @@ class HtmlReporter extends WDIOReporter {
 
     getTest(uid) {
         let suite = this.getSuite(this.suiteUid);
-        for (let i = 0 ; i < suite.tests.length ; i++) {
+        for (let i = 0; i < suite.tests.length; i++) {
             if (uid === suite.tests[i].uid) {
-                return suite.tests[i] ;
+                return suite.tests[i];
             }
         }
         return null;
@@ -171,14 +172,14 @@ class HtmlReporter extends WDIOReporter {
     }
 
     saveScreenshot(filepath) {
-        let test = this.getTest(this.testUid) ;
-        this.moveErrorsToEvents(test) ;
+        let test = this.getTest(this.testUid);
+        this.moveErrorsToEvents(test);
         test.events.push({type: 'screenshot', value: filepath}) ;
     }
 
     saveMessage(message) {
         const test = this.getTest(this.testUid);
-        this.moveErrorsToEvents(test) ;
+        this.moveErrorsToEvents(test);
         test.events.push({type: 'log', value: message}) ;
     }
 
@@ -203,35 +204,35 @@ class HtmlReporter extends WDIOReporter {
         return this.orderedSuites;
     }
 
-// convert to a style class
+    // convert to a style class
     indent(uid) {
         const indents = this.suiteIndents[uid];
         return indents === 0 ? '' : Array(indents).join('    ');
     }
 
     onRunnerEnd(runner) {
-        let self = this ;
-        this.log("onRunnerEnd: " , JSON.stringify(runner));
+        let self = this;
+        this.log("onRunnerEnd: ", JSON.stringify(runner));
         self.openInProgress = true;
-        self.metrics.start = runner.start ;
-        self.metrics.end = runner.end ;
+        self.metrics.start = runner.start;
+        self.metrics.end = runner.end;
         self.metrics.duration = runner._duration;
 
         const reportOptions = {
-            data : {
+            data: {
                 info: runner,
                 metrics: self.metrics,
                 suites: self.getOrderedSuites(),
                 title: self.options.reportTitle
             },
-            showInBrowser : self.options.showInBrowser,
-            outputDir : self.options.outputDir,
-            reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename),
+            showInBrowser: self.options.showInBrowser,
+            outputDir: self.options.outputDir,
+            reportFile: path.join(process.cwd(), self.options.outputDir, self.suiteUid, self.cid, self.options.filename),
             templateFilename: self.options.templateFilename,
             templateFuncs: self.options.templateFuncs,
         };
-        HtmlGenerator.htmlOutput(reportOptions,() => {
-            self.openInProgress = false  ;
+        HtmlGenerator.htmlOutput(reportOptions, () => {
+            self.openInProgress = false;
         })
     }
 
