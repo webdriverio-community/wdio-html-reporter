@@ -103,7 +103,7 @@ A new feature for developers is to add a logger to see detailed debug output.  S
 Uncomment the templateFilename above, and in the ReportAggregator.  You must provide an absolute path to the file you can modify the alt-template above if you wish
 The template must be modified from the default template, just change the formatting and css.
 
-##Add Message and Screenshots to the Html Report:
+## Add Message and Screenshots to the Html Report:
 
 ## To show messages in the html report
 
