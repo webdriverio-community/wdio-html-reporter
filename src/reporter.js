@@ -95,6 +95,7 @@ class HtmlReporter extends WDIOReporter {
 
     onTestFail(test) {
         this.log("onTestFail: " , JSON.stringify(test));
+        this.moveErrorsToEvents(test);
         this.metrics.failed++;
     }
 
