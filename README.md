@@ -26,7 +26,7 @@ yarn add @rpii/wdio-html-reporter --dev
 
 
 ## Configuration
-The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the array:
+The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array.  Syntax shown requires babel:
 
 ```javascript
 // wdio.conf.js
@@ -40,20 +40,24 @@ module.exports = {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
+            
+            //to show the report in a browser when done
             showInBrowser: true,
+
+            //to turn on screenshots after every test
             useOnAfterCommandForScreenshot: false,
 
-            // to use the template override option:
+            // to use the template override option, can point to your own file in the test project:
             // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),
             
-            // to add custom template functions:
+            // to add custom template functions for your custom template:
             // templateFuncs: {
             //     addOne: (v) => {
             //         return v+1;
             //     },
             // },
 
-            //initialize the logger
+            //to initialize the logger
             LOG: log4j.getLogger("default")
         }
         ]
@@ -66,7 +70,7 @@ module.exports = {
   
 ### To generate a master report for all suites
 
-Add the following event handlers to your wdio.config.js
+webdriver.io will call the reporter for each test suite.  It does not aggregate the reports.  To do this, add the following event handlers to your wdio.config.js
 
 ```javascript
     onPrepare: function (config, capabilities) {
@@ -75,6 +79,8 @@ Add the following event handlers to your wdio.config.js
             outputDir: './reports/html-reports/',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
+            
+            // to use the template override option, can point to your own file in the test project:
             // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs')
         });
         reportAggregator.clean() ;
@@ -95,13 +101,13 @@ Add the following event handlers to your wdio.config.js
 ``` 
 ### To use a logger for debugging
 
-A new feature for developers is to add a logger to see detailed debug output.  See the test/reporter.spec.js for configuration
+A new feature for developers is to add a log4js logger to see detailed debug output.  See the test/reporter.spec.js for configuration options
  
   
-### To use a custom template for reports
+### To use a custom handlebars template for reports
 
 Uncomment the templateFilename above, and in the ReportAggregator.  You must provide an absolute path to the file you can modify the alt-template above if you wish
-The template must be modified from the default template, just change the formatting and css.
+The template must support all the constructs in the default template.  YOu may add more or just change the formatting and css.
 
 ## Add Message and Screenshots to the Html Report:
 
@@ -115,7 +121,10 @@ Add the function below to your test code and call it when you want to output a m
     }
 ```
 
-## Add a function to take a screenshot that you can call from enywhere in your test:
+## To take Screenshots:
+
+Add a function that you can call from anywhere in your test:
+
 ``` 
     takeScreenshot(message) {
         const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
