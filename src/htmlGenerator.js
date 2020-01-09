@@ -4,8 +4,7 @@ const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
 const moment = require('moment');
-const Png = require("pngjs").PNG;
-const Jpeg = require("jpeg-js");
+const base64Img = require('base64-img');
 const open = require('open');
 const logger = require('@log4js-node/log4js-api');
 
@@ -26,8 +25,8 @@ class HtmlGenerator  {
                 if (!fs.existsSync(screenshotFile)) {
                     screenshotFile = `${screenshotPath}/${screenshotFile}`
                 }
-                let png = new Png.sync.read(fs.readFileSync(path.resolve(`${screenshotFile}`)));
-                return `data:image/jpeg;base64,${Jpeg.encode(png, 50).data.toString('base64')}`
+                const data = base64Img.base64Sync(path.resolve(`${screenshotFile}`));
+                return `${data}`;
             });
 
             Handlebars.registerHelper('isValidSuite', function (suite, hbopts) {

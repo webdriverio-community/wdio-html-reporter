@@ -44,7 +44,11 @@ export const SUITES = [
                         "message": "Expected <xpath://p[@class='message red-gradient' and  contains(.,'Unable to login due to Bad credentials')]> to be displayed but it is not",
                         "stack": "Error: Expected <xpath://p[@class='message red-gradient' and  contains(.,'Unable to login due to Bad credentials')]> to be displayed but it is not\n    at timer.catch.e (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\webdriverio\\build\\commands\\browser\\waitUntil.js:69:15)\n    at Browser.runCommand (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\@wdio\\sync\\build\\wrapCommand.js:31:24)\n    at Browser.<anonymous> (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\@wdio\\sync\\build\\wrapCommand.js:53:31)\n    at Proxy.<anonymous> (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\chai-webdriverio\\dist\\assertions\\displayed.js:35:20)\n    at Proxy.methodWrapper (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\chai\\lib\\chai\\utils\\addMethod.js:57:25)\n    at LoginPage.displayed [as assertInvalidCredentials] (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\test\\pages/login.page.js:112:51)\n    at LoginPage.assertion [as login] (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\test\\pages/login.page.js:89:9)\n    at LoginPage.login [as loginFn] (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\test\\pages/login.page.js:98:14)\n    at module.exports.loginFn [as fn] (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\test\\specs/login2.spec.js:29:23)\n    at module.exports.runCase (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\@rpii\\wdio-data-driven\\lib\\wdio-data-driven.js:92:22)\n    at module.exports.forCasesInSpreadsheet (C:\\Users\\rpii\\Development\\micro-magic-web-e2e-test\\node_modules\\@rpii\\wdio-data-driven\\lib\\wdio-data-driven.js:71:18)",
                         "type": "Error"
-                    }
+                    },
+                    {
+                        "type": "screenshot",
+                        "value": "reports\\html-reports\\screenshots\\20191222-171215.552.png"
+                    },
                 ]
             },
             {
