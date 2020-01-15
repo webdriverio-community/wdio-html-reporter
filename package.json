@@ -3,7 +3,7 @@
   "version": "0.8.5",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "build/index.js",
-  "typings": "typings.d.ts",
+  "types": "wdio-html-reporter.d.ts",
   "scripts": {
     "build:test": "babel test/* -d build-test",
     "build": "babel src/* -d build/ && babel test/* -d build-test",
