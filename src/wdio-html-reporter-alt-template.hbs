@@ -166,6 +166,13 @@
             background-color: #8ae2db;
             /*color:white;*/
         }
+        .filterOff{
+            border: 1px solid;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: rgba(138, 226, 219, 0.59);
+            /*color:white;*/
+        }
         /* Style the accordion panel. Note: hidden by default */
         .panel {
             padding: 0 18px;
@@ -397,10 +404,12 @@
                 $(this).parent().nextUntil('.suite-header').slideUp();
             }
             $(this).slideToggle();
-        })
+        });
         $(this).find('span').text(function (_, value) {
             return value == 'Show' ? 'Hide' : 'Show'
         });
+        $(this).toggleClass('filter', 'filterOff', true);
+        $(this).toggleClass('filterOff', 'filter', true);
     });
 
     $('.togglePassingTests').click(function () {
@@ -411,10 +420,12 @@
                 $(this).parent().nextUntil('.suite-header').slideUp();
             }
             $(this).slideToggle();
-        })
+        });
         $(this).find('span').text(function (_, value) {
             return value == 'Show' ? 'Hide' : 'Show'
         });
+        $(this).toggleClass('filter', 'filterOff', true);
+        $(this).toggleClass('filterOff', 'filter', true);
     });
 
 
