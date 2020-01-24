@@ -5,10 +5,6 @@ declare global {
         interface Global {
             reportAggregator: any;
         }
-        interface Process {
-            emit(event: "test:log", message: string): boolean;
-            emit(event: "test:screenshot", filename: string): boolean;
-        }
     }
 }
 

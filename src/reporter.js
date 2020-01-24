@@ -7,8 +7,10 @@ const path = require('path');
 const moment = require('moment');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
-const logger = require('log4js');const log4js = require('@log4js-node/log4js-api');
-
+const logger = require('log4js');
+const log4js = require('@log4js-node/log4js-api');
+const ReportEvents  = require("@rpii/wdio-report-events") ;
+let proxy = new ReportEvents.default() ;
 
 class HtmlReporter extends WDIOReporter {
 
@@ -47,8 +49,8 @@ class HtmlReporter extends WDIOReporter {
         };
         this.openInProgress = false;
         this.defaultTestIndent = '   ' ;
-        process.on('test:log', this.saveMessage.bind(this));
-        process.on('test:screenshot', this.saveScreenshot.bind(this));
+        proxy.connectMessageEvent(this.saveMessage.bind(this));
+        proxy.connectScreenshotEvent(this.saveScreenshot.bind(this));
 
     }
 

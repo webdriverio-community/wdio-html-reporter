@@ -5,8 +5,6 @@ import {HtmlReporter, ReportAggregator} from '../build/index.js';
 import {RUNNER, SUITES} from './testdata';
 const log4js = require ('log4js') ;
 
-let htmlReporter = null;
-
 log4js.configure({ // configure to use all types in different files.
     appenders: {
         fileLog: {
@@ -36,16 +34,18 @@ let reportAggregator = new ReportAggregator({
 });
 reportAggregator.clean();
 
+let htmlReporter  = new HtmlReporter({
+    debug: false,
+    outputDir: './reports/html-reports/',
+    filename: 'report.html',
+    reportTitle: 'Unit Test Report Title',
+    showInBrowser: false,
+    LOG : logger
+});
+
 describe('HtmlReporter', () => {
     before(function () {
-        htmlReporter = new HtmlReporter({
-            debug: false,
-            outputDir: './reports/html-reports/',
-            filename: 'report.html',
-            reportTitle: 'Unit Test Report Title',
-            showInBrowser: false,
-            LOG : logger
-        });
+
 
     });
 
@@ -83,6 +83,7 @@ describe('HtmlReporter', () => {
         it('should add to suiteUids', function () {
             expect(htmlReporter.suiteUids.length).to.equal(1);
             expect(htmlReporter.suiteUids[0]).to.equal('Foo test1')
+            expect(htmlReporter.suiteUid).to.equal('Foo test1')
         });
 
         it('should increase suiteIndents', function () {

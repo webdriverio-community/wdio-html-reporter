@@ -117,8 +117,14 @@
             margin-left:24px;
         }
 
-        .screenshot {
+        .screenshotWrapper {
+            max-width: 1024px;
             margin-left:24px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .screenshot {
         }
         .screenshot-small {
             height: 20%;
@@ -153,15 +159,19 @@
             margin-left:24px;
         }
 
-        .screenshotWrapper {
-            max-width: 1024px;
-        }
-
         .filter {
             border: 1px solid;
             padding: 8px;
             border-radius: 4px;
             background-color: #8ae2db;
+            /*color:white;*/
+        }
+
+        .filterOff{
+            border: 1px solid;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: rgba(138, 226, 219, 0.59);
             /*color:white;*/
         }
         /* Style the accordion panel. Note: hidden by default */
@@ -399,6 +409,8 @@
         $(this).find('span').text(function (_, value) {
             return value == 'Show' ? 'Hide' : 'Show'
         });
+        $(this).toggleClass('filter', 'filterOff', true);
+        $(this).toggleClass('filterOff', 'filter', true);
     });
 
     $('.togglePassingTests').click(function () {
@@ -413,6 +425,8 @@
         $(this).find('span').text(function (_, value) {
             return value == 'Show' ? 'Hide' : 'Show'
         });
+        $(this).toggleClass('filter', 'filterOff', true);
+        $(this).toggleClass('filterOff', 'filter', true);
     });
 
 

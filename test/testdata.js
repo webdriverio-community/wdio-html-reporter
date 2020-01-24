@@ -47,7 +47,7 @@ export const SUITES = [
                     },
                     {
                         "type": "screenshot",
-                        "value": "reports\\html-reports\\screenshots\\20191222-171215.552.png"
+                        "value": "build-test\\test.png"
                     },
                 ]
             },

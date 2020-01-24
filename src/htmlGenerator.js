@@ -23,7 +23,11 @@ class HtmlGenerator  {
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile, screenshotPath, hbopts) {
                 // occurs when there is an error file
                 if (!fs.existsSync(screenshotFile)) {
-                    screenshotFile = `${screenshotPath}/${screenshotFile}`
+                    if (screenshotPath) {
+                        screenshotFile = `${screenshotPath}/${screenshotFile}`
+                    } else {
+                        screenshotFile = `${screenshotFile}`
+                    }
                 }
                 const data = base64Img.base64Sync(path.resolve(`${screenshotFile}`));
                 return `${data}`;

@@ -1,6 +1,6 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "A WebdriverIO plugin. Create a basic HTML formatted report",
   "main": "build/index.js",
   "types": "wdio-html-reporter.d.ts",
@@ -37,6 +37,7 @@
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
     "@wdio/reporter": "^5.11.0",
+    "@rpii/wdio-report-events": "^0.1.1",
     "base64-img": "1.0.4",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.6.0",
