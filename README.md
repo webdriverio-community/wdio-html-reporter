@@ -107,7 +107,7 @@ A new feature for developers is to add a log4js logger to see detailed debug out
 ### To use a custom handlebars template for reports
 
 Uncomment the templateFilename above, and in the ReportAggregator.  You must provide an absolute path to the file you can modify the alt-template above if you wish
-The template must support all the constructs in the default template.  YOu may add more or just change the formatting and css.
+The template must support all the constructs in the default template.  You may add more or just change the formatting and css.
 
 ## Add Message and Screenshots to the Html Report:
 
