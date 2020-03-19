@@ -219,7 +219,12 @@ class HtmlReporter extends WDIOReporter {
         self.metrics.start = runner.start ;
         self.metrics.end = runner.end ;
         self.metrics.duration = runner._duration;
-
+        if (! self.suiteUid) {
+            self.suiteUid = "suite";
+        }
+        if (! self.cid) {
+            self.cid = "cid" ;
+        }
         const reportOptions = {
             data : {
                 info: runner,
