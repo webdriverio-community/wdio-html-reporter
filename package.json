@@ -44,7 +44,6 @@
     "lodash": "^4.17.15",
     "mocha": "^7.1.1",
     "moment": "^2.24.0",
-    "path": "^0.12.7",
     "moment-duration-format": "^2.3.2",
     "open": "^7.0.3"
   },
