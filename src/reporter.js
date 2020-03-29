@@ -20,7 +20,7 @@ class HtmlReporter extends WDIOReporter {
             stdout: true,
             outputDir: 'reports/html-reports/',
             filename: 'report.html',
-            templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'),
+            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             templateFuncs: {},
             reportTitle: 'Test Report Title',
             showInBrowser: false,

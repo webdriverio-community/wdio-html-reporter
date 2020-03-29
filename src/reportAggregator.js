@@ -34,7 +34,7 @@ class ReportAggregator {
             filename: 'master-report.html',
             reportTitle: 'Test Master Report',
             showInBrowser: false,
-            templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-template.hbs'),
+            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             templateFuncs: {},
             LOG: null
         }, opts);
