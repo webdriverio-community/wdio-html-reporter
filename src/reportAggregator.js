@@ -68,8 +68,8 @@ class ReportAggregator {
             passed: 0,
             skipped: 0,
             failed: 0,
-            start : moment("2048-01-01T01:00:00-08:00"),
-            end : moment("2000-01-01T01:00:00-08:00"),
+            start : new moment(),
+            end : new moment(),
             duration: 0
         };
         let suites = [];
@@ -112,7 +112,31 @@ class ReportAggregator {
             }
 
         }
-        metrics.duration = moment.duration(metrics.end.diff(metrics.start), "milliseconds").format('hh:mm:ss.SS', {trim: false});
+        if (!this.reports || !this.reports.length ) {
+            // the test failed hard at the beginning.  Create a dummy structure to get throught html generation
+            let report = {
+                "info" : {
+                    "cid": "0-0",
+                    "config": {
+                        "hostname": "localhost"
+                    },
+                "specs": [],
+                "suites": [
+                    {
+                        "uid": "Test Start Failure",
+                        "title": "Test Start Failure",
+                        "type": "suite",
+                        "tests": [],
+                    }
+                    ]
+                }
+            };
+            this.reports = [] ;
+            this.reports.push(report);
+        }
+        
+        let duration = metrics.end.diff(metrics.start) ;
+        metrics.duration = moment.duration(duration, "milliseconds").format('hh:mm:ss.SS', {trim: false});
         metrics.start = metrics.start.format() ;
         metrics.end = metrics.end.format() ;
 
