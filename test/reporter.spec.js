@@ -28,7 +28,7 @@ let reportAggregator = new ReportAggregator({
     outputDir: './reports/html-reports/',
     filename: 'master-report.html',
     reportTitle: 'Master Report',
-    templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),
+    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-alt-template.hbs'),
     showInBrowser: true,
     LOG : logger
 });

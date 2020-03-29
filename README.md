@@ -1,10 +1,12 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.
 This project is a fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
-That project has not been updated and doesnt work with the latest webdriverio.
+That project has not been updated and doesnt work with the latest webdriverio 5.x.
 
 This project does. A pull request was submitted to that project, but it appears to be inactive.
 Due to name conflict issues,  this package had to be put in my user namespace. it is now in npm.
+
+This module has been tested with mocha and now cucumber.  It works with both.
 
 ## Installation
 
@@ -48,7 +50,7 @@ module.exports = {
             useOnAfterCommandForScreenshot: false,
 
             // to use the template override option, can point to your own file in the test project:
-            // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs'),
+            // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs'),
             
             // to add custom template functions for your custom template:
             // templateFuncs: {
@@ -81,7 +83,7 @@ webdriver.io will call the reporter for each test suite.  It does not aggregate 
             reportTitle: 'Master Report',
             
             // to use the template override option, can point to your own file in the test project:
-            // templateFilename: path.resolve(__dirname, '../src/wdio-html-reporter-alt-template.hbs')
+            // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs')
         });
         reportAggregator.clean() ;
 
