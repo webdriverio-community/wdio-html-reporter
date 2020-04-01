@@ -24,15 +24,7 @@ log4js.configure({ // configure to use all types in different files.
 
 let logger = log4js.getLogger("default") ;
 
-let reportAggregator = new ReportAggregator({
-    outputDir: './reports/html-reports/',
-    filename: 'master-report.html',
-    reportTitle: 'Master Report',
-    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-alt-template.hbs'),
-    showInBrowser: true,
-    LOG : logger
-});
-reportAggregator.clean();
+
 
 let htmlReporter  = new HtmlReporter({
     debug: false,
@@ -45,8 +37,16 @@ let htmlReporter  = new HtmlReporter({
 
 describe('HtmlReporter', () => {
     before(function () {
-
-
+        global.reportAggregator = new ReportAggregator({
+            outputDir: './reports/html-reports/',
+            filename: 'master-report.html',
+            reportTitle: 'Master Report',
+            browserName : "test browser",
+            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-alt-template.hbs'),
+            showInBrowser: true,
+            LOG : logger
+        });
+        global.reportAggregator.clean();
     });
 
     describe('on create', function () {
@@ -179,8 +179,8 @@ describe('HtmlReporter', () => {
         });
         it('should invoke the reportAggregator', function () {
             (async () => {
-                await reportAggregator.createReport();
-                expect(fs.existsSync(reportAggregator.options.reportFile)).to.equal(true);
+                await global.reportAggregator.createReport();
+                expect(fs.existsSync(global.reportAggregator.options.reportFile)).to.equal(true);
             })();
 
         })

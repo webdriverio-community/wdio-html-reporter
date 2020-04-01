@@ -36,6 +36,7 @@ class ReportAggregator {
             showInBrowser: false,
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             templateFuncs: {},
+            browserName: "not specified",
             LOG: null
         }, opts);
         this.options = opts;
@@ -147,13 +148,15 @@ class ReportAggregator {
                 metrics: metrics,
                 suites: suites,
                 title: this.options.reportTitle,
+                browserName: this.options.browserName
             },
             outputDir: this.options.outputDir,
             reportFile: this.options.reportFile,
             templateFilename: this.options.templateFilename,
             LOG : this.options.LOG,
             templateFuncs: this.options.templateFuncs,
-            showInBrowser: this.options.showInBrowser
+            showInBrowser: this.options.showInBrowser,
+
         };
 
         HtmlGenerator.htmlOutput(reportOptions);

@@ -15,7 +15,7 @@ The easiest way is to keep the `@rpii/wdio-html-reporter` as a devDependency in 
 ```javascript
 {
   "devDependencies": {
-    "@rpii/wdio-html-reporter": "~0.8.0"
+    "@rpii/wdio-html-reporter": "~1.0.0"
   }
 }
 ```
@@ -81,7 +81,7 @@ webdriver.io will call the reporter for each test suite.  It does not aggregate 
             outputDir: './reports/html-reports/',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
-            
+            browserName : browser.capabilities.browserName,
             // to use the template override option, can point to your own file in the test project:
             // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs')
         });
