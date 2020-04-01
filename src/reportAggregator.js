@@ -161,4 +161,4 @@ class ReportAggregator {
     }
 }
 
-    export default ReportAggregator;
+export default ReportAggregator;

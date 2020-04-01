@@ -184,5 +184,11 @@ describe('HtmlReporter', () => {
             })();
 
         })
-    })
+    });
+
+    describe('test2 * yep', function () {
+        it('test fit', () => {
+            console.log("made it2");
+        });
+    });
 });
