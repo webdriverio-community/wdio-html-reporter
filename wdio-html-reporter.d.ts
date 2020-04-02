@@ -13,7 +13,7 @@ export interface ReportOptions {
     outputDir: string ;
     filename: string ;
     reportTitle: string ;
-    browserName: string;
+    browserName?: string | undefined;
     showInBrowser?: boolean;
     useOnAfterCommandForScreenshot?: boolean;
     templateFilename?: string ;
