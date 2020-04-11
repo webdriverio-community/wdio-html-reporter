@@ -32,13 +32,19 @@ class HtmlGenerator  {
                 const data = base64Img.base64Sync(path.resolve(`${screenshotFile}`));
                 return `${data}`;
             });
-
+            Handlebars.registerHelper('isValidReport', function (suites, hbopts) {
+                if (suites && suites.length > 0 ) {
+                    return hbopts.fn(this);
+                }
+                return hbopts.inverse(this);
+            });
             Handlebars.registerHelper('isValidSuite', function (suite, hbopts) {
                 if (suite.title.length > 0 &&
                     suite.type === 'suite' &&
                     suite.tests.length > 0 ) {
                     return hbopts.fn(this);
                 }
+                return hbopts.inverse(this);
             });
 
             Handlebars.registerHelper('testStateColour', function (state, hbopts) {

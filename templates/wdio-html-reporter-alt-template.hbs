@@ -67,6 +67,9 @@
             text-align: right;
             display: inline;
         }
+        .warning      {
+            color: #AD2B2B;
+        }
         span.error      {
             color: #AD2B2B;
         }
@@ -164,6 +167,7 @@
             padding: 8px;
             border-radius: 4px;
             background-color: #8ae2db;
+            cursor: pointer;
             /*color:white;*/
         }
         .filterOff{
@@ -171,6 +175,7 @@
             padding: 8px;
             border-radius: 4px;
             background-color: rgba(138, 226, 219, 0.59);
+            cursor: pointer;
             /*color:white;*/
         }
         /* Style the accordion panel. Note: hidden by default */
@@ -249,8 +254,11 @@
                 <table class="table table-bordered">
                     <tr>
                         <td colspan="2">
-
-                            <h3>{{info.cid}}</h3>
+                            {{#isValidReport suites}}
+                                <h3>{{info.cid}}</h3>
+                            {{else}}
+                                <h3 class="warning">{{info.cid}}</h3>
+                            {{/isValidReport}}
                             <table class="table table-bordered">
                                 {{#if specs }}
                                     {{#each specs as | spec|}}

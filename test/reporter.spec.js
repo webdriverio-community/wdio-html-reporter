@@ -28,7 +28,7 @@ let logger = log4js.getLogger("default") ;
 
 let htmlReporter  = new HtmlReporter({
     debug: false,
-    outputDir: './reports/html-reports/',
+    outputDir: './reports/html-reports/valid',
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
     showInBrowser: false,
@@ -38,7 +38,7 @@ let htmlReporter  = new HtmlReporter({
 describe('HtmlReporter', () => {
     before(function () {
         global.reportAggregator = new ReportAggregator({
-            outputDir: './reports/html-reports/',
+            outputDir: './reports/html-reports/valid',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName : "test browser",
@@ -186,9 +186,4 @@ describe('HtmlReporter', () => {
         })
     });
 
-    describe('test2 * yep', function () {
-        it('test fit', () => {
-            console.log("made it2");
-        });
-    });
 });

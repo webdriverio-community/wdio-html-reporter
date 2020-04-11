@@ -21,6 +21,14 @@ export interface ReportOptions {
     LOG?: any;
 }
 
+export interface ReportData {
+    info: any,
+    specs:any,
+    metrics: any,
+    suites: any,
+    title: string,
+    browserName: string
+}
 export declare class HtmlReporter {
     constructor(opts:ReportOptions);
 }
@@ -28,6 +36,6 @@ export declare class HtmlReporter {
 export declare class ReportAggregator {
     constructor(opts:ReportOptions) ;
     clean() : void;
-    createReport(opts: any): any;
+    createReport(reportData: ReportData): any;
 }
 

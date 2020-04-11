@@ -1,4 +1,0 @@
---colors
---reporter spec
---timeout 60000
---compilers: ['js:@babel/register']

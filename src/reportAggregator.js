@@ -117,7 +117,7 @@ class ReportAggregator {
             // the test failed hard at the beginning.  Create a dummy structure to get through html generation
             let report = {
                 "info" : {
-                    "cid": "The execution of the test suite has failed before report generation is started.  Please look at the logs to determine the error, this is likely an issue with your configuration files.",
+                    "cid": "The execution of the test suite has failed before report generation was started.  Please look at the logs to determine the error, this is likely an issue with your configuration files.",
                     "config": {
                         "hostname": "localhost"
                     },
