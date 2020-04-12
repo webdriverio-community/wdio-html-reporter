@@ -36,6 +36,6 @@ export declare class HtmlReporter {
 export declare class ReportAggregator {
     constructor(opts:ReportOptions) ;
     clean() : void;
-    createReport(reportData: ReportData): any;
+    createReport(): any;
 }
 

@@ -63,7 +63,7 @@ class ReportAggregator {
             this.options.LOG.debug(message + object) ;
         }
     }
-    async createReport(results) {
+    async createReport() {
 
         let metrics = {
             passed: 0,
