@@ -64,7 +64,9 @@ class ReportAggregator {
         }
     }
     async createReport() {
-
+        if (this.options.LOG) {
+            this.options.LOG.debug("Report Aggregation started");
+        }
         let metrics = {
             passed: 0,
             skipped: 0,
@@ -158,8 +160,11 @@ class ReportAggregator {
             showInBrowser: this.options.showInBrowser,
 
         };
-
+        if (this.options.LOG) {
+            this.options.LOG.debug("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
+        }
         HtmlGenerator.htmlOutput(reportOptions);
+        reportOptions.LOG.debug("Report Aggregation completed");
 
     }
 }

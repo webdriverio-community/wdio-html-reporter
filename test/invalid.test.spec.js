@@ -81,10 +81,10 @@ describe('HtmlReporter', () => {
     describe('onRunnerEnd', function () {
         it('should call htmlOutput method', function () {
             htmlReporter.onRunnerEnd(RUNNER);
-            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.cid, htmlReporter.options.filename)
+            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir, encodeURIComponent(htmlReporter.suiteUid), encodeURIComponent(htmlReporter.cid), htmlReporter.options.filename);
             expect(fs.existsSync(reportFile)).to.equal(true);
             //wipe out output
-            fs.emptyDirSync(path.join(process.cwd(), htmlReporter.options.outputDir, htmlReporter.suiteUid, htmlReporter.cid));
+            fs.emptyDirSync(path.join(process.cwd(), htmlReporter.options.outputDir, encodeURIComponent(htmlReporter.suiteUid), encodeURIComponent(htmlReporter.cid)));
         });
         it('should invoke the reportAggregator', function () {
             (async () => {

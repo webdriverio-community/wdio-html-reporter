@@ -128,7 +128,7 @@ class HtmlReporter extends WDIOReporter {
             if (this.isScreenshotCommand(command) && command.result.value) {
 
                 const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
-                const filepath = path.join(this.options.outputDir, '/screenshots/', this.cid, timestamp, this.options.filename + '.png');
+                const filepath = path.join(this.options.outputDir, '/screenshots/', encodeURIComponent(this.cid), timestamp, this.options.filename + '.png');
                 this.log("onAfterCommand: taking screenshot " + filepath);
                 fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
 
@@ -234,7 +234,7 @@ class HtmlReporter extends WDIOReporter {
             },
             showInBrowser : self.options.showInBrowser,
             outputDir : self.options.outputDir,
-            reportFile : path.join(process.cwd(), self.options.outputDir, self.suiteUid , self.cid, self.options.filename),
+            reportFile : path.join(process.cwd(), self.options.outputDir, encodeURIComponent(self.suiteUid) , encodeURIComponent(self.cid), self.options.filename),
             templateFilename: self.options.templateFilename,
             templateFuncs: self.options.templateFuncs,
         };
