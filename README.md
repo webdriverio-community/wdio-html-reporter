@@ -1,7 +1,7 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.
 
-Compatible with webdriverio version 6.
+Compatible with webdriverio version 6, with a typescript type file.
 
 This project is a fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
 That project has not been updated and doesnt work with the latest webdriverio 5.x or 6.x.
@@ -95,11 +95,7 @@ webdriver.io will call the reporter for each test suite.  It does not aggregate 
     
     onComplete: function(exitCode, config, capabilities, results) {
         (async () => {
-            await global.reportAggregator.createReport( {
-                config: config,
-                capabilities: capabilities,
-                results : results
-            });
+            await global.reportAggregator.createReport();
         })();
     },
     
