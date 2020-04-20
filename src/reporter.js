@@ -115,6 +115,14 @@ class HtmlReporter extends WDIOReporter {
     onSuiteEnd(suite) {
         this.log("onSuiteEnd: " , JSON.stringify(suite));
         this.indents--;
+        // this is to display suite end time and duration in master report.
+        for (const tsuite of this.suites) {
+            if (tsuite.uid == suite.uid) {
+                tsuite.end = suite.end;
+                tsuite._duration = suite._duration;
+                break;
+            }
+        }
     }
 
     isScreenshotCommand(command) {
