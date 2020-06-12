@@ -102,7 +102,12 @@ webdriver.io will call the reporter for each test suite.  It does not aggregate 
 ``` 
 ### To use a logger for debugging
 
-A new feature for developers is to add a log4js logger to see detailed debug output.  See the test/reporter.spec.js for configuration options
+A new feature for developers is to add a log4js logger to see detailed debug output.  See the test/reporter.spec.js for configuration options.
+If you dont want to use the logging, include in your project @log4js-node/log4js-api and you can quites all debugging.
+via:
+
+    const log4js = require('@log4js-node/log4js-api');
+    const logger = log4js.getLogger('default');
  
   
 ### To use a custom handlebars template for reports

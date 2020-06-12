@@ -7,8 +7,8 @@ const path = require('path');
 const moment = require('moment');
 const momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
-const logger = require('log4js');
 const log4js = require('@log4js-node/log4js-api');
+const logger = log4js.getLogger('default');
 const ReportEvents  = require("@rpii/wdio-report-events") ;
 let proxy = new ReportEvents.default() ;
 
