@@ -1,6 +1,6 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "6.0.6",
+  "version": "6.0.7",
   "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 6",
   "main": "build/index.js",
   "types": "wdio-html-reporter.d.ts",
@@ -41,7 +41,7 @@
     "base64-img": "1.0.4",
     "fs-extra": "^9.0.0",
     "handlebars": "^4.7.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "mocha": "^7.1.1",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.3.2",
