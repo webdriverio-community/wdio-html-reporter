@@ -30,7 +30,7 @@ class HtmlReporter extends WDIOReporter {
         super(opts);
         this.options = opts;
         if (!this.options.LOG) {
-            this.options.LOG = logger.getLogger("default") ;
+            this.options.LOG = logger;
         }
         const dir = this.options.outputDir + 'screenshots' ;
 
