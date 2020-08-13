@@ -1,5 +1,7 @@
 # wdio-html-reporter
-A reporter for webdriver.io which generates a HTML report.
+A reporter for webdriver.io which generates a HTML report.  
+
+New Feature: adds support for creating pdf file from html report
 
 Compatible with webdriverio version 6, with a typescript type file.
 

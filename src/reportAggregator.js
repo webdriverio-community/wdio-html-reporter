@@ -1,4 +1,6 @@
 import HtmlGenerator from "./htmlGenerator";
+const open = require('open');
+let copyfiles = require("copyfiles");
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -165,8 +167,30 @@ class ReportAggregator {
         }
         HtmlGenerator.htmlOutput(reportOptions);
         reportOptions.LOG.debug("Report Aggregation completed");
+        copyfiles( ['./templates/*.js', this.options.outputDir] , true,
+            () => {
+                reportOptions.LOG.info( 'copyfiles complete') ;
+                try {
+                    if (this.options.showInBrowser) {
+
+                        let childProcess = open(this.options.reportFile);
+                        childProcess.then(
+                            () => {
+                                reportOptions.LOG.info('browser launched');
+                            },
+                            (error) => {
+                                reportOptions.LOG.error('showInBrowser error spawning :' + this.options.reportFile + " " + error.toString());
+                            })
+                    }
+                } catch (ex) {
+                    reportOptions.LOG.error('Error opening browser:' + ex);
+                }
+            }
+        )
 
     }
+
+
 }
 
 export default ReportAggregator;

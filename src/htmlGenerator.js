@@ -5,7 +5,6 @@ const _ = require('lodash');
 const path = require('path');
 const moment = require('moment');
 const base64Img = require('base64-img');
-const open = require('open');
 const logger = require('@log4js-node/log4js-api');
 
 const momentDurationFormatSetup = require("moment-duration-format");
@@ -154,21 +153,6 @@ class HtmlGenerator  {
 
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                 fs.outputFileSync(reportOptions.reportFile, html);
-                try {
-                    if (reportOptions.showInBrowser) {
-
-                        let childProcess = open(reportOptions.reportFile);
-                        childProcess.then(
-                            () => {
-                                console.log('browser launched');
-                            },
-                            (error) => {
-                                console.error('showInBrowser error spawning :' + reportOptions.reportFile + " " + error.toString());
-                            })
-                    }
-                } catch (ex) {
-                    console.error('Error opening browser:' + ex);
-                }
             }
             if (reportOptions.LOG) {
                 reportOptions.LOG.debug("Html Generation completed");
