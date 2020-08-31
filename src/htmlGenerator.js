@@ -73,6 +73,12 @@ class HtmlGenerator  {
             Handlebars.registerHelper('suiteStateColour', function (tests, hbopts) {
                 let numTests = Object.keys(tests).length;
 
+                _.values(tests).find((test) => {
+                  if (test.state === "pending") {
+                    --numTests;
+                  }
+                });
+
                 let fail = _.values(tests).find((test) => {
                     return test.state === 'failed';
                 })
