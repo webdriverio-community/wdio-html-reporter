@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+expandable-control<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -85,6 +85,18 @@
         }
         .expandable-control {
             cursor: pointer;
+        }
+        .test-header {
+            cursor: pointer;
+        }
+        .test-expand {
+            margin: 2px;
+            padding: 1px;
+        }
+        .test-title {
+            margin: 2px;
+            padding: 1px;
+            text-align: left;
         }
         .test-pass, .suite-pass {
             background-color: #C8E6C9;
@@ -314,20 +326,13 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="table table-test">
-                                                                    <tr>
+                                                                    <tr class="test-header">
                                                                         <td colspan="2" class="{{#testStateColour test.state}}{{/testStateColour}}">
+                                                                            <span class="test-expand">&nbsp;</span>
                                                                             {{#testStateIcon test.state}}{{/testStateIcon}}
-                                                                            {{test.title}}</td>
+                                                                            <span class="test-title">{{test.title}}</span>
+                                                                        </td>
                                                                     </tr>
-                                                                    <!--tooooo verbose-->
-                                                                     <!--<tr>-->
-                                                                         <!--<td>Test Start</td>-->
-                                                                         <!--<td>{{test.start}}</td>-->
-                                                                     <!--</tr>-->
-                                                                    <!--<tr>-->
-                                                                        <!--<td>Test End</td>-->
-                                                                        <!--<td>{{test.end}}</td>-->
-                                                                    <!--</tr>-->
 
                                                                     {{#each test.events as |event|}}
                                                                         {{#ifEventIsError event}}
@@ -409,6 +414,23 @@
             $(this).find('span').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
             $(this).find('span').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
             $(this).nextUntil('.suite-header').slideToggle(100, function () {});
+        }
+    });
+
+    $.each($('.test-header'), function () {
+        if (!$(this).children().hasClass("test-unknown")) {
+            $(this).find('.test-expand').addClass('glyphicon glyphicon-chevron-down');
+            $(this).nextUntil('.test-header').slideToggle(100, function () {
+            });
+        }
+    });
+
+    //hide the test steps
+    $('.test-header').click(function () {
+        if (!$(this).children().hasClass("test-unknown")) {
+            $(this).find('.test-expand').toggleClass('glyphicon glyphicon-chevron-down', 'glyphicon glyphicon-chevron-up', true);
+            $(this).find('.test-expand').toggleClass('glyphicon glyphicon-chevron-up', 'glyphicon glyphicon-chevron-down', true);
+            $(this).nextUntil('.test-header').slideToggle(100, function () {});
         }
     });
 

@@ -1,5 +1,6 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.  
+New Feature: tests are collapsible as well as suites
 
 ###New Feature: adds support for creating a PDF file from the html report.
 Requires an additional plugin to keep the support lightweight for those that dont want it.
@@ -22,7 +23,7 @@ The easiest way is to keep the `@rpii/wdio-html-reporter` as a devDependency in 
 ```javascript
 {
   "devDependencies": {
-    "@rpii/wdio-html-reporter": "~1.0.0"
+    "@rpii/wdio-html-reporter": "~6.2.0"
   }
 }
 ```
