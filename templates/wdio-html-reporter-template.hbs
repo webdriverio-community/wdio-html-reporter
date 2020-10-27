@@ -1,4 +1,4 @@
-expandable-control<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -417,14 +417,15 @@ expandable-control<!DOCTYPE html>
         }
     });
 
-    $.each($('.test-header'), function () {
-        if (!$(this).children().hasClass("test-unknown")) {
-            $(this).find('.test-expand').addClass('glyphicon glyphicon-chevron-down');
-            $(this).nextUntil('.test-header').slideToggle(100, function () {
-            });
-        }
-    });
-
+    {{#ifCollapseTests}}
+        $.each($('.test-header'), function () {
+            if (!$(this).children().hasClass("test-unknown")) {
+                $(this).find('.test-expand').addClass('glyphicon glyphicon-chevron-down');
+                $(this).nextUntil('.test-header').slideToggle(100, function () {
+                });
+            }
+        });
+    {{/ifCollapseTests}}
     //hide the test steps
     $('.test-header').click(function () {
         if (!$(this).children().hasClass("test-unknown")) {

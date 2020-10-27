@@ -160,6 +160,7 @@ class ReportAggregator {
             LOG : this.options.LOG,
             templateFuncs: this.options.templateFuncs,
             showInBrowser: this.options.showInBrowser,
+            collapseTests: this.options.collapseTests
 
         };
         if (this.options.LOG) {

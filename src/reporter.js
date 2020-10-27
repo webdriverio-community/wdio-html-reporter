@@ -24,6 +24,7 @@ class HtmlReporter extends WDIOReporter {
             templateFuncs: {},
             reportTitle: 'Test Report Title',
             showInBrowser: false,
+            collapseTests: false,
             useOnAfterCommandForScreenshot: true,
             LOG : null
         }, opts);
@@ -241,6 +242,7 @@ class HtmlReporter extends WDIOReporter {
                 title: self.options.reportTitle
             },
             showInBrowser : self.options.showInBrowser,
+            collapseTests : self.options.collapseTests,
             outputDir : self.options.outputDir,
             reportFile : path.join(process.cwd(), self.options.outputDir, encodeURIComponent(self.suiteUid) , encodeURIComponent(self.cid), self.options.filename),
             templateFilename: self.options.templateFilename,

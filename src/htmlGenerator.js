@@ -137,6 +137,10 @@ class HtmlGenerator  {
                 return hbopts.inverse(this);
             });
 
+            Handlebars.registerHelper('ifCollapseTests', function (text , hbopts) {
+                return reportOptions.collapseTests;
+            });
+
             Handlebars.registerHelper('logClass', function (text , hbopts) {
                 if (text.includes('Test Iteration')) {
                     return "test-iteration";
@@ -144,7 +148,6 @@ class HtmlGenerator  {
                     return "log-output";
                 }
             });
-
             Object.keys(reportOptions.templateFuncs).forEach((key)=>{
                 Handlebars.registerHelper(key, reportOptions.templateFuncs[key]);
             });
