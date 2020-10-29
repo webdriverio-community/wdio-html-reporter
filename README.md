@@ -1,6 +1,6 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.  
-New Feature: tests are collapsible as well as suites 
+###New Feature:  tests are collapsible as well as suites 
 
 ###New Feature: adds support for creating a PDF file from the html report.
 Requires an additional plugin to keep the support lightweight for those that dont want it.
