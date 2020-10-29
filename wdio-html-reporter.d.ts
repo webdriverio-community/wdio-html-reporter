@@ -15,6 +15,7 @@ export interface ReportOptions {
     reportTitle: string ;
     browserName?: string | undefined;
     showInBrowser?: boolean;
+    collapseTests: boolean;
     useOnAfterCommandForScreenshot?: boolean;
     templateFilename?: string ;
     templateFuncs?: any ;

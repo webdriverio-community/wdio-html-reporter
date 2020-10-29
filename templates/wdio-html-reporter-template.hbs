@@ -417,7 +417,7 @@
         }
     });
 
-    {{#ifCollapseTests}}
+
         $.each($('.test-header'), function () {
             if (!$(this).children().hasClass("test-unknown")) {
                 $(this).find('.test-expand').addClass('glyphicon glyphicon-chevron-down');
@@ -425,7 +425,7 @@
                 });
             }
         });
-    {{/ifCollapseTests}}
+
     //hide the test steps
     $('.test-header').click(function () {
         if (!$(this).children().hasClass("test-unknown")) {
@@ -474,6 +474,10 @@
         let panel = $(this).parents('.test-row').next().find('.pre.stack.panel');
         panel.slideToggle(100, function () {});
     });
+
+    {{#ifCollapseTests}}
+        $('.test-header').click();
+    {{/ifCollapseTests }}
 </script>
 </body>
 </html>
