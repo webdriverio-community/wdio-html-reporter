@@ -1,12 +1,14 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.  
+Compatible with webdriverio version 6, with a typescript type file.
+
 ###New Feature:  tests are collapsible as well as suites 
 
 ###New Feature: adds support for creating a PDF file from the html report.
 Requires an additional plugin to keep the support lightweight for those that dont want it.
 see [@rpii/wdio-html-reporter-pdf](https://www.npmjs.com/package/@rpii/wdio-html-reporter-pdf)
 
-Compatible with webdriverio version 6, with a typescript type file.
+## Information
 
 This project is a fork of [wdio-html-format-reporter](https://www.npmjs.com/package/wdio-html-format-reporter)
 That project has not been updated and doesnt work with the latest webdriverio 5.x or 6.x.
@@ -89,7 +91,7 @@ webdriver.io will call the reporter for each test suite.  It does not aggregate 
             outputDir: './reports/html-reports/',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
-            browserName : browser.capabilities.browserName,
+            browserName : capabilities.browserName,
             collapseTests: true,
             // to use the template override option, can point to your own file in the test project:
             // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs')
