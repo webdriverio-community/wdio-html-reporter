@@ -3,8 +3,8 @@ const Handlebars = require('handlebars');
 const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
+const encode = require('./encode').default;
 const moment = require('moment');
-const base64Img = require('base64-img');
 const logger = require('@log4js-node/log4js-api');
 
 const momentDurationFormatSetup = require("moment-duration-format");
@@ -28,9 +28,9 @@ class HtmlGenerator  {
                         screenshotFile = `${screenshotFile}`
                     }
                 }
-                const data = base64Img.base64Sync(path.resolve(`${screenshotFile}`));
-                return `${data}`;
+                return encode(path.resolve(screenshotFile)) ;
             });
+
             Handlebars.registerHelper('isValidReport', function (suites, hbopts) {
                 if (suites && suites.length > 0 ) {
                     return hbopts.fn(this);
