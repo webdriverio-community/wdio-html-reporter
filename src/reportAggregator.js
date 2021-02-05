@@ -168,7 +168,7 @@ class ReportAggregator {
         }
         HtmlGenerator.htmlOutput(reportOptions);
         reportOptions.LOG.debug("Report Aggregation completed");
-        let jsFiles = path.join(__dirname, '..//templates/*.js');
+        let jsFiles = path.join(__dirname, '../js/*.*');
         let reportDir = path.join(process.cwd(), this.options.outputDir);
         copyfiles( [jsFiles, reportDir] , true,
             () => {

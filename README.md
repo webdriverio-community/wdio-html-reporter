@@ -1,6 +1,7 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.  
 Compatible with webdriverio version 6, with a typescript type file.
+####New Feature:  Styles are provided in a css file and can be modified
 ####New Feature:  All major vulnerabilities in dependencies fixed 
 ####New Feature:  tests are collapsible as well as suites 
 
@@ -25,7 +26,7 @@ The easiest way is to keep the `@rpii/wdio-html-reporter` as a devDependency in 
 ```javascript
 {
   "devDependencies": {
-    "@rpii/wdio-html-reporter": "~6.2.0"
+    "@rpii/wdio-html-reporter": "~6.3.2"
   }
 }
 ```

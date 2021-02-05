@@ -1,6 +1,6 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "6.3.1",
+  "version": "6.3.2",
   "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 6",
   "main": "build/index.js",
   "types": "wdio-html-reporter.d.ts",
@@ -10,7 +10,7 @@
     "clean:build": "rimraf ./build",
     "clean:reports": "rimraf ./reports",
     "test": "mocha build-test/**/*.js --require @babel/register",
-    "copyjs": "copyfiles --flat --verbose ./test/template/*.js ./reports/html-reports/"
+    "copyjs": "copyfiles --flat --verbose js/*.* ./reports/html-reports/"
   },
   "repository": {
     "type": "git",
