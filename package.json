@@ -1,6 +1,6 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "6.3.2",
+  "version": "6.4.0",
   "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 6",
   "main": "build/index.js",
   "types": "wdio-html-reporter.d.ts",
@@ -73,7 +73,8 @@
     "George Crawford <george.crawford@ft.com>",
     "Christian Bromann <github@christian-bromann.com>",
     "Markus Benning <ich@markusbenning.de>",
-    "Rich Peters <16782353+rpii@users.noreply.github.com>"
+    "Rich Peters <16782353+rpii@users.noreply.github.com>",
+    "Orozbek Askarov <oroz.askarov@gmail.com>"
   ],
   "babel": {
     "presets": [

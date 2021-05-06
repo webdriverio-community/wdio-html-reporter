@@ -1,6 +1,7 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.  
 Compatible with webdriverio version 6, with a typescript type file.
+####Newest Feature:  No more jquery, uses only vanilla js
 ####New Feature:  Styles are provided in a css file and can be modified
 ####New Feature:  All major vulnerabilities in dependencies fixed 
 ####New Feature:  tests are collapsible as well as suites 
