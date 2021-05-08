@@ -43,7 +43,7 @@
     "@wdio/reporter": "^5.11.0",
     "copyfiles": "^2.3.0",
     "fs-extra": "^9.0.0",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "image-to-base64": "^2.1.1",
     "lodash": "^4.17.19",
     "mocha": "^7.1.1",
