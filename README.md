@@ -186,3 +186,47 @@ This option is used if you are not using either of the screenshot options above.
 ## Sample Output:
 
 ![Report Screenshot](TestReport.png)
+
+##browserName
+
+This must be set manually.  Its not available at config time since the browser object doesnt exist until you start a session.
+
+Add to browser config object:
+```
+let baseConfig = require('./base.config') ;
+exports.config = Object.assign({}, baseConfig.config, {
+    path: '/',
+    capabilities: [
+        {
+            // Set maxInstances to 1 if screen recordings are enabled:
+            // maxInstances: 1,
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+                args: [process.env.CHROME_ARGS]
+            }
+        }
+    ],
+    port: 9515, // default for ChromeDriver
+    services: ['chromedriver'],
+    chromeDriverLogs: './logs'
+});
+```
+
+Add to onPrepare:
+```
+    onPrepare: function (config, capabilities) {
+
+        let reportAggregator = new ReportAggregator({
+            outputDir: './reports/html-reports/',
+            filename: 'master-report.html',
+            reportTitle: 'Master Report',
+            LOG: logger,
+            showInBrowser: true,
+            collapseTests: true,
+            browserName : capabilities.browserName,
+        });
+        reportAggregator.clean() ;
+
+        global.reportAggregator = reportAggregator;
+    },
+```
