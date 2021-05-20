@@ -12,6 +12,8 @@
     "clean:build": "rimraf ./build",
     "clean:reports": "rimraf ./reports",
     "test": "mocha build-test/**/*.js --require @babel/register",
+    "test:invalid": "mocha build-test/invalid.test.spec.js --require @babel/register",
+    "test:reporter": "mocha build-test/reporter.spec.js --require @babel/register",
     "copyjs": "copyfiles --flat --verbose js/*.* ./reports/html-reports/"
   },
   "repository": {
