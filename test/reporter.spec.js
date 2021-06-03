@@ -42,8 +42,9 @@ describe('HtmlReporter', () => {
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName : "test browser",
-            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-alt-template.hbs'),
+            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             showInBrowser: true,
+            collapseTests: false,
             LOG : logger
         });
         global.reportAggregator.clean();

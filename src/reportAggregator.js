@@ -39,6 +39,7 @@ class ReportAggregator {
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             templateFuncs: {},
             browserName: "not specified",
+            collapseTests: false,
             LOG: null
         }, opts);
         this.options = opts;

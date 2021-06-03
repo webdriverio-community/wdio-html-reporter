@@ -6,3 +6,4 @@ dist
 reports
 node_modules
 *.log
+package-lock.json

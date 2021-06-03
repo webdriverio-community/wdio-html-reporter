@@ -1,11 +1,18 @@
 # wdio-html-reporter
 A reporter for webdriver.io which generates a HTML report.  
 Compatible with webdriverio version 6, with a typescript type file.
+
+
+####Newest Feature:  No more jquery, uses only vanilla js
+
 ####New Feature:  Styles are provided in a css file and can be modified
+
 ####New Feature:  All major vulnerabilities in dependencies fixed 
+
 ####New Feature:  tests are collapsible as well as suites 
 
 ####New Feature: adds support for creating a PDF file from the html report.
+
 Requires an additional plugin to keep the support lightweight for those that dont want it.
 see [@rpii/wdio-html-reporter-pdf](https://www.npmjs.com/package/@rpii/wdio-html-reporter-pdf)
 
@@ -179,3 +186,47 @@ This option is used if you are not using either of the screenshot options above.
 ## Sample Output:
 
 ![Report Screenshot](TestReport.png)
+
+##browserName
+
+This must be set manually.  Its not available at config time since the browser object doesnt exist until you start a session.
+
+Add to browser config object:
+```
+let baseConfig = require('./base.config') ;
+exports.config = Object.assign({}, baseConfig.config, {
+    path: '/',
+    capabilities: [
+        {
+            // Set maxInstances to 1 if screen recordings are enabled:
+            // maxInstances: 1,
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+                args: [process.env.CHROME_ARGS]
+            }
+        }
+    ],
+    port: 9515, // default for ChromeDriver
+    services: ['chromedriver'],
+    chromeDriverLogs: './logs'
+});
+```
+
+Add to onPrepare:
+```
+    onPrepare: function (config, capabilities) {
+
+        let reportAggregator = new ReportAggregator({
+            outputDir: './reports/html-reports/',
+            filename: 'master-report.html',
+            reportTitle: 'Master Report',
+            LOG: logger,
+            showInBrowser: true,
+            collapseTests: true,
+            browserName : capabilities.browserName,
+        });
+        reportAggregator.clean() ;
+
+        global.reportAggregator = reportAggregator;
+    },
+```

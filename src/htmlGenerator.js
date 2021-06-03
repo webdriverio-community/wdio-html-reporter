@@ -23,9 +23,9 @@ class HtmlGenerator  {
                 // occurs when there is an error file
                 if (!fs.existsSync(screenshotFile)) {
                     if (screenshotPath) {
-                        screenshotFile = `${screenshotPath}/${screenshotFile}`
+                        screenshotFile = `${screenshotPath}/${screenshotFile}`;
                     } else {
-                        screenshotFile = `${screenshotFile}`
+                        screenshotFile = `${screenshotFile}`;
                     }
                 }
                 return encode(path.resolve(screenshotFile)) ;

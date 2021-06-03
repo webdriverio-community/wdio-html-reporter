@@ -1,15 +1,20 @@
 {
   "name": "@rpii/wdio-html-reporter",
-  "version": "6.3.2",
+  "version": "6.4.0",
   "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 6",
   "main": "build/index.js",
   "types": "wdio-html-reporter.d.ts",
   "scripts": {
     "build:test": "babel test/* -d build-test",
     "build": "babel src/* -d build/ && babel test/* -d build-test",
+    "symlink": "npm link",
+    "use:symlink": "npm link @rpii/wdio-html-reporter",
+    "clean": "rimraf ./build  ./build-test ./reports ./logs",
     "clean:build": "rimraf ./build",
     "clean:reports": "rimraf ./reports",
     "test": "mocha build-test/**/*.js --require @babel/register",
+    "test:invalid": "mocha build-test/invalid.test.spec.js --require @babel/register",
+    "test:reporter": "mocha build-test/reporter.spec.js --require @babel/register",
     "copyjs": "copyfiles --flat --verbose js/*.* ./reports/html-reports/"
   },
   "repository": {
@@ -41,7 +46,7 @@
     "@wdio/reporter": "^5.11.0",
     "copyfiles": "^2.3.0",
     "fs-extra": "^9.0.0",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "image-to-base64": "^2.1.1",
     "lodash": "^4.17.19",
     "mocha": "^7.1.1",
@@ -73,7 +78,8 @@
     "George Crawford <george.crawford@ft.com>",
     "Christian Bromann <github@christian-bromann.com>",
     "Markus Benning <ich@markusbenning.de>",
-    "Rich Peters <16782353+rpii@users.noreply.github.com>"
+    "Rich Peters <16782353+rpii@users.noreply.github.com>",
+    "Orozbek Askarov <oroz.askarov@gmail.com>"
   ],
   "babel": {
     "presets": [
