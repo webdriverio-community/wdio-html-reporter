@@ -8,6 +8,7 @@
     "build:test": "babel test/* -d build-test",
     "build": "babel src/* -d build/ && babel test/* -d build-test",
     "symlink": "npm link",
+    "use:symlink": "npm link @rpii/wdio-html-reporter",
     "clean": "rimraf ./build  ./build-test ./reports ./logs",
     "clean:build": "rimraf ./build",
     "clean:reports": "rimraf ./reports",
