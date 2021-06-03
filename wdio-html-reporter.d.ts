@@ -1,5 +1,7 @@
+import WDIOReporter from "@wdio/reporter" ;
+
 // Merge namespace with global NodeJS
-//import  from 'log4js';
+
 declare global {
     export namespace NodeJS {
         interface Global {
@@ -30,7 +32,7 @@ export interface ReportData {
     title: string,
     browserName: string
 }
-export declare class HtmlReporter {
+export declare class HtmlReporter extends WDIOReporter {
     constructor(opts:ReportOptions);
 }
 

@@ -47,7 +47,7 @@ export const SUITES = [
                     },
                     {
                         "type": "screenshot",
-                        "value": "build-test\\test.png"
+                        "value": "test\\test.png"
                     },
                 ]
             },

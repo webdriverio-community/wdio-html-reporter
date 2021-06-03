@@ -26,6 +26,7 @@ class HtmlReporter extends WDIOReporter {
             showInBrowser: false,
             collapseTests: false,
             useOnAfterCommandForScreenshot: true,
+            logFile: "logs/reporter.log",
             LOG : null
         }, opts);
         super(opts);

@@ -37,39 +37,38 @@
   "author": "Adrien Ruiz Gauder <caritsqa@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rpii/wdio-html-reporter/issues"
+    "url": "http://github.com/rpii/wdio-html-reporter/issues"
   },
-  "homepage": "https://github.com/rpii/wdio-html-reporter#readme",
+  "homepage": "http://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
-    "@rpii/wdio-report-events": "^0.1.1",
-    "@wdio/reporter": "^5.11.0",
+    "@rpii/wdio-report-events": "^0.1.3",
+    "@wdio/reporter": "^7.7.0",
     "copyfiles": "^2.3.0",
     "fs-extra": "^9.0.0",
     "handlebars": "^4.7.7",
-    "image-to-base64": "^2.1.1",
-    "lodash": "^4.17.19",
-    "mocha": "^7.1.1",
-    "moment": "^2.24.0",
+    "image-to-base64": "^2.2.0",
+    "mocha": "^8.4.0",
+    "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
-    "open": "^7.0.3"
+    "open": "^8.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@babel/plugin-proposal-function-bind": "^7.8.3",
-    "@babel/plugin-proposal-optional-catch-binding": "^7.8.3",
-    "@babel/plugin-syntax-export-default-from": "^7.8.3",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-typescript": "^7.9.0",
-    "@babel/register": "^7.9.0",
-    "babel-plugin-source-map-support": "^2.1.1",
-    "chai": "^4.2.0",
-    "log4js": "^6.1.2",
-    "mocha": "^7.1.1",
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-proposal-export-default-from": "^7.12.13",
+    "@babel/plugin-proposal-function-bind": "^7.12.13",
+    "@babel/plugin-proposal-optional-catch-binding": "^7.14.2",
+    "@babel/plugin-syntax-export-default-from": "^7.12.13",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-typescript": "^7.13.0",
+    "@babel/register": "^7.13.16",
+    "babel-plugin-source-map-support": "^2.1.3",
+    "chai": "^4.3.4",
+    "log4js": "^6.3.0",
+    "mocha": "^8.4.0",
     "rimraf": "^3.0.2"
   },
   "contributors": [
@@ -92,5 +91,8 @@
         }
       ]
     ]
+  },
+  "mocha": {
+    "ui": "bdd"
   }
 }
