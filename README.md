@@ -1,4 +1,5 @@
 # wdio-html-reporter
+
 A reporter for webdriver.io which generates a HTML report.  
 Compatible with webdriverio version 7, with a typescript type file.
 
