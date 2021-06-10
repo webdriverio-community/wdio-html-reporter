@@ -3,6 +3,6 @@ src
 node_modules
 test
 reports
-build-test
+lib/test
 logs
 

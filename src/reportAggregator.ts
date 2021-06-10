@@ -46,7 +46,8 @@ class ReportAggregator {
             templateFuncs: {},
             browserName: "not specified",
             collapseTests: false,
-            LOG: null
+            LOG: null,
+            removeOutput: true
         }, opts);
         this.options = opts;
         if (!this.options.LOG) {
@@ -101,18 +102,19 @@ class ReportAggregator {
                 metrics.passed += report.metrics.passed;
                 metrics.failed += report.metrics.failed;
                 metrics.skipped += report.metrics.skipped;
-                metrics.start = dayjs().utc().format();
+                metrics.start = dayjs().utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
                 metrics.end = dayjs("2021-01-01").utc().format();
                 for (let k = 0; k < report.suites.length; k++) {
                     let suiteInfo = report.suites[k] ;
                     let start = dayjs.utc(suiteInfo.suite.start) ;
                     if ( start.isSameOrBefore(metrics.start)) {
-                        metrics.start = start.utc().format() ;
+                        metrics.start = start.utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") ;
                     }
                     let end = dayjs.utc(suiteInfo.suite.end) ;
                     if ( end.isAfter(dayjs.utc(metrics.end))) {
-                        metrics.end =  end.utc().format() ;
+                        metrics.end = end.utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") ;
                     }
+
                     suites.push(suiteInfo);
                 }
             } catch (ex) {
@@ -148,7 +150,21 @@ class ReportAggregator {
             this.options.LOG.debug("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
         }
         this.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
-         let reportData = new ReportData(
+        if (this.options.removeOutput) {
+            for (let i = 0; i < suites.length; i++) {
+                let suite = suites[i].suite;
+                for (let j = 0; j < suite.tests.length; j++) {
+                    let test = suite.tests[j];
+                    test.output = [];
+                }
+                let tests = suites[i].tests;
+                for (let k = 0; k < tests.length; k++) {
+                    let test = tests[k];
+                    test.testStats.output = [];
+                }
+            }
+        }
+        let reportData = new ReportData(
             this.options.reportTitle,
             this.reports[0].info,
             suites,
@@ -159,7 +175,7 @@ class ReportAggregator {
         HtmlGenerator.htmlOutput(this.options,reportData) ;
 
         this.options.LOG.debug("Report Aggregation completed");
-        let jsFiles = path.join(__dirname, '../js/*.*');
+        let jsFiles = path.join(__dirname, '../css/*.*');
         let reportDir = path.join(process.cwd(), this.options.outputDir);
         copyfiles( [jsFiles, reportDir] , true,
             () => {

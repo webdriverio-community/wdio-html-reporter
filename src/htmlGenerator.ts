@@ -149,10 +149,10 @@ class HtmlGenerator  {
                     return "log-output";
                 }
             });
-            //TODO restore
-            // Object.keys(reportOptions.templateFuncs).forEach((key)=>{
-            //     Handlebars.registerHelper(key, reportOptions.templateFuncs[key]);
-            // });
+            Object.keys(reportOptions.templateFuncs).forEach((name:string) => {
+                //@ts-ignore
+                Handlebars.registerHelper(name, reportOptions.templateFuncs[name]);
+            });
 
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                let jsonFile = reportData.reportFile.replace('.html' , '.json') ;

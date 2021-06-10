@@ -7,7 +7,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
     outputDir: string;
     filename: string;
     templateFilename: string;
-    templateFuncs?: Function[];
+    templateFuncs: object;
     reportTitle: string;
     showInBrowser: boolean;
     collapseTests: boolean;
@@ -16,12 +16,13 @@ export class HtmlReporterOptions implements Reporters.Options  {
     LOG?: any ;
     debug : boolean;
     browserName:string;
+    removeOutput: boolean;
 
     constructor() {
         this.outputDir = "";
         this.filename =  "";
         this.templateFilename=  "";
-        this.templateFuncs = [];
+        this.templateFuncs = {};
         this.reportTitle=  "";
         this.showInBrowser = false;
         this.collapseTests = false;
@@ -30,6 +31,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.LOG =  undefined;
         this.debug = false;
         this.browserName = "" ;
+        this.removeOutput = true ;
     }
 }
 
