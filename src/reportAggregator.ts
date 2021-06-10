@@ -1,23 +1,29 @@
 import HtmlGenerator from "./htmlGenerator";
-const open = require('open');
-let copyfiles = require("copyfiles");
+import {HtmlReporterOptions, Metrics, ReportData} from "./types";
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+dayjs.extend(isSameOrBefore);
+
+const open = require('open');
+const copyfiles = require("copyfiles");
 const fs = require('fs-extra');
 const path = require('path');
-const moment = require('moment');
 const logger = require('@log4js-node/log4js-api');
 
-function  walk(dir, extensions , filelist = []) {
+function  walk(dir:string, extensions: string[] , filelist: string[] = []) {
     const files = fs.readdirSync(dir);
 
-    files.forEach(function (file) {
+    files.forEach(function (file : string) {
         const filepath = path.join(dir, file);
         const stat = fs.statSync(filepath);
 
         if (stat.isDirectory()) {
             filelist = walk(filepath, extensions, filelist);
         } else {
-            extensions.forEach(function (extension) {
+            extensions.forEach(function (extension: string) {
                 if (file.indexOf(extension) == file.length - extension.length) {
                     filelist.push(filepath);
                 }
@@ -30,7 +36,7 @@ function  walk(dir, extensions , filelist = []) {
 
 class ReportAggregator {
 
-    constructor(opts) {
+    constructor(opts: HtmlReporterOptions) {
         opts = Object.assign({}, {
             outputDir: 'reports/html-reports/',
             filename: 'master-report.html',
@@ -46,14 +52,15 @@ class ReportAggregator {
         if (!this.options.LOG) {
             this.options.LOG = logger.getLogger("default")      ;
         }
-        this.options.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
         this.reports = [];
     }
+    public options: HtmlReporterOptions;
+    public reports: any[];
+    public reportFile : string = "";
 
     clean() {
         fs.emptyDirSync(this.options.outputDir);
     }
-
 
 
     readJsonFiles() {
@@ -61,7 +68,7 @@ class ReportAggregator {
     }
 
 
-    log(message,object) {
+    log(message:string , object:any) {
         if (this.options.LOG) {
             this.options.LOG.debug(message + object) ;
         }
@@ -70,16 +77,10 @@ class ReportAggregator {
         if (this.options.LOG) {
             this.options.LOG.debug("Report Aggregation started");
         }
-        let metrics = {
-            passed: 0,
-            skipped: 0,
-            failed: 0,
-            start : new moment(),
-            end : new moment(),
-            duration: 0
-        };
+        let metrics = new Metrics () ;
+
         let suites = [];
-        let specs = [];
+        let specs : string[] =  [];
 
         let files = this.readJsonFiles();
 
@@ -91,7 +92,7 @@ class ReportAggregator {
                     this.options.LOG.error("report structure in question, no info or info.specs " , JSON.stringify(report));
                     this.options.LOG.info("report content: " , JSON.stringify(report));
                 }
-                report.info.specs.forEach((spec) => {
+                report.info.specs.forEach((spec:any) => {
                     specs.push(spec) ;
                 });
 
@@ -100,18 +101,19 @@ class ReportAggregator {
                 metrics.passed += report.metrics.passed;
                 metrics.failed += report.metrics.failed;
                 metrics.skipped += report.metrics.skipped;
-
+                metrics.start = dayjs().utc().format();
+                metrics.end = dayjs("2021-01-01").utc().format();
                 for (let k = 0; k < report.suites.length; k++) {
-                    let suite = report.suites[k] ;
-                    let start = moment.utc(suite.start) ;
+                    let suiteInfo = report.suites[k] ;
+                    let start = dayjs.utc(suiteInfo.suite.start) ;
                     if ( start.isSameOrBefore(metrics.start)) {
-                        metrics.start =  start ;
+                        metrics.start = start.utc().format() ;
                     }
-                    let end = moment.utc(suite.end) ;
-                    if ( end.isAfter(metrics.end)) {
-                        metrics.end =  end ;
+                    let end = dayjs.utc(suiteInfo.suite.end) ;
+                    if ( end.isAfter(dayjs.utc(metrics.end))) {
+                        metrics.end =  end.utc().format() ;
                     }
-                    suites.push(suite);
+                    suites.push(suiteInfo);
                 }
             } catch (ex) {
                 console.error(ex);
@@ -140,54 +142,42 @@ class ReportAggregator {
             this.reports = [] ;
             this.reports.push(report);
         }
+        metrics.duration = dayjs.duration(dayjs(metrics.end).utc().diff(dayjs(metrics.start).utc())).as('milliseconds');
 
-        let duration = metrics.end.diff(metrics.start) ;
-        metrics.duration = moment.duration(duration, "milliseconds").format('hh:mm:ss.SS', {trim: false});
-        metrics.start = metrics.start.format() ;
-        metrics.end = metrics.end.format() ;
-
-        const reportOptions = {
-            data: {
-                info: this.reports[0].info,
-                specs:specs,
-                metrics: metrics,
-                suites: suites,
-                title: this.options.reportTitle,
-                browserName: this.options.browserName
-            },
-            outputDir: this.options.outputDir,
-            reportFile: this.options.reportFile,
-            templateFilename: this.options.templateFilename,
-            LOG : this.options.LOG,
-            templateFuncs: this.options.templateFuncs,
-            showInBrowser: this.options.showInBrowser,
-            collapseTests: this.options.collapseTests
-
-        };
         if (this.options.LOG) {
             this.options.LOG.debug("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
         }
-        HtmlGenerator.htmlOutput(reportOptions);
-        reportOptions.LOG.debug("Report Aggregation completed");
+        this.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
+         let reportData = new ReportData(
+            this.options.reportTitle,
+            this.reports[0].info,
+            suites,
+            metrics,
+            this.reportFile,
+            this.options.browserName) ;
+
+        HtmlGenerator.htmlOutput(this.options,reportData) ;
+
+        this.options.LOG.debug("Report Aggregation completed");
         let jsFiles = path.join(__dirname, '../js/*.*');
         let reportDir = path.join(process.cwd(), this.options.outputDir);
         copyfiles( [jsFiles, reportDir] , true,
             () => {
-                reportOptions.LOG.info( 'copyfiles complete : ' + jsFiles  + " to " + reportDir) ;
+                this.options.LOG.info( 'copyfiles complete : ' + jsFiles  + " to " + reportDir) ;
                 try {
                     if (this.options.showInBrowser) {
 
-                        let childProcess = open(this.options.reportFile);
+                        let childProcess = open(reportData.reportFile);
                         childProcess.then(
                             () => {
-                                reportOptions.LOG.info('browser launched');
+                                this.options.LOG.info('browser launched');
                             },
-                            (error) => {
-                                reportOptions.LOG.error('showInBrowser error spawning :' + this.options.reportFile + " " + error.toString());
+                            (error:any) => {
+                                this.options.LOG.error('showInBrowser error spawning :' + reportData.reportFile + " " + error.toString());
                             })
                     }
                 } catch (ex) {
-                    reportOptions.LOG.error('Error opening browser:' + ex);
+                    this.options.LOG.error('Error opening browser:' + ex);
                 }
             }
         )

@@ -286,52 +286,52 @@
                                     <td>{{spec}}</td>
                             {{/each}}
                         {{/if}}
-                        {{#each suites as |suite| }}
-                            {{#isValidSuite suite}}
+                        {{#each suites as |suiteInfo| }}
+                            {{#isValidSuite suiteInfo}}
                                 <table class="table table-bordered table-suite">
                                     <tr class="suite-header">
                                         <td colspan="2"
-                                            class="{{#suiteStateColour suite.tests}}{{/suiteStateColour}}">
+                                            class="{{#suiteStateColour suiteInfo.tests}}{{/suiteStateColour}}">
                                             <h3>
-                                                <span style="margin: 2px; padding: 1px" class="glyphicon glyphicon-chevron-up">&nbsp;</span>Suite {{suite.title}}
+                                                <span style="margin: 2px; padding: 1px" class="glyphicon glyphicon-chevron-up">&nbsp;</span>Suite {{suiteInfo.suite.title}}
                                             </h3>
                                         </td>
                                     </tr>
 
-                                    {{#ifSuiteHasTests suite.tests}}
+                                    {{#ifSuiteHasTests suiteInfo.tests}}
                                         <tr>
                                             <td>Suite Start</td>
-                                            <td>{{suite.start}}</td>
+                                            <td>{{suiteInfo.suite.start}}</td>
                                         </tr>
                                         <tr>
                                             <td>Suite End</td>
-                                            <td>{{suite.end}}</td>
+                                            <td>{{suiteInfo.suite.end}}</td>
                                         </tr>
                                         <tr>
                                             <td>Suite Duration</td>
-                                            <td>{{#humanizeDuration suite._duration}}{{/humanizeDuration}}</td>
+                                            <td>{{#humanizeDuration suiteInfo.suite._duration}}{{/humanizeDuration}}</td>
                                         </tr>
 
 
                                         <tr>
-                                            <td colspan="2"><h4>{{suite.tests.length}}&nbsp;Test(s):</h4></td>
+                                            <td colspan="2"><h4>{{suiteInfo.tests.length}}&nbsp;Test(s):</h4></td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">
                                                 <table>
-                                                    {{#each suite.tests as |test|}}
+                                                    {{#each suiteInfo.tests as | testInfo|}}
                                                         <tr>
                                                             <td>
                                                                 <table class="table table-test">
                                                                     <tr class="test-header">
-                                                                        <td colspan="2" class="{{#testStateColour test.state}}{{/testStateColour}}">
+                                                                        <td colspan="2" class="{{#testStateColour testInfo}}{{/testStateColour}}">
                                                                             <span class="test-expand glyphicon glyphicon-chevron-up">&nbsp;</span>
-                                                                            {{#testStateIcon test.state}}{{/testStateIcon}}
-                                                                            <span class="test-title">{{test.title}}</span>
+                                                                            {{#testStateIcon testInfo}}{{/testStateIcon}}
+                                                                            <span class="test-title">{{testInfo.testStats.title}}</span>
                                                                         </td>
                                                                     </tr>
 
-                                                                    {{#each test.events as |event|}}
+                                                                    {{#each testInfo.events as |event|}}
                                                                         {{#ifEventIsError event}}
                                                                             <tr class="test-row expandable-control">
                                                                                 <td colspan="2" >

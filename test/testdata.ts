@@ -1,15 +1,17 @@
-export const RUNNER = {
+import {RunnerStats, SuiteStats} from "@wdio/reporter";
+
+export const RUNNER = new RunnerStats({
     type: "runner",
     start: "2019-04-13T00:10:05.191Z",
     end :  "2019-04-13T00:10:15.191Z",
     _duration: 34428,
     cid : '0-0',
-    config: { hostname: 'localhost' },
     capabilities : {
+        hostname: 'localhost',
         browserName : 'loremipsum',
     },
     specs : ['/foo/bar/baz.js']
-};
+});
 
 export const SUITE_UIDS = [
     'Foo test1',
@@ -17,14 +19,14 @@ export const SUITE_UIDS = [
     'Baz test3',
 ]
 
-export const SUITES = [
+export const SUITES : SuiteStats[] = [
     {
         uid : SUITE_UIDS[0],
         title : SUITE_UIDS[0].slice(0, -1),
         type : "suite",
         hooks: [],
-        start: "2019-04-13T00:10:05.191Z",
-        end :  "2019-04-13T00:10:15.191Z",
+        start: new Date("2019-04-13T00:10:05.191Z"),
+        end :  new Date("2019-04-13T00:10:15.191Z"),
         tests : [
             {
                 uid : 'foo1',
@@ -74,6 +76,7 @@ export const SUITES = [
                 title : 'a failed test',
                 state : 'failed',
                 error : {
+                    name: "error",
                     message : 'expected foo to equal bar',
                     stack : 'Failed test stack trace'
                 }
@@ -99,7 +102,7 @@ export const SUITES = [
     }
 ]
 
-export const SUITES_MULTIPLE_ERRORS = [
+export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
     {
         uid : SUITE_UIDS[0],
         title : SUITE_UIDS[0].slice(0, -1),
@@ -146,7 +149,7 @@ export const SUITES_MULTIPLE_ERRORS = [
     },
 ]
 
-export const SUITES_NO_TESTS = [
+export const SUITES_NO_TESTS : SuiteStats[] = [
     {
         uid: SUITE_UIDS[0],
         title: SUITE_UIDS[0].slice(0, -1),
@@ -156,7 +159,7 @@ export const SUITES_NO_TESTS = [
     },
 ]
 
-export const SUITES_NO_TESTS_WITH_HOOK_ERROR = [
+export const SUITES_NO_TESTS_WITH_HOOK_ERROR : SuiteStats[] = [
     {
         uid: SUITE_UIDS[0],
         title: SUITE_UIDS[0].slice(0, -1),
@@ -167,6 +170,7 @@ export const SUITES_NO_TESTS_WITH_HOOK_ERROR = [
             title : 'a failed hook',
             state : 'failed',
             error : {
+                name: "Error",
                 message : 'expected foo to equal bar',
                 stack : 'Failed test stack trace'
             }

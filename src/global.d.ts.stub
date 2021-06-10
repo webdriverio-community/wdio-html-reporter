@@ -1,0 +1,9 @@
+// Merge namespace with global NodeJS
+
+declare global {
+    export namespace NodeJS {
+        interface Global {
+            reportAggregator: ReportAggregator;
+        }
+    }
+}

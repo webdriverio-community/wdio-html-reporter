@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 import {expect} from 'chai';
-import {HtmlReporter, ReportAggregator} from '../build/index.js';
+import {HtmlReporter, ReportAggregator} from '../src/index';
 import {RUNNER, SUITES} from './testdata';
 const log4js = require ('log4js') ;
 
@@ -23,8 +23,7 @@ log4js.configure({ // configure to use all types in different files.
 });
 
 let logger = log4js.getLogger("default") ;
-
-
+let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
     debug: false,
@@ -32,21 +31,31 @@ let htmlReporter  = new HtmlReporter({
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
     showInBrowser: false,
-    LOG : logger
+    browserName: "dummy",
+    LOG : logger,
+    collapseTests: true,
+    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
+    useOnAfterCommandForScreenshot: false,
+    logFile:""
+
 });
 
 describe('HtmlReporter', () => {
     before(function () {
-        global.reportAggregator = new ReportAggregator({
+        reportAggregator = new ReportAggregator({
+            debug: false,
             outputDir: './reports/html-reports/invalid/',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName : "test browser",
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             showInBrowser: true,
-            LOG : logger
+            collapseTests: false,
+            LOG : logger,
+            useOnAfterCommandForScreenshot: false,
+            logFile:""
         });
-        global.reportAggregator.clean();
+        reportAggregator.clean();
     });
     //
     // describe('on create', function () {
@@ -73,23 +82,21 @@ describe('HtmlReporter', () => {
             htmlReporter.onRunnerStart(RUNNER);
         });
         it('fail to set cid test', function () {
-            htmlReporter.suites = null;
-            htmlReporter.cid = null;
-            expect(htmlReporter.cid).to.be.null();
+            expect(htmlReporter._currentCid).to.be.null;
         });
     });
     describe('onRunnerEnd', function () {
         it('should call htmlOutput method', function () {
             htmlReporter.onRunnerEnd(RUNNER);
-            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir, encodeURIComponent(htmlReporter.suiteUid), encodeURIComponent(htmlReporter.cid), htmlReporter.options.filename);
+            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir, encodeURIComponent(htmlReporter._currentSuiteUid), encodeURIComponent(htmlReporter._currentCid), htmlReporter.options.filename);
             expect(fs.existsSync(reportFile)).to.equal(true);
             //wipe out output
-            fs.emptyDirSync(path.join(process.cwd(), htmlReporter.options.outputDir, encodeURIComponent(htmlReporter.suiteUid), encodeURIComponent(htmlReporter.cid)));
+            fs.emptyDirSync(path.join(process.cwd(), htmlReporter.options.outputDir, encodeURIComponent(htmlReporter._currentSuiteUid), encodeURIComponent(htmlReporter._currentCid)));
         });
         it('should invoke the reportAggregator', function () {
             (async () => {
-                await global.reportAggregator.createReport();
-                expect(fs.existsSync(global.reportAggregator.options.reportFile)).to.equal(true);
+                await reportAggregator.createReport();
+                expect(fs.existsSync(reportAggregator.reportFile)).to.equal(true);
             })();
 
         })

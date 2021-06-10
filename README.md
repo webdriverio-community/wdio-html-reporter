@@ -154,7 +154,7 @@ Add a function that you can call from anywhere in your test:
 
 ``` 
     takeScreenshot(message) {
-        const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
+        let timestamp = dayjs().format('YYYYMMDD-HHmmss.SSS');
         fs.ensureDirSync('reports/html-reports/screenshots/');
         const filepath = path.join('reports/html-reports/screenshots/', timestamp + '.png');
         this.browser.saveScreenshot(filepath);
@@ -169,13 +169,13 @@ wdio.conf.js
 
     afterTest: function (test) {
         const path = require('path');
-        const moment = require('moment');
+        const dayjs = require('dayjs');
 
         // if test passed, ignore, else take and save screenshot.
         if (test.passed) {
             return;
         }
-        const timestamp = moment().format('YYYYMMDD-HHmmss.SSS');
+        let timestamp = dayjs().format('YYYYMMDD-HHmmss.SSS');
         const filepath = path.join('reports/html-reports/screenshots/', timestamp + '.png');
         browser.saveScreenshot(filepath);
         process.emit('test:screenshot', filepath);

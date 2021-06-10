@@ -1,20 +1,20 @@
 {
-  "name": "@rpii/wdio-html-reporter",
-  "version": "7.0.0",
-  "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 6",
-  "main": "build/index.js",
-  "types": "wdio-html-reporter.d.ts",
+  "name": "@wdio/html-reporter",
+  "version": "7.7.0",
+  "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 7",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "build:test": "babel test/* -d build-test",
-    "build": "babel src/* -d build/ && babel test/* -d build-test",
+    "build:test": "tsc -p test ",
+    "build": "tsc",
     "symlink": "npm link",
     "use:symlink": "npm link @rpii/wdio-html-reporter",
-    "clean": "rimraf ./build  ./build-test ./reports ./logs",
-    "clean:build": "rimraf ./build",
+    "clean": "rimraf ./lib  ./build-test ./reports ./logs",
+    "clean:build": "rimraf ./lib",
     "clean:reports": "rimraf ./reports",
-    "test": "mocha build-test/**/*.js --require @babel/register",
-    "test:invalid": "mocha build-test/invalid.test.spec.js --require @babel/register",
-    "test:reporter": "mocha build-test/reporter.spec.js --require @babel/register",
+    "test": "mocha ./lib/test/**/*.js",
+    "test:invalid": "mocha ./lib/test/invalid.test.spec.js ",
+    "test:reporter": "mocha ./lib/test/reporter.spec.js",
     "copyjs": "copyfiles --flat --verbose js/*.* ./reports/html-reports/"
   },
   "repository": {
@@ -34,7 +34,7 @@
     "wdio-html-reporter",
     "wdio-html-format-reporter"
   ],
-  "author": "Adrien Ruiz Gauder <caritsqa@gmail.com>",
+  "author": "Rich Peters <16782353+rpii@users.noreply.github.com>",
   "license": "MIT",
   "bugs": {
     "url": "http://github.com/rpii/wdio-html-reporter/issues"
@@ -42,56 +42,33 @@
   "homepage": "http://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
-    "@rpii/wdio-report-events": "^0.1.3",
-    "@wdio/reporter": "^7.7.0",
     "copyfiles": "^2.3.0",
     "fs-extra": "^9.0.0",
     "handlebars": "^4.7.7",
     "image-to-base64": "^2.2.0",
-    "mocha": "^8.4.0",
-    "moment": "^2.29.1",
-    "moment-duration-format": "^2.3.2",
+    "dayjs": "^1.10.5",
     "open": "^8.2.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@babel/node": "^7.14.2",
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-export-default-from": "^7.12.13",
-    "@babel/plugin-proposal-function-bind": "^7.12.13",
-    "@babel/plugin-proposal-optional-catch-binding": "^7.14.2",
-    "@babel/plugin-syntax-export-default-from": "^7.12.13",
-    "@babel/preset-env": "^7.14.4",
-    "@babel/preset-typescript": "^7.13.0",
-    "@babel/register": "^7.13.16",
-    "babel-plugin-source-map-support": "^2.1.3",
+    "@types/node": "^14.14.31",
+    "@types/chai": "^4.2.18",
+    "@types/mocha": "^8.2.2",
+    "@wdio/types": "7.7.3",
+    "@rpii/wdio-report-events": "^0.1.3",
+    "@wdio/reporter": "^7.7.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.3.2",
+    "concat": "^1.0.3",
     "chai": "^4.3.4",
     "log4js": "^6.3.0",
     "mocha": "^8.4.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "@wdio/cli": "^7.0.0"
   },
   "contributors": [
-    "Adrien Ruiz Gauder <caritsqa@gmail.com>",
-    "Gisella Fama <gisella.fama@gmail.com>",
-    "George Crawford <george.crawford@ft.com>",
-    "Christian Bromann <github@christian-bromann.com>",
-    "Markus Benning <ich@markusbenning.de>",
-    "Rich Peters <16782353+rpii@users.noreply.github.com>",
-    "Orozbek Askarov <oroz.askarov@gmail.com>"
+    "Rich Peters <16782353+rpii@users.noreply.github.com>"
   ],
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
-  },
   "mocha": {
     "ui": "bdd"
   }

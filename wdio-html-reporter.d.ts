@@ -1,4 +1,5 @@
-import WDIOReporter from "@wdio/reporter" ;
+import WDIOReporter, { SuiteStats, HookStats, RunnerStats } from '@wdio/reporter';
+import type { Reporters }  from "@wdio/types" ;
 
 // Merge namespace with global NodeJS
 
@@ -34,6 +35,13 @@ export interface ReportData {
 }
 export declare class HtmlReporter extends WDIOReporter {
     constructor(opts:ReportOptions);
+    onSuiteStart(suite: SuiteStats): void;
+    onSuiteEnd(): void;
+    onHookEnd(hook: HookStats): void;
+    onTestPass(): void;
+    onTestFail(): void;
+    onTestSkip(): void;
+    onRunnerEnd(runner: RunnerStats): void;
 }
 
 export declare class ReportAggregator {

@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 import {expect} from 'chai';
-import {HtmlReporter, ReportAggregator} from '../build/index.js';
+import {HtmlReporter, ReportAggregator} from '../src/index';
 import {RUNNER, SUITES} from './testdata';
 const log4js = require ('log4js') ;
 
@@ -25,6 +25,7 @@ log4js.configure({ // configure to use all types in different files.
 let logger = log4js.getLogger("default") ;
 
 
+let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
     debug: false,
@@ -32,12 +33,18 @@ let htmlReporter  = new HtmlReporter({
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
     showInBrowser: false,
-    LOG : logger
+    LOG : logger,
+    browserName: "dummy",
+    collapseTests: true,
+    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
+    useOnAfterCommandForScreenshot: false,
+    logFile:""
 });
 
 describe('HtmlReporter', () => {
     before(function () {
-        global.reportAggregator = new ReportAggregator({
+        reportAggregator = new ReportAggregator({
+            debug: false,
             outputDir: './reports/html-reports/valid',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
@@ -45,19 +52,21 @@ describe('HtmlReporter', () => {
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             showInBrowser: true,
             collapseTests: false,
-            LOG : logger
+            LOG : logger,
+            useOnAfterCommandForScreenshot: false,
+            logFile:""
         });
-        global.reportAggregator.clean();
+        reportAggregator.clean();
     });
 
     describe('on create', function () {
         it('should verify initial properties', function () {
-            expect(Array.isArray(htmlReporter.suiteUids)).to.equal(true);
-            expect(htmlReporter.suiteUids.length).to.equal(0);
+            expect(Array.isArray(htmlReporter._suiteUids)).to.equal(true);
+            expect(htmlReporter._suiteUids.size).to.equal(0);
             expect(Array.isArray(htmlReporter.suites)).to.equal(true);
             expect(htmlReporter.suites.length).to.deep.equal(0);
-            expect(htmlReporter.indents).to.equal(0);
-            expect(htmlReporter.suiteIndents).to.deep.equal({});
+            expect(htmlReporter._indents).to.equal(0);
+            expect(htmlReporter._suiteIndents).to.deep.equal({});
             expect(htmlReporter.defaultTestIndent).to.equal('   ');
             expect(htmlReporter.metrics).to.deep.equal({
                 passed: 0,
@@ -74,7 +83,7 @@ describe('HtmlReporter', () => {
             htmlReporter.onRunnerStart(RUNNER);
         });
         it('should set cid', function () {
-            expect(htmlReporter.cid).to.equal(RUNNER.cid);
+            expect(htmlReporter._currentCid).to.equal(RUNNER.cid);
         });
     });
     describe('onSuiteStart', function () {
@@ -82,13 +91,13 @@ describe('HtmlReporter', () => {
             htmlReporter.onSuiteStart(SUITES[0])
         });
         it('should add to suiteUids', function () {
-            expect(htmlReporter.suiteUids.length).to.equal(1);
-            expect(htmlReporter.suiteUids[0]).to.equal('Foo test1')
-            expect(htmlReporter.suiteUid).to.equal('Foo test1')
+            expect(htmlReporter._suiteUids.size).to.equal(1);
+            // expect(htmlReporter._suiteUids[0]).to.equal('Foo test1')
+            expect(htmlReporter._currentSuiteUid).to.equal('Foo test1')
         });
 
         it('should increase suiteIndents', function () {
-            expect(htmlReporter.suiteIndents['Foo test1']).to.equal(1)
+            expect(htmlReporter._suiteIndents['Foo test1']).to.equal(1)
         })
     });
 
@@ -162,7 +171,7 @@ describe('HtmlReporter', () => {
         });
 
         it('should decrease indents', function () {
-            expect(htmlReporter.indents).to.equal(0)
+            expect(htmlReporter._indents).to.equal(0)
         });
 
         it('should add the suite to the suites array', function () {
@@ -175,13 +184,13 @@ describe('HtmlReporter', () => {
     describe('onRunnerEnd', function () {
         it('should call htmlOutput method', function () {
             htmlReporter.onRunnerEnd(RUNNER);
-            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir,  encodeURIComponent(htmlReporter.suiteUid),  encodeURIComponent(htmlReporter.cid), htmlReporter.options.filename);
+            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir,  encodeURIComponent(htmlReporter._currentSuiteUid),  encodeURIComponent(htmlReporter._currentCid), htmlReporter.options.filename);
             expect(fs.existsSync(reportFile)).to.equal(true);
         });
         it('should invoke the reportAggregator', function () {
             (async () => {
-                await global.reportAggregator.createReport();
-                expect(fs.existsSync(global.reportAggregator.options.reportFile)).to.equal(true);
+                await reportAggregator.createReport();
+                expect(fs.existsSync(reportAggregator.reportFile)).to.equal(true);
             })();
 
         })
