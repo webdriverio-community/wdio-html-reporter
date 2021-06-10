@@ -43,7 +43,6 @@ class ReportAggregator {
             reportTitle: 'Test Master Report',
             showInBrowser: false,
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
-            templateFuncs: {},
             browserName: "not specified",
             collapseTests: false,
             LOG: null,
@@ -51,7 +50,7 @@ class ReportAggregator {
         }, opts);
         this.options = opts;
         if (!this.options.LOG) {
-            this.options.LOG = logger.getLogger("default")      ;
+            this.options.LOG = logger.getLogger(this.options.debug ? 'debug' : 'default')      ;
         }
         this.reports = [];
     }

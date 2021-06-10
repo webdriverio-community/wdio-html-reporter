@@ -25,6 +25,10 @@ Its not totally compatible, so I have created a new package.
 ## Configuration
 The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array.  Syntax shown requires babel:
 
+###A functioning wdio.config.ts is provided in the [/test/sample.wdio.config.ts](/test/sample.wdio.config.ts)
+
+below are snippets from that file
+
 ```typescript
 // wdio.conf.ts
 import {ReportAggregator, HtmlReporter} from '@wdio/html-reporter';
@@ -96,8 +100,9 @@ If you dont want to use the logging, include in your project @log4js-node/log4js
 via:
 
     const log4js = require('@log4js-node/log4js-api');
-    const logger = log4js.getLogger('default');
+    const logger = log4js.getLogger(this.options.debug ? 'debug' : 'default');
  
+
   
 ### To use a custom handlebars template for reports
 

@@ -7,17 +7,17 @@ import WDIOReporter, {
     AfterCommandArgs,
     CommandArgs
 } from '@wdio/reporter'
-import type { Reporters } from '@wdio/types'
+
 import HtmlGenerator from './htmlGenerator'
 import {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData, SuiteInfo, TestInfo} from "./types";
 import dayjs from 'dayjs';
+import ReportEvents from "@rpii/wdio-report-events" ;
 
 const fs = require('fs-extra');
 const path = require('path');
 const log4js = require('@log4js-node/log4js-api');
-const logger = log4js.getLogger('default');
-const ReportEvents  = require("@rpii/wdio-report-events") ;
-let proxy = new ReportEvents.default() ;
+
+let proxy = new ReportEvents() ;
 
 class HtmlReporter extends WDIOReporter {
     options: HtmlReporterOptions;
@@ -41,7 +41,6 @@ class HtmlReporter extends WDIOReporter {
                 outputDir: 'reports/html-reports/',
                 filename: 'report.html',
                 templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
-                templateFuncs: {},
                 reportTitle: 'Test Report Title',
                 showInBrowser: false,
                 collapseTests: false,
@@ -52,7 +51,7 @@ class HtmlReporter extends WDIOReporter {
 
         this.options = Object.assign(opts, options);
         if (!this.options.LOG) {
-            this.options.LOG = logger;
+            this.options.LOG =  log4js.getLogger(this.options.debug ? 'debug' : 'default' );;
         }
 
         const dir = this.options.outputDir + 'screenshots';
@@ -82,7 +81,7 @@ class HtmlReporter extends WDIOReporter {
         this.metrics.passed = 0;
         this.metrics.skipped = 0;
         this.metrics.failed = 0;
-        this.metrics.start =  dayjs().utc().format() ;
+        this.metrics.start =  dayjs().utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") ;
     }
 
     onSuiteStart(suite: SuiteStats) {

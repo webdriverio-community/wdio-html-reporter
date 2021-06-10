@@ -149,11 +149,12 @@ class HtmlGenerator  {
                     return "log-output";
                 }
             });
-            Object.keys(reportOptions.templateFuncs).forEach((name:string) => {
-                //@ts-ignore
-                Handlebars.registerHelper(name, reportOptions.templateFuncs[name]);
-            });
-
+            if (reportOptions.templateFuncs) {
+                Object.keys(reportOptions.templateFuncs).forEach((name: string) => {
+                    //@ts-ignore
+                    Handlebars.registerHelper(name, reportOptions.templateFuncs[name]);
+                });
+            }
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                let jsonFile = reportData.reportFile.replace('.html' , '.json') ;
                     fs.outputFileSync(jsonFile, JSON.stringify(reportData));

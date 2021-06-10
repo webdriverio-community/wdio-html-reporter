@@ -6,8 +6,8 @@ import {Dayjs} from "dayjs";
 export class HtmlReporterOptions implements Reporters.Options  {
     outputDir: string;
     filename: string;
-    templateFilename: string;
-    templateFuncs: object;
+    templateFilename?: string | undefined;
+    templateFuncs?: object | undefined;
     reportTitle: string;
     showInBrowser: boolean;
     collapseTests: boolean;
@@ -21,7 +21,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
     constructor() {
         this.outputDir = "";
         this.filename =  "";
-        this.templateFilename=  "";
+        this.templateFilename = "";
         this.templateFuncs = {};
         this.reportTitle=  "";
         this.showInBrowser = false;
