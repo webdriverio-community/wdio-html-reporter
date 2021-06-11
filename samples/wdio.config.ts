@@ -15,21 +15,41 @@ LOG.configure({
     appenders: {
         fileLog: {
             type: 'file',
-            filename: "logs/console.log"
+            filename: "logs/html-reporter.log",
+            maxLogSize: 5000000,
+            level: 'debug'
+        },
+        debugLog: {
+            type: 'file',
+            filename: "logs/debug-html-reporter.log",
+            maxLogSize: 5000000,
+            level: 'debug'
         },
         'out': {
             type: 'stdout',
-            layout: {type: 'basic'}
+            layout: {
+                type: "pattern",
+                pattern: "%[[%p]%] - %10.-100f{2} | %7.12l:%7.12o - %[%m%]"
+            }
+        },
+        'filterOut': {
+            type: 'stdout',
+            layout: {
+                type: "pattern",
+                pattern: "%[[%p]%] - %10.-100f{2} | %7.12l:%7.12o - %[%m%]"
+            },
+            level: 'info'
         }
     },
     categories: {
-        file: {appenders: ['fileLog'], level: 'debug'},
+        file: {appenders: ['fileLog'], level: 'info'},
         default: {appenders: ['out', 'fileLog'], level: 'info'},
-        debug: {appenders: ['out', 'fileLog'], level: 'debug'}
+        console: {appenders: ['out'], level: 'info'},
+        debug: {appenders: ['debugLog'], level: 'debug'}
     }
 });
 
-let logger = LOG.getLogger("file");
+let logger = LOG.getLogger("default");
 
 let reportAggregator : ReportAggregator;
 

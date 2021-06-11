@@ -15,7 +15,7 @@ class HtmlGenerator  {
     static htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done:boolean) =>{}) {
 
         try {
-            reportOptions.LOG.debug("Html Generation started");
+            reportOptions.LOG.info("Html Generation started");
             let templateFile = fs.readFileSync(reportOptions.templateFilename, 'utf8');
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile:string, screenshotPath:string, helperOpts: HelperOptions) {
@@ -154,8 +154,22 @@ class HtmlGenerator  {
                 });
             }
             if (fs.pathExistsSync(reportOptions.outputDir)) {
+                if (reportOptions.removeOutput) {
+                    for (let i = 0; i < reportData.suites.length; i++) {
+                        let suite = reportData.suites[i].suite;
+                        for (let j = 0; j < suite.tests.length; j++) {
+                            let test = suite.tests[j];
+                            test.output = [];
+                        }
+                        let tests = suite.tests;
+                        for (let k = 0; k < tests.length; k++) {
+                            let test = tests[k];
+                            test.output = [];
+                        }
+                    }
+                }
                let jsonFile = reportData.reportFile.replace('.html' , '.json') ;
-                    fs.outputFileSync(jsonFile, JSON.stringify(reportData));
+               fs.outputFileSync(jsonFile, JSON.stringify(reportData));
             }
 
             let template = Handlebars.compile(templateFile);
@@ -164,7 +178,7 @@ class HtmlGenerator  {
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                 fs.outputFileSync(reportData.reportFile, html);
             }
-            reportOptions.LOG.debug("Html Generation completed");
+            reportOptions.LOG.info("Html Generation completed");
             callback(true);
         } catch(ex) {
             reportOptions.LOG.error("Html Generation processing ended in error: " + ex);

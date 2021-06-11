@@ -1,13 +1,27 @@
 import {RunnerStats, SuiteStats} from "@wdio/reporter";
 
 export const RUNNER = new RunnerStats(
-    //@ts-ignore
+
     {
+    "start": "2021-06-11T16:24:27.910Z",
+    "_duration": 22079,
     cid : '0-0',
-    capabilities : {
-        hostname: 'localhost',
-        browserName : 'loremipsum',
+    "capabilities": {
+        "acceptInsecureCerts": false,
+        "browserName": "chrome",
+        "browserVersion": "91.0.4472.101",
+        "chrome": {
+            "chromedriverVersion": "90.0.4430.24 (4c6d850f087da467d926e8eddb76550aed655991-refs/branch-heads/4430@{#429})",
+            "userDataDir": "C:\\Users\\rpii\\AppData\\Local\\Temp\\scoped_dir3692_1178567250"
+        },
+    "logLevel": "warn",
+    "outputDir": "./logs",
+    "connectionRetryTimeout": 160000,
+    "connectionRetryCount": 3,
+    "logLevels": {},
+    "strictSSL": true,
     },
+
     specs : ['/foo/bar/baz.js']
 });
 
@@ -36,11 +50,14 @@ export const SUITES : SuiteStats[] = [
                 "_duration":9009,
                 "cid":"0-0",
                 "fullTitle":"full foo",
+                "parent": "login test valid logins suite",
             },
             {
                 uid : 'bar1',
                 title : 'bar',
                 state : 'failed',
+                "start": new Date("2021-06-11T01:28:24.778Z"),
+                "_duration": 15809,
                 //@ts-ignore
                 "events": [
                     {
@@ -63,6 +80,7 @@ export const SUITES : SuiteStats[] = [
                 uid : 'three',
                 title : 'bar',
                 state : 'skipped',
+                title : 'skip',
             }
         ],
     },

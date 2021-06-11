@@ -71,7 +71,8 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onRunnerStart(runner: RunnerStats) {
-        this.log("onRunnerStart: " , JSON.stringify(runner));
+        this.options.LOG.info("onRunnerStart:") ;
+        this.options.LOG.debug( JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this._currentCid = runner.cid;
         this.metrics.passed = 0;
@@ -91,11 +92,13 @@ class HtmlReporter extends WDIOReporter {
         this._currentSuiteUid = suite.uid;
         let thisSuite = new SuiteInfo('suite', suite);
         this._suiteStats.push(thisSuite);
-        this.log("onSuiteStart: ", JSON.stringify(thisSuite));
+        this.options.LOG.info("onSuiteStart:") ;
+        this.options.LOG.debug(JSON.stringify(thisSuite));
     }
 
     onTestStart(theTest :TestStats) {
-        this.log("onTestStart: " , JSON.stringify(theTest));
+        this.options.LOG.info("onTestStart:") ;
+        this.options.LOG.debug(JSON.stringify(theTest));
         this._currentTestUid = theTest.uid ;
 
         let test = new TestInfo(theTest) ;
@@ -105,17 +108,20 @@ class HtmlReporter extends WDIOReporter {
       }
 
     onTestPass(test :TestStats) {
-        this.log("onTestPass: " , JSON.stringify(test));
+        this.options.LOG.info("onTestPass:");
+        this.options.LOG.debug(JSON.stringify(test));
         this.metrics.passed++;
     }
 
     onTestSkip(test : TestStats) {
-        this.log("onTestSkip: " , JSON.stringify(test));
+        this.options.LOG.info("onTestSkip:");
+        this.options.LOG.debug(JSON.stringify(test));
         this.metrics.skipped++;
     }
 
     onTestFail(theTest :TestStats) {
-        this.log("onTestFail: " , JSON.stringify(theTest));
+        this.options.LOG.info("onTestFail:");
+        this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid) ;
         if (test) {
             this.moveErrorsToEvents(test);
@@ -124,7 +130,8 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onTestEnd(theTest :TestStats) {
-        this.log("onTestEnd: " , JSON.stringify(theTest));
+        this.options.LOG.info("onTestEnd:");
+        this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid) ;
         if (test) {
             this.moveErrorsToEvents(test);
@@ -137,7 +144,8 @@ class HtmlReporter extends WDIOReporter {
         }
     }
     onSuiteEnd(suite : SuiteStats  ) {
-        this.log("onSuiteEnd: " , JSON.stringify(suite));
+        this.options.LOG.info("onSuiteEnd:" );
+        this.options.LOG.debug(JSON.stringify(suite));
         this._indents--;
         // this is to display suite end time and duration in master report.
         for (const suiteInfo of this._suiteStats) {
@@ -166,7 +174,7 @@ class HtmlReporter extends WDIOReporter {
             if (this.isScreenshotCommand(command) && command.result.value) {
                 let timestamp = dayjs().format('YYYYMMDD-HHmmss.SSS');
                 const filepath = path.join(this.options.outputDir, '/screenshots/', encodeURIComponent(this._currentCid), timestamp, this.options.filename + '.png');
-                this.log("onAfterCommand: taking screenshot " , filepath);
+                this.options.LOG.info("onAfterCommand: taking screenshot " , filepath);
                 fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
 
                 let test = this.getTest(this._currentTestUid);
@@ -178,7 +186,8 @@ class HtmlReporter extends WDIOReporter {
     }
 
     onRunnerEnd(runner: RunnerStats) {
-        this.log("onRunnerEnd: " , JSON.stringify(runner));
+        this.options.LOG.info("onRunnerEnd: ");
+        this.options.LOG.debug(JSON.stringify(runner));
         this.openInProgress = true;
         this.metrics.end = dayjs().utc().format() ;
         this.metrics.duration = runner._duration;
@@ -202,10 +211,6 @@ class HtmlReporter extends WDIOReporter {
         HtmlGenerator.htmlOutput(this.options,reportData,() => {
             this.openInProgress = false  ;
         })
-    }
-
-    log(message:string, object:any ) {
-        this.options.LOG.debug(message + object) ;
     }
 
     getSuite(uid:string|undefined) : SuiteInfo | undefined {

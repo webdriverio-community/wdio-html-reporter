@@ -67,12 +67,8 @@ class ReportAggregator {
         return walk(this.options.outputDir, [".json"]);
     }
 
-
-    log(message:string , object:any) {
-        this.options.LOG.debug(message + object) ;
-    }
     async createReport() {
-        this.options.LOG.debug("Report Aggregation started");
+        this.options.LOG.info("Report Aggregation started");
         let metrics = new Metrics () ;
 
         let suites = [];
@@ -86,7 +82,7 @@ class ReportAggregator {
                 let report = JSON.parse(fs.readFileSync(filename));
                 if (!report.info || !report.info.specs) {
                     this.options.LOG.error("report structure in question, no info or info.specs " , JSON.stringify(report));
-                    this.options.LOG.info("report content: " , JSON.stringify(report));
+                    this.options.LOG.debug("report content: " , JSON.stringify(report));
                 }
                 report.info.specs.forEach((spec:any) => {
                     specs.push(spec) ;
@@ -141,7 +137,7 @@ class ReportAggregator {
         }
         metrics.duration = dayjs.duration(dayjs(metrics.end).utc().diff(dayjs(metrics.start).utc())).as('milliseconds');
 
-        this.options.LOG.debug("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
+        this.options.LOG.info("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
         this.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
         if (this.options.removeOutput) {
             for (let i = 0; i < suites.length; i++) {
@@ -150,10 +146,10 @@ class ReportAggregator {
                     let test = suite.tests[j];
                     test.output = [];
                 }
-                let tests = suites[i].tests;
+                let tests = suite.tests;
                 for (let k = 0; k < tests.length; k++) {
                     let test = tests[k];
-                    test.testStats.output = [];
+                    test.output = [];
                 }
             }
         }
@@ -167,7 +163,7 @@ class ReportAggregator {
 
         HtmlGenerator.htmlOutput(this.options,reportData) ;
 
-        this.options.LOG.debug("Report Aggregation completed");
+        this.options.LOG.info("Report Aggregation completed");
         let jsFiles = path.join(__dirname, '../css/*.*');
         let reportDir = path.join(process.cwd(), this.options.outputDir);
         copyfiles( [jsFiles, reportDir] , true,
