@@ -42,11 +42,7 @@ class HtmlReporter extends WDIOReporter {
                 filename: 'report.html',
                 templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
                 reportTitle: 'Test Report Title',
-                showInBrowser: false,
-                collapseTests: false,
-                useOnAfterCommandForScreenshot: true,
-                logFile: "logs/reporter.log",
-                LOG: null
+                useOnAfterCommandForScreenshot: true
             };
 
         this.options = Object.assign(opts, options);

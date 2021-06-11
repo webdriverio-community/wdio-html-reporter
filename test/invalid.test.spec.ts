@@ -35,9 +35,7 @@ let htmlReporter  = new HtmlReporter({
     LOG : logger,
     collapseTests: true,
     templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
-    useOnAfterCommandForScreenshot: false,
-    logFile:""
-
+    useOnAfterCommandForScreenshot: false
 });
 
 describe('HtmlReporter', () => {
@@ -52,8 +50,7 @@ describe('HtmlReporter', () => {
             showInBrowser: true,
             collapseTests: false,
             LOG : logger,
-            useOnAfterCommandForScreenshot: false,
-            logFile:""
+            useOnAfterCommandForScreenshot: false
         });
         reportAggregator.clean();
     });

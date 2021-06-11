@@ -1,4 +1,4 @@
-import {ReportAggregator, HtmlReporter} from '@wdio/html-reporter';
+import {ReportAggregator, HtmlReporter} from '@rpii/wdio-html-reporter';
 import SpecReporter from "@wdio/spec-reporter";
 import commands from "@rpii/wdio-commands" ;
 
@@ -168,13 +168,7 @@ const BaseConfig: WebdriverIO.Config = {
                 reportTitle: 'Micro-Magic Web Test Report',
                 browserName: process.env.TEST_BROWSER ? process.env.TEST_BROWSER : 'unspecified',
                 showInBrowser: true,
-                collapseTests: true,
-                LOG: logger,
-                debug:true,
-                logFile: "./logs/html-reporter.log",
-                removeOutput: true,
-                useOnAfterCommandForScreenshot: false
-
+                LOG: logger
             });
 
         reportAggregator.clean();

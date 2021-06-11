@@ -28,33 +28,23 @@ let logger = log4js.getLogger("default") ;
 let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
-    debug: false,
     outputDir: './reports/html-reports/valid',
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
-    showInBrowser: false,
     LOG : logger,
     browserName: "dummy",
-    collapseTests: true,
-    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
-    useOnAfterCommandForScreenshot: false,
-    logFile:""
+    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs')
 });
 
 describe('HtmlReporter', () => {
     before(function () {
         reportAggregator = new ReportAggregator({
-            debug: false,
             outputDir: './reports/html-reports/valid',
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName : "test browser",
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
-            showInBrowser: true,
-            collapseTests: false,
-            LOG : logger,
-            useOnAfterCommandForScreenshot: false,
-            logFile:""
+            LOG : logger
         });
         reportAggregator.clean();
     });

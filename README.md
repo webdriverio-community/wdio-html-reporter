@@ -25,12 +25,12 @@ Its not totally compatible, so I have created a new package.
 ## Configuration
 The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array.  Syntax shown requires babel:
 
-###A functioning wdio.config.ts is provided in the [/test/sample.wdio.config.ts](/test/sample.wdio.config.ts)
+###A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
 
 below are snippets from that file
 
 ```typescript
-// wdio.conf.ts
+// wdio.config.ts
 import {ReportAggregator, HtmlReporter} from '@wdio/html-reporter';
 let reportAggregator: ReportAggregator;
 

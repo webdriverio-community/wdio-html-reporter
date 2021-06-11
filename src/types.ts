@@ -1,34 +1,30 @@
 import {Reporters} from "@wdio/types";
 import {RunnerStats, SuiteStats, TestStats} from "@wdio/reporter";
-import {Test} from "@wdio/reporter/build/stats/test";
-import {Dayjs} from "dayjs";
 
 export class HtmlReporterOptions implements Reporters.Options  {
     outputDir: string;
     filename: string;
+    reportTitle: string;
     templateFilename?: string | undefined;
     templateFuncs?: object | undefined;
-    reportTitle: string;
-    showInBrowser: boolean;
-    collapseTests: boolean;
-    useOnAfterCommandForScreenshot: boolean;
-    logFile: string;
+    showInBrowser?: boolean | undefined;
+    collapseTests?: boolean | undefined;
+    useOnAfterCommandForScreenshot?: boolean | undefined;
     LOG?: any ;
-    debug : boolean;
+    debug ?: boolean | undefined;
     browserName:string;
-    removeOutput: boolean;
+    removeOutput?: boolean | undefined;
 
     constructor() {
         this.outputDir = "";
         this.filename =  "";
         this.templateFilename = "";
         this.templateFuncs = {};
-        this.reportTitle=  "";
+        this.reportTitle =  "Please add a Title";
         this.showInBrowser = false;
         this.collapseTests = false;
         this.useOnAfterCommandForScreenshot = false;
-        this.logFile = "";
-        this.LOG =  undefined;
+        this.LOG = null ;
         this.debug = false;
         this.browserName = "" ;
         this.removeOutput = true ;

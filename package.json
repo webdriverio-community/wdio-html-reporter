@@ -64,7 +64,8 @@
     "log4js": "^6.3.0",
     "mocha": "^8.4.0",
     "rimraf": "^3.0.2",
-    "@wdio/cli": "^7.0.0"
+    "@wdio/cli": "^7.7.3",
+    "typescript-string-operations": "^1.4.1"
   },
   "contributors": [
     "Rich Peters <16782353+rpii@users.noreply.github.com>"
