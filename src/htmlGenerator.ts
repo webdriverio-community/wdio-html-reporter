@@ -15,9 +15,7 @@ class HtmlGenerator  {
     static htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done:boolean) =>{}) {
 
         try {
-            if (reportOptions.LOG) {
-                reportOptions.LOG.debug("Html Generation started");
-            }
+            reportOptions.LOG.debug("Html Generation started");
             let templateFile = fs.readFileSync(reportOptions.templateFilename, 'utf8');
 
             Handlebars.registerHelper('imageAsBase64', function (screenshotFile:string, screenshotPath:string, helperOpts: HelperOptions) {
@@ -166,14 +164,10 @@ class HtmlGenerator  {
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                 fs.outputFileSync(reportData.reportFile, html);
             }
-            if (reportOptions.LOG) {
-                reportOptions.LOG.debug("Html Generation completed");
-            }
+            reportOptions.LOG.debug("Html Generation completed");
             callback(true);
         } catch(ex) {
-            if (reportOptions.LOG) {
-                reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
-            }
+            reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
             callback(false);
         }
     }

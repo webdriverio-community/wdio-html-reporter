@@ -47,7 +47,7 @@ class HtmlReporter extends WDIOReporter {
 
         this.options = Object.assign(opts, options);
         if (!this.options.LOG) {
-            this.options.LOG =  log4js.getLogger(this.options.debug ? 'debug' : 'default' );;
+            this.options.LOG = log4js.getLogger(this.options.debug ? 'debug' : 'default' );;
         }
 
         const dir = this.options.outputDir + 'screenshots';
@@ -205,9 +205,7 @@ class HtmlReporter extends WDIOReporter {
     }
 
     log(message:string, object:any ) {
-        if (this.options.LOG || this.options.debug ) {
-            this.options.LOG.debug(message + object) ;
-        }
+        this.options.LOG.debug(message + object) ;
     }
 
     getSuite(uid:string|undefined) : SuiteInfo | undefined {

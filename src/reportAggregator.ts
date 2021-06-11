@@ -11,7 +11,7 @@ const open = require('open');
 const copyfiles = require("copyfiles");
 const fs = require('fs-extra');
 const path = require('path');
-const logger = require('@log4js-node/log4js-api');
+const log4js = require('@log4js-node/log4js-api');
 
 function  walk(dir:string, extensions: string[] , filelist: string[] = []) {
     const files = fs.readdirSync(dir);
@@ -50,7 +50,7 @@ class ReportAggregator {
         }, opts);
         this.options = opts;
         if (!this.options.LOG) {
-            this.options.LOG = logger.getLogger(this.options.debug ? 'debug' : 'default')      ;
+            this.options.LOG = log4js.getLogger(this.options.debug ? 'debug' : 'default');
         }
         this.reports = [];
     }
@@ -69,14 +69,10 @@ class ReportAggregator {
 
 
     log(message:string , object:any) {
-        if (this.options.LOG) {
-            this.options.LOG.debug(message + object) ;
-        }
+        this.options.LOG.debug(message + object) ;
     }
     async createReport() {
-        if (this.options.LOG) {
-            this.options.LOG.debug("Report Aggregation started");
-        }
+        this.options.LOG.debug("Report Aggregation started");
         let metrics = new Metrics () ;
 
         let suites = [];
@@ -145,9 +141,7 @@ class ReportAggregator {
         }
         metrics.duration = dayjs.duration(dayjs(metrics.end).utc().diff(dayjs(metrics.start).utc())).as('milliseconds');
 
-        if (this.options.LOG) {
-            this.options.LOG.debug("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
-        }
+        this.options.LOG.debug("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");
         this.reportFile = path.join(process.cwd(), this.options.outputDir, this.options.filename);
         if (this.options.removeOutput) {
             for (let i = 0; i < suites.length; i++) {
