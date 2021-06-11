@@ -1,10 +1,8 @@
 import {RunnerStats, SuiteStats} from "@wdio/reporter";
 
-export const RUNNER = new RunnerStats({
-    type: "runner",
-    start: "2019-04-13T00:10:05.191Z",
-    end :  "2019-04-13T00:10:15.191Z",
-    _duration: 34428,
+export const RUNNER = new RunnerStats(
+    //@ts-ignore
+    {
     cid : '0-0',
     capabilities : {
         hostname: 'localhost',
@@ -28,15 +26,22 @@ export const SUITES : SuiteStats[] = [
         start: new Date("2019-04-13T00:10:05.191Z"),
         end :  new Date("2019-04-13T00:10:15.191Z"),
         tests : [
+            //@ts-ignore
             {
+                type :"test",
                 uid : 'foo1',
                 title : 'foo',
-                state : 'passed'
+                state : 'passed',
+                "start": new Date("2021-06-11T01:28:24.778Z"),
+                "_duration":9009,
+                "cid":"0-0",
+                "fullTitle":"full foo",
             },
             {
                 uid : 'bar1',
                 title : 'bar',
                 state : 'failed',
+                //@ts-ignore
                 "events": [
                     {
                         "type": "log",
@@ -53,6 +58,7 @@ export const SUITES : SuiteStats[] = [
                     },
                 ]
             },
+            //@ts-ignore
             {
                 uid : 'three',
                 title : 'bar',
@@ -66,11 +72,13 @@ export const SUITES : SuiteStats[] = [
         hooks: [],
         type : "suite",
         tests : [
+            //@ts-ignore
             {
                 uid : 'some test1',
                 title : 'some test',
                 state : 'passed',
             },
+            //@ts-ignore
             {
                 uid : 'a failed test2',
                 title : 'a failed test',
@@ -89,11 +97,13 @@ export const SUITES : SuiteStats[] = [
         type : "suite",
         hooks: [],
         tests : [
+            //@ts-ignore
             {
                 uid : 'foo bar baz1',
                 title : 'foo bar baz',
                 state : 'passed',
             },
+            //@ts-ignore
             {
                 uid : 'a skipped test2',
                 title : 'a skipped test',
@@ -108,11 +118,13 @@ export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
         title : SUITE_UIDS[0].slice(0, -1),
         hooks: [],
         tests : [
+            //@ts-ignore
             {
                 uid : 'foo1',
                 title : 'foo',
                 state : 'passed',
             },
+            //@ts-ignore
             {
                 uid : 'bar1',
                 title : 'bar',
@@ -125,6 +137,7 @@ export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
         title : SUITE_UIDS[1].slice(0, -1),
         hooks: [],
         tests : [
+            //@ts-ignore
             {
                 uid : 'some test1',
                 title : 'some test',
@@ -134,11 +147,14 @@ export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
                 uid : 'a failed test',
                 title : 'a test with two failures',
                 state : 'failed',
+
                 errors : [
+                    //@ts-ignore
                     {
                         message : 'expected the party on the first part to be the party on the first part',
                         stack : 'First failed stack trace'
                     },
+                    //@ts-ignore
                     {
                         message : 'expected the party on the second part to be the party on the second part',
                         stack : 'Second failed stack trace'
@@ -150,6 +166,7 @@ export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
 ]
 
 export const SUITES_NO_TESTS : SuiteStats[] = [
+    //@ts-ignore
     {
         uid: SUITE_UIDS[0],
         title: SUITE_UIDS[0].slice(0, -1),
@@ -165,7 +182,9 @@ export const SUITES_NO_TESTS_WITH_HOOK_ERROR : SuiteStats[] = [
         title: SUITE_UIDS[0].slice(0, -1),
         tests: [],
         suites: [],
-        hooks: [{
+        hooks: [
+            //@ts-ignore
+            {
             uid : 'a failed hook2',
             title : 'a failed hook',
             state : 'failed',
