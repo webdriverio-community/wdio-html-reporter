@@ -1,19 +1,6 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "declaration": true,
-    "allowJs": true,
-    "noEmit": false,
-    "strict": true,
-    "isolatedModules": false,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports" : true,
-    "noImplicitAny": true,
-    "outDir": "../lib/",
     "types": [
       "node",
       "webdriverio/sync",
@@ -23,10 +10,10 @@
     ]
   },
   "include": [
-    "../test/**/*.ts"
+    "./**/*.ts"
   ],
   "exclude": [
-    "node_modules",
+    "../node_modules",
     "../src"
   ],
   "compileOnSave": false

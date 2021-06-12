@@ -10,6 +10,7 @@ export const RUNNER = new RunnerStats(
         "acceptInsecureCerts": false,
         "browserName": "chrome",
         "browserVersion": "91.0.4472.101",
+        //@ts-ignore
         "chrome": {
             "chromedriverVersion": "90.0.4430.24 (4c6d850f087da467d926e8eddb76550aed655991-refs/branch-heads/4430@{#429})",
             "userDataDir": "C:\\Users\\rpii\\AppData\\Local\\Temp\\scoped_dir3692_1178567250"
@@ -78,7 +79,6 @@ export const SUITES : SuiteStats[] = [
             //@ts-ignore
             {
                 uid : 'three',
-                title : 'bar',
                 state : 'skipped',
                 title : 'skip',
             }

@@ -3,31 +3,54 @@ const path = require('path');
 import {expect} from 'chai';
 import {HtmlReporter, ReportAggregator} from '../src/index';
 import {RUNNER, SUITES} from './testdata';
-const log4js = require ('log4js') ;
-
-log4js.configure({ // configure to use all types in different files.
+const LOG = require ('log4js') ;
+LOG.configure({
     appenders: {
         fileLog: {
             type: 'file',
-            filename: "logs/console.log"
+            filename: "logs/html-reporter.log",
+            maxLogSize: 5000000,
+            level: 'debug'
         },
-        'out': {
+        debugLog: {
+            type: 'file',
+            filename: "logs/debug-html-reporter.log",
+            maxLogSize: 5000000,
+            level: 'debug'
+        },
+        out: {
             type: 'stdout',
-            layout: {type: 'basic'}
+            layout: {
+                type: "pattern",
+                pattern: "%[[%p]%] - %10.-100f{2} | %7.12l:%7.12o - %[%m%]"
+            }
+        },
+        filterOut: {
+            type: 'stdout',
+            layout: {
+                type: "pattern",
+                pattern: "%[[%p]%] - %10.-100f{2} | %7.12l:%7.12o - %[%m%]"
+            },
+            level: 'info'
         }
     },
     categories: {
-        file: {appenders: ['fileLog'], level: 'debug'},
-        default: {appenders: ['out', 'fileLog'], level: 'debug'}
+        file: {appenders: ['fileLog'], level: 'info'},
+        default: {appenders: ['fileLog'], level: 'info'},
+        debug: {appenders: ['debugLog'], level: 'debug'}
     }
 });
 
-let logger = log4js.getLogger("default") ;
+
+
+let logger = LOG.getLogger("debug") ;
 
 
 let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
+    //@ts-ignore
+    logFile: './logs/reporter.log',
     outputDir: './reports/html-reports/valid',
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
@@ -51,10 +74,8 @@ describe('HtmlReporter', () => {
 
     describe('on create', function () {
         it('should verify initial properties', function () {
-            expect(Array.isArray(htmlReporter._suiteUids)).to.equal(true);
-            expect(htmlReporter._suiteUids.size).to.equal(0);
-            expect(Array.isArray(htmlReporter.suites)).to.equal(true);
-            expect(htmlReporter.suites.length).to.deep.equal(0);
+            expect(Array.isArray(htmlReporter._suiteStats)).to.equal(true);
+            expect(htmlReporter._suiteStats.length).to.deep.equal(0);
             expect(htmlReporter._indents).to.equal(0);
             expect(htmlReporter._suiteIndents).to.deep.equal({});
             expect(htmlReporter.defaultTestIndent).to.equal('   ');
@@ -62,8 +83,8 @@ describe('HtmlReporter', () => {
                 passed: 0,
                 skipped: 0,
                 failed: 0,
-                start: 0,
-                end: 0,
+                start: "",
+                end: "",
                 duration: 0
             });
         })
@@ -165,7 +186,7 @@ describe('HtmlReporter', () => {
         });
 
         it('should add the suite to the suites array', function () {
-            expect(htmlReporter.suites.length).to.equal(1)
+            expect(htmlReporter._suiteStats.length).to.equal(1)
             // expect(htmlReporter.suites[0]).to.equal(SUITES[0])
         })
     });

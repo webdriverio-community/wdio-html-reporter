@@ -1,20 +1,21 @@
 {
   "name": "@wdio/html-reporter",
   "version": "7.7.0",
-  "description": "WebdriverIO report plugin. Create a basic HTML formatted report. compatible with webdriverio version 7",
+  "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build:test": "tsc -p test ",
+    "build:test": "tsc --project test",
     "build": "tsc",
     "symlink": "npm link",
     "use:symlink": "npm link @rpii/wdio-html-reporter",
-    "clean": "rimraf ./lib  ./build-test ./reports ./logs",
+    "clean": "rimraf ./lib  ./reports ./logs",
     "clean:build": "rimraf ./lib",
     "clean:reports": "rimraf ./reports",
-    "test": "mocha ./lib/test/**/*.js",
-    "test:invalid": "mocha ./lib/test/invalid.test.spec.js ",
-    "test:reporter": "mocha ./lib/test/reporter.spec.js",
+    "clean:logs": "rimraf ./logs",
+    "test": "mocha ./test/**/*.ts",
+    "test:invalid": "mocha ./test/invalid.test.spec.ts",
+    "test:reporter": "mocha ./test/reporter.spec.ts",
     "copyjs": "copyfiles --flat --verbose js/*.* ./reports/html-reports/"
   },
   "repository": {
@@ -69,8 +70,5 @@
   },
   "contributors": [
     "Rich Peters <16782353+rpii@users.noreply.github.com>"
-  ],
-  "mocha": {
-    "ui": "bdd"
-  }
+  ]
 }
