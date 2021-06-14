@@ -1,11 +1,10 @@
 {
-  "name": "@wdio/html-reporter",
+  "name": "@rpii/wdio-html-reporter",
   "version": "7.7.0",
   "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build:test": "tsc --project test",
     "build": "tsc",
     "symlink": "npm link",
     "use:symlink": "npm link @rpii/wdio-html-reporter",
