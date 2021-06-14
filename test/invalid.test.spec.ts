@@ -26,7 +26,7 @@ let logger = log4js.getLogger("default") ;
 let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
-    logFile: './logs/reporter.log',
+
     outputDir: './reports/html-reports/invalid/',
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',

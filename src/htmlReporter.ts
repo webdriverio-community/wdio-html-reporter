@@ -34,7 +34,11 @@ class HtmlReporter extends WDIOReporter {
     _orderedSuites: SuiteInfo[] = [];
 
     constructor(options: HtmlReporterOptions) {
-        super(Object.assign({ stdout: true }, options))
+        super(Object.assign(
+            {
+                stdout: true,
+                logFile: './logs/reporter.log',
+            }, options))
         let opts =
             {
                 stdout: true,

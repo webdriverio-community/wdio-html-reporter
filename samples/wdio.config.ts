@@ -1,13 +1,10 @@
 import {ReportAggregator, HtmlReporter} from '@rpii/wdio-html-reporter';
-import SpecReporter from "@wdio/spec-reporter";
 import commands from "@rpii/wdio-commands" ;
-
 import {String, StringBuilder} from 'typescript-string-operations';
 import * as path from "path";
 
 const localEnv =  require('dotenv');
 localEnv.config();
-
 
 
 const LOG = require('log4js');
@@ -49,6 +46,7 @@ LOG.configure({
     }
 });
 
+//pick the category above to match the output you want.
 let logger = LOG.getLogger("default");
 
 let reportAggregator : ReportAggregator;
@@ -90,18 +88,12 @@ const BaseConfig: WebdriverIO.Config = {
     // ============
     // Capabilities
     // ============
-    // Define your capabilities here. WebdriverIO can run multiple capabilities at the same
-    // time. Depending on the number of capabilities, WebdriverIO launches several test
-    // sessions. Within your capabilities you can overwrite the spec and exclude options in
-    // order to group specific specs to a specific capability.
-    //
-    // First, you can define how many instances should be started at the same time. Let's
-    // say you have 3 different capabilities (Chrome, Firefox, and Safari) and you have
-    // set maxInstances to 1; wdio will spawn 3 processes. Therefore, if you have 10 spec
-    // files and you set maxInstances to 10, all spec files will get tested at the same time
-    // and 30 processes will get spawned. The property handles how many capabilities
-    // from the same test should run tests.
-    //
+    capabilities: [
+        {
+            // Set maxInstances to 1 if screen recordings are enabled:
+            maxInstances: 1,
+        }
+    ],
     maxInstances: 1,
 
     //
@@ -155,7 +147,7 @@ const BaseConfig: WebdriverIO.Config = {
     reporters: [
         "spec",
         //@ts-ignore
-        [HtmlReporter, {
+        ["html", {
             debug: false,
             outputDir: './reports/html-reports/',
             filename: 'report.html',
@@ -213,9 +205,6 @@ const BaseConfig: WebdriverIO.Config = {
 
         //@ts-ignore
         commands.addCommands(driver);
-        if (global.screenSize) {
-            browser.setWindowSize(global.screenSize.width,global.screenSize.height);
-        }
     },
     /**
      * Runs before a WebdriverIO command gets executed.

@@ -37,7 +37,7 @@ let reportAggregator: ReportAggregator;
 const BaseConfig: WebdriverIO.Config = {
     
   reporters: ['spec',
-        [HtmlReporter, {
+        ["html", {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',

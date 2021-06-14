@@ -49,8 +49,6 @@ let logger = LOG.getLogger("debug") ;
 let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
-    //@ts-ignore
-    logFile: './logs/reporter.log',
     outputDir: './reports/html-reports/valid',
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
