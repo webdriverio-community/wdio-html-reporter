@@ -26,7 +26,7 @@ let logger = log4js.getLogger("default") ;
 let reportAggregator : ReportAggregator;
 
 let htmlReporter  = new HtmlReporter({
-    debug: false,
+    logFile: './logs/reporter.log',
     outputDir: './reports/html-reports/invalid/',
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
@@ -78,6 +78,7 @@ describe('HtmlReporter', () => {
         before(function () {
             htmlReporter.onRunnerStart(RUNNER);
         });
+        //This will fail.
         it('fail to set cid test', function () {
             expect(htmlReporter._currentCid).to.be.null;
         });
