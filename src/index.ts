@@ -6,4 +6,6 @@ export {
     HtmlReporter,
     HtmlGenerator,
     ReportAggregator
+
 }
+export default HtmlReporter;

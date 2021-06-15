@@ -19,7 +19,7 @@ const log4js = require('@log4js-node/log4js-api');
 
 let proxy = new ReportEvents() ;
 
-class HtmlReporter extends WDIOReporter {
+export default class HtmlReporter extends WDIOReporter {
     options: HtmlReporterOptions;
     openInProgress:boolean;
     defaultTestIndent:string;
@@ -301,4 +301,3 @@ class HtmlReporter extends WDIOReporter {
 
 }
 
-export default HtmlReporter;
