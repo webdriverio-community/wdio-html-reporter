@@ -1,7 +1,6 @@
 import {ReportAggregator, HtmlReporter} from '@rpii/wdio-html-reporter';
 import commands from "@rpii/wdio-commands" ;
 import {String, StringBuilder} from 'typescript-string-operations';
-import * as path from "path";
 
 const localEnv =  require('dotenv');
 localEnv.config();
@@ -25,15 +24,13 @@ LOG.configure({
         'out': {
             type: 'stdout',
             layout: {
-                type: "pattern",
-                pattern: "%[[%p]%] - %10.-100f{2} | %7.12l:%7.12o - %[%m%]"
+                type: "colored"
             }
         },
         'filterOut': {
             type: 'stdout',
             layout: {
-                type: "pattern",
-                pattern: "%[[%p]%] - %10.-100f{2} | %7.12l:%7.12o - %[%m%]"
+                type: "colored"
             },
             level: 'info'
         }

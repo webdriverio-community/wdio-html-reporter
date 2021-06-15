@@ -13,7 +13,9 @@ log4js.configure({ // configure to use all types in different files.
         },
         'out': {
             type: 'stdout',
-            layout: {type: 'basic'}
+            layout: {
+                type: "colored"
+            },
         }
     },
     categories: {

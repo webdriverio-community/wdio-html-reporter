@@ -1,4 +1,4 @@
-# wdio/html-reporter
+#@rpii/wdio-html-reporter
 
 A reporter for webdriver.io which generates a HTML report.  
 Compatible with webdriverio version 7.7
@@ -13,17 +13,19 @@ Compatible with webdriverio version 7.7
 
     No more moment.js dependency
 
-    Removed need for global scope reportAggregator
+    use 'html' for reporter definition
+    
+    Removed need for global scope reportAggregator in client code
 
 
 ## Information
 
 This project is a rewrite of [@rpii/wdio-html-reporter](https://www.npmjs.com/package/wdio-html-reporter)
-
-Its not totally compatible, so I have created a new package.
+It is written in typescript with many enhancements.
 
 ## Configuration
-The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array.  Syntax shown requires babel:
+
+The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array:
 
 ###A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
 
