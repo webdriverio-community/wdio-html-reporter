@@ -1,13 +1,13 @@
 {
-  "name": "@rpii/wdio-html-reporter",
-  "version": "7.7.1",
+  "name": "wdio-html-nice-reporter",
+  "version": "7.7.3",
   "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "symlink": "npm link",
-    "use:symlink": "npm link @rpii/wdio-html-reporter",
+    "use:symlink": "npm link wdio-html-reporter",
     "clean": "rimraf ./lib  ./reports ./logs",
     "clean:build": "rimraf ./lib",
     "clean:reports": "rimraf ./reports",
@@ -19,10 +19,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:rpii/wdio-html-reporter.git"
+    "url": "git+ssh://git@github.com/%40rpii/wdio-html-reporter.git"
   },
   "directories": {
-    "src": "./src"
+    "lib": "lib",
+    "test": "test"
   },
   "keywords": [
     "html",
@@ -31,8 +32,7 @@
     "wdio",
     "wdio-plugin",
     "wdio-reporter",
-    "wdio-html-reporter",
-    "wdio-html-format-reporter"
+    "wdio-html-reporter"
   ],
   "author": "Rich Peters <16782353+rpii@users.noreply.github.com>",
   "license": "MIT",

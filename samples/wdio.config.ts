@@ -1,4 +1,4 @@
-import {ReportAggregator, HtmlReporter} from '@rpii/wdio-html-reporter';
+import {ReportAggregator, HtmlReporter} from 'wdio-html-nice-reporter';
 import commands from "@rpii/wdio-commands" ;
 import {String, StringBuilder} from 'typescript-string-operations';
 
@@ -144,7 +144,7 @@ const BaseConfig: WebdriverIO.Config = {
     reporters: [
         "spec",
         //@ts-ignore
-        ["html", {
+        ["html-nice", {
             debug: false,
             outputDir: './reports/html-reports/',
             filename: 'report.html',

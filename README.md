@@ -1,6 +1,6 @@
-#@rpii/wdio-html-reporter
+#wdio-html-nice-reporter
 
-A reporter for webdriver.io which generates a HTML report.  
+A reporter for webdriver.io which generates a nice HTML report.  
 Compatible with webdriverio version 7.7
 
 
@@ -13,7 +13,7 @@ Compatible with webdriverio version 7.7
 
     No more moment.js dependency
 
-    use 'html' for reporter definition
+    use 'html-nice' for reporter definition
     
     Removed need for global scope reportAggregator in client code
 
@@ -41,7 +41,7 @@ let reportAggregator: ReportAggregator;
 const BaseConfig: WebdriverIO.Config = {
     
   reporters: ['spec',
-        ["html", {
+        ["html-nice", {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
