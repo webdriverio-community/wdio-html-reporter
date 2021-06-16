@@ -9,6 +9,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
     templateFuncs?: object | undefined;
     showInBrowser?: boolean | undefined;
     collapseTests?: boolean | undefined;
+    collapseSuites?: boolean | undefined;
     useOnAfterCommandForScreenshot?: boolean | undefined;
     LOG?: any ;
     debug ?: boolean | undefined;
@@ -23,6 +24,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.reportTitle =  "Please add a Title";
         this.showInBrowser = false;
         this.collapseTests = false;
+        this.collapseSuites = false;
         this.useOnAfterCommandForScreenshot = false;
         this.LOG = null ;
         this.debug = false;

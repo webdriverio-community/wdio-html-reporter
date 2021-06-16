@@ -140,6 +140,10 @@ class HtmlGenerator  {
                 return reportOptions.collapseTests;
             });
 
+            Handlebars.registerHelper('ifCollapseSuites',  (text , helperOpts: HelperOptions) => {
+                return reportOptions.collapseSuites;
+            });
+
             Handlebars.registerHelper('logClass', (text , helperOpts: HelperOptions) => {
                 if (text.includes('Test Iteration')) {
                     return "test-iteration";

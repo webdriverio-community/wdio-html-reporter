@@ -17,6 +17,8 @@ Compatible with webdriverio version 7.7
     
     Removed need for global scope reportAggregator in client code
 
+    Add collapseTests and collapseSuites options
+
 
 ## Information
 

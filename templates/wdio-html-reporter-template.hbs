@@ -614,6 +614,11 @@
                 item.click();
             });
         }
+        if ({{#ifCollapseSuites}}{{/ifCollapseSuites }}) {
+            document.querySelectorAll('.suite-header').forEach(item => {
+                item.click();
+            });
+        }
     }, false);
 </script>
 </body>
