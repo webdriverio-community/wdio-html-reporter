@@ -22,6 +22,8 @@ Compatible with webdriverio version 7.7
     Add collapseTests and collapseSuites options,default to false
 
     sort suites by time order
+    
+    display spec file in suite header
 
 
 ## Information

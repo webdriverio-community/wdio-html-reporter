@@ -14,7 +14,7 @@ dayjs.extend(duration);
 class HtmlGenerator  {
 
     static htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done:boolean) =>{}) {
-
+        const specFileReferences: string[] = [];
         try {
             reportOptions.LOG.info("Html Generation started");
             let templateFile = fs.readFileSync(reportOptions.templateFilename, 'utf8');
@@ -44,6 +44,20 @@ class HtmlGenerator  {
                     return helperOpts.fn(this);
                 }
                 return helperOpts.inverse(this);
+            });
+
+            Handlebars.registerHelper('displaySpecFile',  (suiteInfo, helperOpts: HelperOptions) => {
+                if (!specFileReferences.includes(suiteInfo.suite.file)) {
+                    specFileReferences.push(suiteInfo.suite.file)
+                    return helperOpts.fn(this);
+                }
+                return helperOpts.inverse(this);
+            });
+
+            Handlebars.registerHelper('formatSpecFile',  (suiteInfo, helperOpts: HelperOptions) => {
+                // Display file path of spec
+                    let specFile = `${suiteInfo.suite.file.replace(process.cwd(), '')}`
+                return specFile;
             });
 
             Handlebars.registerHelper('testStateColour',  (testInfo:TestInfo, helperOpts: HelperOptions) => {

@@ -298,7 +298,15 @@
                                         </td>
                                     </tr>
 
+                                    {{#displaySpecFile suiteInfo}}
+                                        <tr>
+                                            <td>Spec File</td>
+                                            <td>{{#formatSpecFile suiteInfo}}{{/formatSpecFile}}</td>
+                                        </tr>
+                                    {{/displaySpecFile}}
+
                                     {{#ifSuiteHasTests suiteInfo.tests}}
+
                                         <tr>
                                             <td>Suite Start</td>
                                             <td>{{suiteInfo.suite.start}}</td>
