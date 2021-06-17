@@ -1,11 +1,13 @@
-#wdio-html-nice-reporter
+ #wdio-html-nice-reporter
 
 A reporter for webdriver.io which generates a nice HTML report.  
+The name is silly but provides integration with webdriverio
+
 Compatible with webdriverio version 7.7
 
 
 
-####Newest Features:  
+#### Newest Features:  
 
     Totally rewritten in typescript.
     
@@ -17,7 +19,9 @@ Compatible with webdriverio version 7.7
     
     Removed need for global scope reportAggregator in client code
 
-    Add collapseTests and collapseSuites options
+    Add collapseTests and collapseSuites options,default to false
+
+    sort suites by time order
 
 
 ## Information
@@ -123,7 +127,7 @@ see [@rpii/wdio-html-reporter-pdf](https://www.npmjs.com/package/@rpii/wdio-html
 
 ![Report Screenshot](TestReport.png)
 
-##browserName
+## browserName
 
 This must be set manually.  Its not available at config time since the browser object doesnt exist until you start a session.
 

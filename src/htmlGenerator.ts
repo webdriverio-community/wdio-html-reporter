@@ -1,6 +1,7 @@
 import {HtmlReporterOptions, ReportData, TestInfo} from "./types";
 import * as Handlebars from "handlebars";
 import {HelperOptions} from "handlebars";
+import {String } from 'typescript-string-operations';
 const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');

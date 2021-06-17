@@ -1,13 +1,13 @@
 {
   "name": "wdio-html-nice-reporter",
-  "version": "7.7.3",
+  "version": "7.7.6",
   "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "symlink": "npm link",
-    "use:symlink": "npm link wdio-html-reporter",
+    "use:symlink": "npm link wdio-html-nice-reporter",
     "clean": "rimraf ./lib  ./reports ./logs",
     "clean:build": "rimraf ./lib",
     "clean:reports": "rimraf ./reports",

@@ -28,7 +28,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.useOnAfterCommandForScreenshot = false;
         this.LOG = null ;
         this.debug = false;
-        this.browserName = "" ;
+        this.browserName = "not specified" ;
         this.removeOutput = true ;
     }
 }

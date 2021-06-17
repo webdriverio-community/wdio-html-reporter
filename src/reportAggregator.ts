@@ -1,5 +1,5 @@
 import HtmlGenerator from "./htmlGenerator";
-import {HtmlReporterOptions, Metrics, ReportData} from "./types";
+import {HtmlReporterOptions, Metrics, ReportData, SuiteInfo} from "./types";
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -45,6 +45,7 @@ class ReportAggregator {
             templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             browserName: "not specified",
             collapseTests: false,
+            collapseSuites: false,
             LOG: null,
             removeOutput: true
         }, opts);
@@ -57,6 +58,7 @@ class ReportAggregator {
     public options: HtmlReporterOptions;
     public reports: any[];
     public reportFile : string = "";
+    _orderedSuites: SuiteInfo[] = [];
 
     clean() {
         fs.emptyDirSync(this.options.outputDir);
@@ -81,29 +83,47 @@ class ReportAggregator {
                 let filename = files[i];
                 let report = JSON.parse(fs.readFileSync(filename));
                 if (!report.info || !report.info.specs) {
-                    this.options.LOG.error("report structure in question, no info or info.specs " , JSON.stringify(report));
-                    this.options.LOG.debug("report content: " , JSON.stringify(report));
+                    this.options.LOG.error("report structure in question, no info or info.specs ", JSON.stringify(report));
+                    this.options.LOG.debug("report content: ", JSON.stringify(report));
                 }
-                report.info.specs.forEach((spec:any) => {
-                    specs.push(spec) ;
+                report.info.specs.forEach((spec: any) => {
+                    specs.push(spec);
                 });
-
-
                 this.reports.push(report);
+            } catch (ex) {
+                console.error(ex);
+            }
+        }
+
+        this.reports.sort((report1:any,report2:any) => {
+            let first = dayjs.utc(report1.info.start);
+            let second = dayjs.utc(report2.info.start);
+            if (first.isAfter(second)) {
+                return 1;
+            }
+            else if (first.isBefore(second)) {
+                return -1;
+            }
+            return  0;
+        }) ;
+
+        for (let j = 0; j < this.reports.length; j++) {
+            try {
+                let report = this.reports[j];
                 metrics.passed += report.metrics.passed;
                 metrics.failed += report.metrics.failed;
                 metrics.skipped += report.metrics.skipped;
                 metrics.start = dayjs().utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
                 metrics.end = dayjs("2021-01-01").utc().format();
                 for (let k = 0; k < report.suites.length; k++) {
-                    let suiteInfo = report.suites[k] ;
-                    let start = dayjs.utc(suiteInfo.suite.start) ;
-                    if ( start.isSameOrBefore(metrics.start)) {
-                        metrics.start = start.utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") ;
+                    let suiteInfo = report.suites[k];
+                    let start = dayjs.utc(suiteInfo.suite.start);
+                    if (start.isSameOrBefore(metrics.start)) {
+                        metrics.start = start.utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
                     }
-                    let end = dayjs.utc(suiteInfo.suite.end) ;
-                    if ( end.isAfter(dayjs.utc(metrics.end))) {
-                        metrics.end = end.utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") ;
+                    let end = dayjs.utc(suiteInfo.suite.end);
+                    if (end.isAfter(dayjs.utc(metrics.end))) {
+                        metrics.end = end.utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
                     }
 
                     suites.push(suiteInfo);
@@ -111,8 +131,8 @@ class ReportAggregator {
             } catch (ex) {
                 console.error(ex);
             }
-
         }
+
         if (!this.reports || !this.reports.length ) {
             // the test failed hard at the beginning.  Create a dummy structure to get through html generation
             let report = {
@@ -135,6 +155,7 @@ class ReportAggregator {
             this.reports = [] ;
             this.reports.push(report);
         }
+
         metrics.duration = dayjs.duration(dayjs(metrics.end).utc().diff(dayjs(metrics.start).utc())).as('milliseconds');
 
         this.options.LOG.info("Aggregated " + specs.length + " specs, " + suites.length + " suites, " + this.reports.length + " reports, ");

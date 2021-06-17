@@ -12,6 +12,7 @@ import HtmlGenerator from './htmlGenerator'
 import {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData, SuiteInfo, TestInfo} from "./types";
 import dayjs from 'dayjs';
 import ReportEvents from "@rpii/wdio-report-events" ;
+import {String } from 'typescript-string-operations';
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -75,7 +76,7 @@ export default class HtmlReporter extends WDIOReporter {
     }
 
     onRunnerStart(runner: RunnerStats) {
-        this.options.LOG.info("onRunnerStart:") ;
+        this.options.LOG.info(String.Format("onRunnerStart: {0}", runner.cid)) ;
         this.options.LOG.debug( JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this._currentCid = runner.cid;
@@ -96,12 +97,12 @@ export default class HtmlReporter extends WDIOReporter {
         this._currentSuiteUid = suite.uid;
         let thisSuite = new SuiteInfo('suite', suite);
         this._suiteStats.push(thisSuite);
-        this.options.LOG.info("onSuiteStart:") ;
+        this.options.LOG.info(String.Format("onSuiteStart: {0}", suite.cid)) ;
         this.options.LOG.debug(JSON.stringify(thisSuite));
     }
 
     onTestStart(theTest :TestStats) {
-        this.options.LOG.info("onTestStart:") ;
+        this.options.LOG.info(String.Format("onTestStart: {0}", theTest.cid)) ;
         this.options.LOG.debug(JSON.stringify(theTest));
         this._currentTestUid = theTest.uid ;
 
@@ -112,19 +113,19 @@ export default class HtmlReporter extends WDIOReporter {
       }
 
     onTestPass(test :TestStats) {
-        this.options.LOG.info("onTestPass:");
+        this.options.LOG.info(String.Format("onTestPass: {0}", test.cid)) ;
         this.options.LOG.debug(JSON.stringify(test));
         this.metrics.passed++;
     }
 
     onTestSkip(test : TestStats) {
-        this.options.LOG.info("onTestSkip:");
+        this.options.LOG.info(String.Format("onTestSkip: {0}", test.cid)) ;
         this.options.LOG.debug(JSON.stringify(test));
         this.metrics.skipped++;
     }
 
     onTestFail(theTest :TestStats) {
-        this.options.LOG.info("onTestFail:");
+        this.options.LOG.info(String.Format("onTestFail: {0}", theTest.cid)) ;
         this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid) ;
         if (test) {
@@ -134,7 +135,7 @@ export default class HtmlReporter extends WDIOReporter {
     }
 
     onTestEnd(theTest :TestStats) {
-        this.options.LOG.info("onTestEnd:");
+        this.options.LOG.info(String.Format("onTestEnd: {0}", theTest.cid)) ;
         this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid) ;
         if (test) {
@@ -148,7 +149,7 @@ export default class HtmlReporter extends WDIOReporter {
         }
     }
     onSuiteEnd(suite : SuiteStats  ) {
-        this.options.LOG.info("onSuiteEnd:" );
+        this.options.LOG.info(String.Format("onSuiteEnd: {0}", suite.cid)) ;
         this.options.LOG.debug(JSON.stringify(suite));
         this._indents--;
         // this is to display suite end time and duration in master report.
@@ -178,7 +179,7 @@ export default class HtmlReporter extends WDIOReporter {
             if (this.isScreenshotCommand(command) && command.result.value) {
                 let timestamp = dayjs().format('YYYYMMDD-HHmmss.SSS');
                 const filepath = path.join(this.options.outputDir, '/screenshots/', encodeURIComponent(this._currentCid), timestamp, this.options.filename + '.png');
-                this.options.LOG.info("onAfterCommand: taking screenshot " , filepath);
+                this.options.LOG.info(String.Format("onAfterCommand: {0} taking screenshot {1}" , this._currentTestUid, filepath));
                 fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
 
                 let test = this.getTest(this._currentTestUid);
@@ -190,7 +191,7 @@ export default class HtmlReporter extends WDIOReporter {
     }
 
     onRunnerEnd(runner: RunnerStats) {
-        this.options.LOG.info("onRunnerEnd: ");
+        this.options.LOG.info(String.Format("onRunnerEnd: {0}", runner.cid)) ;
         this.options.LOG.debug(JSON.stringify(runner));
         this.openInProgress = true;
         this.metrics.end = dayjs().utc().format() ;
