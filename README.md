@@ -1,4 +1,4 @@
- #wdio-html-nice-reporter
+ # wdio-html-nice-reporter
 
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
@@ -33,7 +33,7 @@ It is written in typescript with many enhancements.
 
 The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array:
 
-###A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
+### A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
 
 below are snippets from that file
 
