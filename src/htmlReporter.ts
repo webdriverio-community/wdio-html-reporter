@@ -12,7 +12,7 @@ import HtmlGenerator from './htmlGenerator'
 import {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData, SuiteInfo, TestInfo} from "./types";
 import dayjs from 'dayjs';
 import ReportEvents from "@rpii/wdio-report-events" ;
-import {String } from 'typescript-string-operations';
+import { String } from 'typescript-string-operations';
 
 const fs = require('fs-extra');
 const path = require('path');
