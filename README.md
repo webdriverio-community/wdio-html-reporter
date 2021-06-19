@@ -8,7 +8,9 @@ Compatible with webdriverio version 7.7
 
 
 #### Newest Features:  
-
+    
+    Bugfix: fix start time setting
+    
     Totally rewritten in typescript.
     
     No more jquery, uses only vanilla js

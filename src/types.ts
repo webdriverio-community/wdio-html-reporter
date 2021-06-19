@@ -37,16 +37,14 @@ export class Metrics   {
     passed : number;
     skipped : number;
     failed : number;
-    start: string ;
-    end: string ;
+    start?: string ;
+    end?: string ;
     duration: number  ;
 
     constructor() {
         this.passed = 0;
         this.skipped = 0;
         this.failed = 0;
-        this.start = "";
-        this.end = "";
         this.duration = 0 ;
     }
 }
