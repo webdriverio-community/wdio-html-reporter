@@ -99,9 +99,7 @@ webdriver.io will call the reporter for each test suite.  It does not aggregate 
     },
     
     onComplete: function(exitCode, config, capabilities, results) {
-        (async () => {
-            await reportAggregator.createReport();
-        })();
+        reportAggregator.createReport();
     },
     
 ``` 

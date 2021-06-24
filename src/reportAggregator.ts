@@ -71,7 +71,7 @@ class ReportAggregator {
         return walk(this.options.outputDir, [".json"]);
     }
 
-    async createReport() {
+    createReport() {
         this.options.LOG.info("Report Aggregation started");
         let metrics = new Metrics () ;
 
