@@ -8,7 +8,8 @@ Compatible with webdriverio version 7.7
 
 
 #### Newest Features:  
-    
+
+    Bugfix: cleanup async behaviour of createReport    
     Bugfix: fix start time setting
     
     Totally rewritten in typescript.
