@@ -6,9 +6,8 @@ import utc from 'dayjs/plugin/utc';
 dayjs.extend(utc);
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
-
+import copyFiles from "./copyFiles";
 const open = require('open');
-const copyfiles = require("copyfiles");
 const fs = require('fs-extra');
 const path = require('path');
 const log4js = require('@log4js-node/log4js-api');
@@ -194,32 +193,26 @@ class ReportAggregator {
         HtmlGenerator.htmlOutput(this.options,reportData) ;
 
         this.options.LOG.info("Report Aggregation completed");
-        let jsFiles = path.join(__dirname, '../css/*.*');
+        let jsFiles = path.join(__dirname, '../css/');
         let reportDir = path.join(process.cwd(), this.options.outputDir);
-        copyfiles( [jsFiles, reportDir] , true,
-            () => {
-                this.options.LOG.info( 'copyfiles complete : ' + jsFiles  + " to " + reportDir) ;
-                try {
-                    if (this.options.showInBrowser) {
-
-                        let childProcess = open(reportData.reportFile);
-                        childProcess.then(
-                            () => {
-                                this.options.LOG.info('browser launched');
-                            },
-                            (error:any) => {
-                                this.options.LOG.error('showInBrowser error spawning :' + reportData.reportFile + " " + error.toString());
-                            })
-                    }
-                } catch (ex) {
-                    this.options.LOG.error('Error opening browser:' + ex);
-                }
+        await copyFiles( jsFiles, reportDir ) ;
+        this.options.LOG.info( 'copyfiles complete : ' + jsFiles  + " to " + reportDir) ;
+        try {
+            if (this.options.showInBrowser) {
+                let childProcess = await open(reportData.reportFile
+                    // ,{ app:
+                    //         {
+                    //         name: 'google chrome',
+                    //         arguments: ['--incognito']
+                    //         }
+                    // }
+                    );
+                this.options.LOG.info('browser launched');
             }
-        )
-
+        } catch (ex) {
+            this.options.LOG.error('Error opening browser:' + ex);
+        }
     }
-
-
 }
 
 export default ReportAggregator;

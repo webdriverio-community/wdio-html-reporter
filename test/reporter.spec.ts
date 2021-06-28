@@ -81,8 +81,6 @@ describe('HtmlReporter', () => {
                 passed: 0,
                 skipped: 0,
                 failed: 0,
-                start: "",
-                end: "",
                 duration: 0
             });
         })
