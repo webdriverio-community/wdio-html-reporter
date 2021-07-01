@@ -9,7 +9,10 @@ Compatible with webdriverio version 7.7
 
 #### Newest Features:  
 
+    Bugfix: fix file case error in copyFiles  
+
     Bugfix: cleanup async behaviour of createReport    
+
     Bugfix: fix start time setting
     
     Totally rewritten in typescript.
