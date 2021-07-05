@@ -167,15 +167,22 @@ export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
                 state : 'failed',
 
                 errors : [
-                    //@ts-ignore
+
                     {
-                        message : 'expected the party on the first part to be the party on the first part',
-                        stack : 'First failed stack trace'
+                        "name": "Error",
+                        "message": "expected the party on the first part to be the party on the first part",
+                        "stack": "First failed stack trace",
+                        //@ts-ignore
+                        "type": "Error"
                     },
+
                     //@ts-ignore
                     {
+                        name: "Error",
                         message : 'expected the party on the second part to be the party on the second part',
-                        stack : 'Second failed stack trace'
+                        stack : 'Second failed stack trace',
+                        //@ts-ignore
+                        type: "Error"
                     }
                 ]
             }

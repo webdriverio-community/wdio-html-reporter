@@ -9,6 +9,8 @@ Compatible with webdriverio version 7.7
 
 #### Newest Features:  
 
+    Bugfix: webdriverio 7.7.4 event structure was changed, update to match. caused assertion display to fail  
+
     Bugfix: fix file case error in copyFiles  
 
     Bugfix: cleanup async behaviour of createReport    

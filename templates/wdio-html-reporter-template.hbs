@@ -345,14 +345,14 @@
                                                                                 <td colspan="2" >
                                                                                     <p class="pre assert ">
                                                                                         <span style="margin: 2px; padding: 1px" class='glyphicon glyphicon-chevron-down'>&nbsp;</span>
-                                                                                        Assertion: {{event.message}}
+                                                                                        Assertion: {{event.value.message}}
                                                                                     </p>
                                                                                 </td>
                                                                             </tr>
-                                                                        {{#if event.stack }}
+                                                                        {{#if event.value.stack }}
                                                                             <tr class="test-row">
                                                                                 <td colspan="2">
-                                                                                   <pre class='pre stack panel'>{{event.stack}}</pre>
+                                                                                   <pre class='pre stack panel'>{{event.value.stack}}</pre>
                                                                                 </td>
                                                                             </tr>
                                                                         {{/if}}
