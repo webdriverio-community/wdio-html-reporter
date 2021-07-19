@@ -5,7 +5,7 @@ The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7
 
-## [Changelog](changelog.md)
+## [Changelog](./changelog.md)
 
 ## Information
 
