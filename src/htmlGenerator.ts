@@ -188,7 +188,11 @@ class HtmlGenerator  {
                     }
                 }
                let jsonFile = reportData.reportFile.replace('.html' , '.json') ;
-               fs.outputFileSync(jsonFile, JSON.stringify(reportData));
+               try {
+                   fs.outputFileSync(jsonFile, JSON.stringify(reportData));
+               } catch (ex) {
+                   reportOptions.LOG.error("Json write failed: " + ex.toString());
+               }
             }
 
             let template = Handlebars.compile(templateFile);
