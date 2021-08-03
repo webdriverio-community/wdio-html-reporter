@@ -38,7 +38,6 @@ class HtmlGenerator {
             });
 
             environment.addGlobal('displaySpecFile', (suiteInfo:any) => {
-                reportOptions.LOG.debug("displaySpecFile: ");
                 if (suiteInfo && suiteInfo.file) {
                     if (specFileReferences && !specFileReferences.includes(suiteInfo.file)) {
                         specFileReferences.push(suiteInfo.file)
@@ -49,7 +48,6 @@ class HtmlGenerator {
             });
 
             environment.addGlobal('formatSpecFile', (suiteInfo:any) => {
-                reportOptions.LOG.debug("formatSpecFile: ");
                 // Display file path of spec
                 let specFile = `${suiteInfo.file.replace(process.cwd(), '')}`
                 return specFile;
@@ -90,7 +88,6 @@ class HtmlGenerator {
                 }
             });
             environment.addGlobal('suiteStateColour', (suiteInfo:any) => {
-                reportOptions.LOG.debug("suiteStateColour: ");
                 if (!suiteInfo || !suiteInfo.tests) {
                     return 'suite-unknown';
                 }

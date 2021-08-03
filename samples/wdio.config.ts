@@ -148,7 +148,7 @@ const BaseConfig: WebdriverIO.Config = {
             debug: false,
             outputDir: './reports/html-reports/',
             filename: 'report.html',
-            reportTitle: 'Micro-Magic Web Test Report',
+            reportTitle: 'Web Test Report',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: false,
             LOG: logger
