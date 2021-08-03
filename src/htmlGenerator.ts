@@ -1,25 +1,31 @@
-import {HtmlReporterOptions, ReportData, TestInfo} from "./types";
-import * as Handlebars from "handlebars";
-import {HelperOptions} from "handlebars";
-import {String } from 'typescript-string-operations';
+import {HtmlReporterOptions, ReportData} from "./types";
+import nunjucks from "nunjucks";
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import {TestStats} from "@wdio/reporter";
+
 const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
 const encode = require('./encode').default;
-const logger = require('@log4js-node/log4js-api');
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
+
+
 dayjs.extend(duration);
 
-class HtmlGenerator  {
+class HtmlGenerator {
 
-    static htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done:boolean) =>{}) {
+    static htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done: boolean) => {
+    }) {
         const specFileReferences: string[] = [];
         try {
             reportOptions.LOG.info("Html Generation started");
-            let templateFile = fs.readFileSync(reportOptions.templateFilename, 'utf8');
 
-            Handlebars.registerHelper('imageAsBase64', function (screenshotFile:string, screenshotPath:string, helperOpts: HelperOptions) {
+            let environment = nunjucks.configure([path.join(__dirname, '../templates/')], { // set folders with templates
+                autoescape: true,
+            });
+
+
+            environment.addGlobal('imageAsBase64', function (screenshotFile: string, screenshotPath: string) {
                 // occurs when there is an error file
                 if (!fs.existsSync(screenshotFile)) {
                     if (screenshotPath) {
@@ -28,88 +34,92 @@ class HtmlGenerator  {
                         screenshotFile = `${screenshotFile}`;
                     }
                 }
-                return encode(path.resolve(screenshotFile)) ;
+                return encode(path.resolve(screenshotFile));
             });
 
-            Handlebars.registerHelper('isValidReport',  (suites, helperOpts: HelperOptions) => {
-                if (suites && suites.length > 0 ) {
-                    return helperOpts.fn(this);
+            environment.addGlobal('displaySpecFile', (suiteInfo:any) => {
+                reportOptions.LOG.debug("displaySpecFile: ");
+                if (suiteInfo && suiteInfo.file) {
+                    if (specFileReferences && !specFileReferences.includes(suiteInfo.file)) {
+                        specFileReferences.push(suiteInfo.file)
+                        return true;
+                    }
                 }
-                return helperOpts.inverse(this);
-            });
-            Handlebars.registerHelper('isValidSuite',  (suiteInfo, helperOpts: HelperOptions) => {
-                if (suiteInfo.suite.title.length > 0 &&
-                    suiteInfo.suite.type === 'suite:start'  &&
-                    suiteInfo.suite.tests.length > 0 ) {
-                    return helperOpts.fn(this);
-                }
-                return helperOpts.inverse(this);
+                return false ;
             });
 
-            Handlebars.registerHelper('displaySpecFile',  (suiteInfo, helperOpts: HelperOptions) => {
-                if (!specFileReferences.includes(suiteInfo.suite.file)) {
-                    specFileReferences.push(suiteInfo.suite.file)
-                    return helperOpts.fn(this);
-                }
-                return helperOpts.inverse(this);
-            });
-
-            Handlebars.registerHelper('formatSpecFile',  (suiteInfo, helperOpts: HelperOptions) => {
+            environment.addGlobal('formatSpecFile', (suiteInfo:any) => {
+                reportOptions.LOG.debug("formatSpecFile: ");
                 // Display file path of spec
-                    let specFile = `${suiteInfo.suite.file.replace(process.cwd(), '')}`
+                let specFile = `${suiteInfo.file.replace(process.cwd(), '')}`
                 return specFile;
             });
 
-            Handlebars.registerHelper('testStateColour',  (testInfo:TestInfo, helperOpts: HelperOptions) => {
-                if (testInfo.testStats.state === 'passed') {
+            environment.addGlobal('testStateColour', (testInfo:any) => {
+                if (testInfo.state === 'passed') {
                     return 'test-pass';
-                } else if (testInfo.testStats.state === 'failed') {
+                } else if (testInfo.state === 'failed') {
                     return 'test-fail';
-                } else if (testInfo.testStats.state === 'pending') {
+                } else if (testInfo.state === 'pending') {
                     return 'test-pending';
-                } else if (testInfo.testStats.state === 'skipped') {
-                return 'test-skipped';
-            }
-            });
-
-            Handlebars.registerHelper('testStateIcon', (testInfo:TestInfo, helperOpts: HelperOptions) => {
-                if (testInfo.testStats.state === 'passed') {
-                    return '<span class="success">&#10004;</span>' ;
-                } else if (testInfo.testStats.state === 'failed') {
-                    return '<span class="error">&#10006;</span>' ;
-                } else if (testInfo.testStats.state === 'pending') {
-                    return '<span class="pending">&#10004;</span>' ;
-                } else if (testInfo.testStats.state === 'skipped') {
-                    return '<span class="skipped">&#10034;</span>' ;
+                } else if (testInfo.state === 'skipped') {
+                    return 'test-skipped';
                 }
             });
 
-            Handlebars.registerHelper('suiteStateColour', (tests, helperOpts: HelperOptions) => {
-                let numTests = Object.keys(tests).length;
+            environment.addGlobal('testStateClass', (testInfo:any) => {
+                if (testInfo.state === 'passed') {
+                    return 'success';
+                } else if (testInfo.state === 'failed') {
+                    return 'error';
+                } else if (testInfo.state === 'pending') {
+                    return 'pending';
+                } else if (testInfo.state === 'skipped') {
+                    return 'skipped';
+                }
+            });
+            environment.addGlobal('testStateIcon', (testInfo:any) => {
+                if (testInfo.state === 'passed') {
+                    return '&#10004;';
+                } else if (testInfo.state === 'failed') {
+                    return '&#10006;';
+                } else if (testInfo.state === 'pending') {
+                    return '&#10004;';
+                } else if (testInfo.state === 'skipped') {
+                    return '&#10034;';
+                }
+            });
+            environment.addGlobal('suiteStateColour', (suiteInfo:any) => {
+                reportOptions.LOG.debug("suiteStateColour: ");
+                if (!suiteInfo || !suiteInfo.tests) {
+                    return 'suite-unknown';
+                }
+                let numTests = Object.keys(suiteInfo.tests).length;
+                let tests = suiteInfo.tests;
 
-                _.values(tests).find((test:TestInfo) => {
-                  if (test.testStats.state === "pending") {
-                    --numTests;
-                  }
+                _.values(tests).find((test: TestStats) => {
+                    if (test.state === "pending") {
+                        --numTests;
+                    }
                 });
 
-                let fail = _.values(tests).find((test:TestInfo) => {
-                    return test.testStats.state === 'failed';
+                let fail = _.values(tests).find((test: TestStats) => {
+                    return test.state === 'failed';
                 })
                 if (fail != null) {
                     return 'suite-fail';
                 }
 
-                let passes = _.values(tests).filter((test:TestInfo) => {
-                    return test.testStats.state === 'passed';
+                let passes = _.values(tests).filter((test: TestStats) => {
+                    return test.state === 'passed';
                 })
                 if (passes.length === numTests && numTests > 0) {
                     return 'suite-pass';
                 }
 
                 //skipped is the lowest priority check
-                let skipped = _.values(tests).find((test:TestInfo) => {
-                    return test.testStats.state === 'skipped';
+                let skipped = _.values(tests).find((test: TestStats) => {
+                    return test.state === 'skipped';
                 })
                 if (skipped != null) {
                     return 'suite-pending';
@@ -118,92 +128,53 @@ class HtmlGenerator  {
                 return 'suite-unknown'
             });
 
-            Handlebars.registerHelper('humanizeDuration', (duration, helperOpts: HelperOptions) => {
+            environment.addGlobal('humanizeDuration', (duration:any) => {
                 return dayjs.duration(duration, "milliseconds").format('HH:mm:ss.SSS');
             });
 
-            Handlebars.registerHelper('ifSuiteHasTests', (testsHash, helperOpts: HelperOptions) => {
-                if (Object.keys(testsHash).length > 0) {
-                    return helperOpts.fn(this)
-                }
-                return helperOpts.inverse(this);
-            });
-
-
-            Handlebars.registerHelper('ifEventIsError', (event, helperOpts: HelperOptions) => {
-                if (event.type.includes('Error')) {
-                    return helperOpts.fn(this);
-                }
-                return helperOpts.inverse(this);
-            });
-
-            Handlebars.registerHelper('ifEventIsScreenshot', (event, helperOpts: HelperOptions) => {
-                if (event.type === 'screenshot') {
-                    return helperOpts.fn(this);
-                }
-                return helperOpts.inverse(this);
-            });
-
-            Handlebars.registerHelper('ifEventIsLogMessage', (event, helperOpts: HelperOptions) => {
-                if (event.type === 'log') {
-                    return helperOpts.fn(this);
-                }
-                return helperOpts.inverse(this);
-            });
-
-            Handlebars.registerHelper('ifCollapseTests',  (text , helperOpts: HelperOptions) => {
+            environment.addGlobal('ifCollapseTests', (text:string) => {
                 return reportOptions.collapseTests;
             });
 
-            Handlebars.registerHelper('ifCollapseSuites',  (text , helperOpts: HelperOptions) => {
+            environment.addGlobal('ifCollapseSuites', (text:string) => {
                 return reportOptions.collapseSuites;
             });
 
-            Handlebars.registerHelper('logClass', (text , helperOpts: HelperOptions) => {
-                if (text.includes('Test Iteration')) {
+            environment.addGlobal('logClass', (text:string) => {
+                if (text && text.includes('Test Iteration')) {
                     return "test-iteration";
                 } else {
                     return "log-output";
                 }
             });
-            if (reportOptions.templateFuncs) {
-                Object.keys(reportOptions.templateFuncs).forEach((name: string) => {
-                    //@ts-ignore
-                    Handlebars.registerHelper(name, reportOptions.templateFuncs[name]);
-                });
-            }
+
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                 if (reportOptions.removeOutput) {
                     for (let i = 0; i < reportData.suites.length; i++) {
-                        let suite = reportData.suites[i].suite;
+                        let suite = reportData.suites[i];
                         for (let j = 0; j < suite.tests.length; j++) {
                             let test = suite.tests[j];
                             test.output = [];
                         }
-                        let tests = suite.tests;
-                        for (let k = 0; k < tests.length; k++) {
-                            let test = tests[k];
-                            test.output = [];
-                        }
                     }
                 }
-               let jsonFile = reportData.reportFile.replace('.html' , '.json') ;
-               try {
-                   fs.outputFileSync(jsonFile, JSON.stringify(reportData));
-               } catch (ex) {
-                   reportOptions.LOG.error("Json write failed: " + ex.toString());
-               }
+                let jsonFile = reportData.reportFile.replace('.html', '.json');
+                try {
+                    let json = JSON.stringify(reportData);
+                    fs.outputFileSync(jsonFile, json);
+                } catch (ex) {
+                    reportOptions.LOG.error("Json write failed: " + ex.toString());
+                }
             }
 
-            let template = Handlebars.compile(templateFile);
-            let html = template(reportData);
+            let html = nunjucks.render("report.html", reportData);
 
             if (fs.pathExistsSync(reportOptions.outputDir)) {
                 fs.outputFileSync(reportData.reportFile, html);
             }
             reportOptions.LOG.info("Html Generation completed");
             callback(true);
-        } catch(ex) {
+        } catch (ex) {
             reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
             callback(false);
         }

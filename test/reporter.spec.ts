@@ -53,8 +53,7 @@ let htmlReporter  = new HtmlReporter({
     filename: 'report.html',
     reportTitle: 'Unit Test Report Title',
     LOG : logger,
-    browserName: "dummy",
-    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs')
+    browserName: "dummy"
 });
 
 describe('HtmlReporter', () => {
@@ -64,7 +63,6 @@ describe('HtmlReporter', () => {
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName : "test browser",
-            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             LOG : logger
         });
         reportAggregator.clean();

@@ -9,7 +9,7 @@ import WDIOReporter, {
 } from '@wdio/reporter'
 
 import HtmlGenerator from './htmlGenerator'
-import {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData, SuiteInfo, TestInfo} from "./types";
+import {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData } from "./types";
 import dayjs from 'dayjs';
 import ReportEvents from "@rpii/wdio-report-events" ;
 import { String } from 'typescript-string-operations';
@@ -28,11 +28,11 @@ export default class HtmlReporter extends WDIOReporter {
     _indents : number;
     _suiteIndents: Record<string, number> = {};
     _suiteUids = new Set();
-    _suiteStats: SuiteInfo[] ;
+    _suiteStats: SuiteStats[] ;
     _currentSuiteUid: string;
     _currentTestUid: string;
     _currentCid: string;
-    _orderedSuites: SuiteInfo[] = [];
+    _orderedSuites: SuiteStats[] = [];
 
     constructor(options: HtmlReporterOptions) {
         super(Object.assign(
@@ -45,7 +45,6 @@ export default class HtmlReporter extends WDIOReporter {
                 stdout: true,
                 outputDir: 'reports/html-reports/',
                 filename: 'report.html',
-                templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
                 reportTitle: 'Test Report Title',
                 useOnAfterCommandForScreenshot: true
             };
@@ -95,10 +94,9 @@ export default class HtmlReporter extends WDIOReporter {
             this._suiteIndents[suite.uid] = ++this._indents
         }
         this._currentSuiteUid = suite.uid;
-        let thisSuite = new SuiteInfo('suite', suite);
-        this._suiteStats.push(thisSuite);
+        this._suiteStats.push(suite);
         this.options.LOG.info(String.Format("onSuiteStart: {0}", suite.cid)) ;
-        this.options.LOG.debug(JSON.stringify(thisSuite));
+        this.options.LOG.debug(JSON.stringify(suite));
     }
 
     onTestStart(theTest :TestStats) {
@@ -106,10 +104,12 @@ export default class HtmlReporter extends WDIOReporter {
         this.options.LOG.debug(JSON.stringify(theTest));
         this._currentTestUid = theTest.uid ;
 
-        let test = new TestInfo(theTest) ;
-        this.pushTest(test) ;
-            test.events = [];
-            test.errorIndex = 0;
+
+        this.pushTest(theTest) ;
+        //@ts-ignore
+        theTest.events = [];
+        //@ts-ignore
+        theTest.errorIndex = 0;
       }
 
     onTestPass(test :TestStats) {
@@ -144,6 +144,7 @@ export default class HtmlReporter extends WDIOReporter {
     }
 
     onHookEnd(hook: HookStats) {
+        this.options.LOG.info(String.Format("onHookEnd: {0}", hook.cid)) ;
         if (hook.error) {
             this.metrics.failed++;
         }
@@ -154,9 +155,9 @@ export default class HtmlReporter extends WDIOReporter {
         this._indents--;
         // this is to display suite end time and duration in master report.
         for (const suiteInfo of this._suiteStats) {
-            if (suiteInfo.suite.uid == suite.uid) {
-                suiteInfo.suite.end = suite.end;
-                suiteInfo.suite._duration = suite._duration;
+            if (suiteInfo.uid == suite.uid) {
+                suiteInfo.end = suite.end;
+                suiteInfo._duration = suite._duration;
                 break;
             }
         }
@@ -184,6 +185,7 @@ export default class HtmlReporter extends WDIOReporter {
 
                 let test = this.getTest(this._currentTestUid);
                 if (test) {
+                    //@ts-ignore
                     test.events.push({type: 'screenshot', value: filepath});
                 }
             }
@@ -218,10 +220,10 @@ export default class HtmlReporter extends WDIOReporter {
         })
     }
 
-    getSuite(uid:string|undefined) : SuiteInfo | undefined {
+    getSuite(uid:string|undefined) : SuiteStats | undefined {
         if (uid) {
             for (let i = 0; i < this._suiteStats.length; i++) {
-                if (uid === this._suiteStats[i].suite.uid) {
+                if (uid === this._suiteStats[i].uid) {
                     return this._suiteStats[i];
                 }
             }
@@ -229,18 +231,18 @@ export default class HtmlReporter extends WDIOReporter {
         return undefined ;
     }
 
-    getTest(uid:string ) : TestInfo | undefined {
+    getTest(uid:string ) : TestStats | undefined {
         let suiteInfo = this.getSuite(this._currentSuiteUid);
         if (suiteInfo) {
             for (let i = 0; i < suiteInfo.tests.length; i++) {
-                if (uid === suiteInfo.tests[i].testStats.uid) {
+                if (uid === suiteInfo.tests[i].uid) {
                     return suiteInfo.tests[i];
                 }
             }
         }
         return undefined ;
     }
-    pushTest(test:TestInfo ) {
+    pushTest(test:TestStats ) {
         let suiteInfo = this.getSuite(this._currentSuiteUid);
         if (suiteInfo) {
             suiteInfo.tests.push(test) ;
@@ -248,12 +250,15 @@ export default class HtmlReporter extends WDIOReporter {
     }
     //this is a hack.  we have to move all the things in test.errors before they get blown away
 
-    moveErrorsToEvents(test: TestInfo) {
-        if (test.testStats.errors) {
-            for (let i = test.errorIndex; i < test.testStats.errors.length; i++) {
-                test.events.push(new InternalReportEvent('Error', test.testStats.errors[i]));
+    moveErrorsToEvents(test: TestStats) {
+        if (test.errors) {
+            //@ts-ignore
+            for (let i = test.errorIndex; i < test.errors.length; i++) {
+                //@ts-ignore
+                test.events.push(new InternalReportEvent('Error', test.errors[i]));
             }
-            test.errorIndex = test.testStats.errors.length;
+            //@ts-ignore
+            test.errorIndex = test.errors.length;
         }
     }
 
@@ -261,6 +266,7 @@ export default class HtmlReporter extends WDIOReporter {
         let test = this.getTest(this._currentTestUid) ;
         if (test) {
             this.moveErrorsToEvents(test);
+            //@ts-ignore
             test.events.push(new InternalReportEvent('screenshot', filepath));
         }
     }
@@ -269,6 +275,7 @@ export default class HtmlReporter extends WDIOReporter {
         const test = this.getTest(this._currentTestUid);
         if (test) {
             this.moveErrorsToEvents(test);
+            //@ts-ignore
             test.events.push({type: 'log', value: message});
         }
     }
@@ -285,7 +292,7 @@ export default class HtmlReporter extends WDIOReporter {
         this._orderedSuites = [];
         for (const uid of this._suiteUids) {
             for (const  suite of this._suiteStats) {
-                if (suite.suite.uid !== uid) {
+                if (suite.uid !== uid) {
                     continue;
                 }
                 this._orderedSuites.push(suite);

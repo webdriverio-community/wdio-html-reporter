@@ -3,6 +3,7 @@
   "compilerOptions": {
     "types": [
       "node",
+      "@wdio/types",
       "webdriverio/sync",
       "@rpii/wdio-report-events",
       "@types/chai",
@@ -13,8 +14,7 @@
     "./**/*.ts"
   ],
   "exclude": [
-    "../node_modules",
-    "../src"
+    "../node_modules"
   ],
   "compileOnSave": false
 }

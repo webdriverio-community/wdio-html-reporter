@@ -36,7 +36,6 @@ let htmlReporter  = new HtmlReporter({
     browserName: "dummy",
     LOG : logger,
     collapseTests: true,
-    templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
     useOnAfterCommandForScreenshot: false
 });
 
@@ -48,7 +47,6 @@ describe('HtmlReporter', () => {
             filename: 'master-report.html',
             reportTitle: 'Master Report',
             browserName : "test browser",
-            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             showInBrowser: true,
             collapseTests: false,
             LOG : logger,

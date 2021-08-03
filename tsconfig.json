@@ -16,6 +16,7 @@
     "outDir": "./lib/",
     "types": [
       "node",
+      "@wdio/types",
       "webdriverio/sync",
       "@rpii/wdio-report-events"
     ]

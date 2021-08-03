@@ -1,5 +1,5 @@
 import HtmlGenerator from "./htmlGenerator";
-import {HtmlReporterOptions, Metrics, ReportData, SuiteInfo} from "./types";
+import {HtmlReporterOptions, Metrics, ReportData} from "./types";
 import {String } from 'typescript-string-operations';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -7,6 +7,7 @@ dayjs.extend(utc);
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
 import copyFiles from "./copyFiles";
+import {SuiteStats} from "@wdio/reporter";
 const open = require('open');
 const fs = require('fs-extra');
 const path = require('path');
@@ -43,7 +44,6 @@ class ReportAggregator {
             filename: 'master-report.html',
             reportTitle: 'Test Master Report',
             showInBrowser: false,
-            templateFilename: path.resolve(__dirname, '../templates/wdio-html-reporter-template.hbs'),
             browserName: "not specified",
             collapseTests: false,
             collapseSuites: false,
@@ -59,7 +59,7 @@ class ReportAggregator {
     public options: HtmlReporterOptions;
     public reports: any[];
     public reportFile : string = "";
-    _orderedSuites: SuiteInfo[] = [];
+    _orderedSuites: SuiteStats[] = [];
 
     clean() {
         fs.emptyDirSync(this.options.outputDir);
@@ -116,7 +116,7 @@ class ReportAggregator {
                 metrics.skipped += report.metrics.skipped;
                 for (let k = 0; k < report.suites.length; k++) {
                     let suiteInfo = report.suites[k];
-                    let start = dayjs.utc(suiteInfo.suite.start);
+                    let start = dayjs.utc(suiteInfo.start);
                     if (metrics.start) {
                         if (start.isBefore(metrics.start)) {
                             metrics.start = start.utc().format(timeFormat);
@@ -124,7 +124,7 @@ class ReportAggregator {
                     } else {
                         metrics.start = start.utc().format(timeFormat);
                     }
-                    let end = dayjs.utc(suiteInfo.suite.end);
+                    let end = dayjs.utc(suiteInfo.end);
                     if (metrics.end) {
                         if (end.isAfter(dayjs.utc(metrics.end))) {
                         metrics.end = end.utc().format(timeFormat);
@@ -171,14 +171,11 @@ class ReportAggregator {
         if (this.options.removeOutput) {
             for (let i = 0; i < suites.length; i++) {
                 let suite = suites[i].suite;
-                for (let j = 0; j < suite.tests.length; j++) {
-                    let test = suite.tests[j];
-                    test.output = [];
-                }
-                let tests = suite.tests;
-                for (let k = 0; k < tests.length; k++) {
-                    let test = tests[k];
-                    test.output = [];
+                if (suite && suite.tests) {
+                    for (let j = 0; j < suite.tests.length; j++) {
+                        let test = suite.tests[j];
+                        test.output = [];
+                    }
                 }
             }
         }

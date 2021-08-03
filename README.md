@@ -39,16 +39,6 @@ const BaseConfig: WebdriverIO.Config = {
             //to turn on screenshots after every test
             useOnAfterCommandForScreenshot: false,
 
-            // to use the template override option, can point to your own file in the test project:
-            // templateFilename: path.resolve(__dirname, '../template/wdio-html-reporter-alt-template.hbs'),
-            
-            // to add custom template functions for your custom template:
-            // templateFuncs: {
-            //     addOne: (v) => {
-            //         return v+1;
-            //     },
-            // },
-
             //to initialize the logger
             LOG: log4j.getLogger("default")
         }
@@ -95,11 +85,6 @@ via:
  
 
   
-### To use a custom handlebars template for reports
-
-Uncomment the templateFilename above, and in the ReportAggregator.  You must provide an absolute path to the file you can modify the alt-template above if you wish
-The template must support all the constructs in the default template.  You may add more or just change the formatting and css.
-
 ### To generate a pdf file from this report
 
 Requires an additional plugin to keep the support lightweight for those that dont want it.

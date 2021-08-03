@@ -149,7 +149,6 @@ const BaseConfig: WebdriverIO.Config = {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Micro-Magic Web Test Report',
-            // templateFilename: path.resolve(__dirname, '../../../test/template/wdio-html-reporter-template.hbs'),
             showInBrowser: false,
             useOnAfterCommandForScreenshot: false,
             LOG: logger
