@@ -8,8 +8,13 @@
         <td colspan="2"
             class="{{ suiteStateColour(suite) }}">
             <h3>
-                <span style="margin: 2px; padding: 1px" class="glyphicon glyphicon-chevron-up">&nbsp;</span>Suite {{ suite.title }}
+                <span style="margin: 2px; padding: 1px" class="glyphicon glyphicon-chevron-up">&nbsp;</span>{{ suite.title }}
             </h3>
+            {% if suite.description %}
+            <h4>
+                <span class="description">&nbsp;</span>{{ suite.description }}
+            </h4>
+            {% endif %}
         </td>
     </tr>
     {% if displaySpecFile(suite) %}

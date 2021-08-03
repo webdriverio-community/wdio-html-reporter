@@ -300,7 +300,13 @@ table {
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
     /*border-color: #ECEFF1;*/
 }
-
+.description {
+    margin: 2px;
+    padding-left: 42px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    padding-top: 1px;
+}
 .table-bordered > tbody > tr, .table-bordered > tfoot > tr {
     background-color: white;
 }
@@ -341,6 +347,12 @@ span.pending    {
 }
 .suite-header {
     cursor: pointer;
+}
+.suite-feature {
+    background-color: #5e8cd1;;
+}
+.suite-scenario {
+    background-color: #5ed1c0;;
 }
 .expandable-control {
     cursor: pointer;

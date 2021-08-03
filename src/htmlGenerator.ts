@@ -2,7 +2,7 @@ import {HtmlReporterOptions, ReportData} from "./types";
 import nunjucks from "nunjucks";
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import {TestStats} from "@wdio/reporter";
+import {SuiteStats, TestStats} from "@wdio/reporter";
 
 const fs = require('fs-extra');
 const _ = require('lodash');
@@ -37,7 +37,7 @@ class HtmlGenerator {
                 return encode(path.resolve(screenshotFile));
             });
 
-            environment.addGlobal('displaySpecFile', (suiteInfo:any) => {
+            environment.addGlobal('displaySpecFile', (suiteInfo:SuiteStats) => {
                 if (suiteInfo && suiteInfo.file) {
                     if (specFileReferences && !specFileReferences.includes(suiteInfo.file)) {
                         specFileReferences.push(suiteInfo.file)
@@ -47,13 +47,13 @@ class HtmlGenerator {
                 return false ;
             });
 
-            environment.addGlobal('formatSpecFile', (suiteInfo:any) => {
+            environment.addGlobal('formatSpecFile', (suiteInfo:SuiteStats) => {
                 // Display file path of spec
                 let specFile = `${suiteInfo.file.replace(process.cwd(), '')}`
                 return specFile;
             });
 
-            environment.addGlobal('testStateColour', (testInfo:any) => {
+            environment.addGlobal('testStateColour', (testInfo:TestStats) => {
                 if (testInfo.state === 'passed') {
                     return 'test-pass';
                 } else if (testInfo.state === 'failed') {
@@ -65,7 +65,7 @@ class HtmlGenerator {
                 }
             });
 
-            environment.addGlobal('testStateClass', (testInfo:any) => {
+            environment.addGlobal('testStateClass', (testInfo:TestStats) => {
                 if (testInfo.state === 'passed') {
                     return 'success';
                 } else if (testInfo.state === 'failed') {
@@ -76,7 +76,7 @@ class HtmlGenerator {
                     return 'skipped';
                 }
             });
-            environment.addGlobal('testStateIcon', (testInfo:any) => {
+            environment.addGlobal('testStateIcon', (testInfo:TestStats) => {
                 if (testInfo.state === 'passed') {
                     return '&#10004;';
                 } else if (testInfo.state === 'failed') {
@@ -87,7 +87,10 @@ class HtmlGenerator {
                     return '&#10034;';
                 }
             });
-            environment.addGlobal('suiteStateColour', (suiteInfo:any) => {
+            environment.addGlobal('suiteStateColour', (suiteInfo:SuiteStats) => {
+                if (suiteInfo.type.includes('feature')) {
+                    return 'suite-feature';
+                }
                 if (!suiteInfo || !suiteInfo.tests) {
                     return 'suite-unknown';
                 }
@@ -125,7 +128,7 @@ class HtmlGenerator {
                 return 'suite-unknown'
             });
 
-            environment.addGlobal('humanizeDuration', (duration:any) => {
+            environment.addGlobal('humanizeDuration', (duration:number) => {
                 return dayjs.duration(duration, "milliseconds").format('HH:mm:ss.SSS');
             });
 
