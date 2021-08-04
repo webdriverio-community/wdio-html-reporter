@@ -5,6 +5,8 @@
                    render a suite that contains suites.
                    Had to switch to numjucks to have cucumber work.
                    As a result you can no longer supply your own template file.
+                   Cucumber has nested suites in suites and duplicated data.
+                   Had to work around that.
     7.7.15:
         Bugfix: remove @wdio/types  
     7.7.14:

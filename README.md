@@ -5,6 +5,11 @@ The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7
 
+# *** Special Test Release to make Cucumber work in latest webdriverio.
+Do not download unless you want to test this version.
+
+
+
 ## [Changelog](./changelog.md)
 
 ## Information
