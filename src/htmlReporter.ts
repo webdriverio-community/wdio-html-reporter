@@ -94,16 +94,15 @@ export default class HtmlReporter extends WDIOReporter {
             this._suiteIndents[suite.uid] = ++this._indents
         }
         this._currentSuiteUid = suite.uid;
-        this._suiteStats.push(suite);
-        this.options.LOG.info(String.Format("onSuiteStart: {0}", suite.cid)) ;
+        this.pushSuite(suite) ;
+        this.options.LOG.info(String.Format("onSuiteStart: {0}:{1}", suite.cid, suite.uid)) ;
         this.options.LOG.debug(JSON.stringify(suite));
     }
 
     onTestStart(theTest :TestStats) {
-        this.options.LOG.info(String.Format("onTestStart: {0}", theTest.cid)) ;
+        this.options.LOG.info(String.Format("onTestStart: {0}:{1}", theTest.cid, theTest.uid)) ;
         this.options.LOG.debug(JSON.stringify(theTest));
         this._currentTestUid = theTest.uid ;
-
 
         this.pushTest(theTest) ;
         //@ts-ignore
@@ -112,20 +111,24 @@ export default class HtmlReporter extends WDIOReporter {
         theTest.errorIndex = 0;
       }
 
-    onTestPass(test :TestStats) {
-        this.options.LOG.info(String.Format("onTestPass: {0}", test.cid)) ;
-        this.options.LOG.debug(JSON.stringify(test));
+    onTestPass(theTest :TestStats) {
+        this.options.LOG.info(String.Format("onTestPass: {0}:{1}", theTest.cid, theTest.uid)) ;
+        this.options.LOG.debug(JSON.stringify(theTest));
+        let test = this.getTest(theTest.uid) ;
+        if (test) {
+            this.moveErrorsToEvents(test);
+        }
         this.metrics.passed++;
     }
 
     onTestSkip(test : TestStats) {
-        this.options.LOG.info(String.Format("onTestSkip: {0}", test.cid)) ;
+        this.options.LOG.info(String.Format("onTestSkip: {0}:{1}", test.cid, test.uid)) ;
         this.options.LOG.debug(JSON.stringify(test));
         this.metrics.skipped++;
     }
 
     onTestFail(theTest :TestStats) {
-        this.options.LOG.info(String.Format("onTestFail: {0}", theTest.cid)) ;
+        this.options.LOG.info(String.Format("onTestFail: {0}:{1}", theTest.cid, theTest.uid)) ;
         this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid) ;
         if (test) {
@@ -135,22 +138,25 @@ export default class HtmlReporter extends WDIOReporter {
     }
 
     onTestEnd(theTest :TestStats) {
-        this.options.LOG.info(String.Format("onTestEnd: {0}", theTest.cid)) ;
+        this.options.LOG.info(String.Format("onTestEnd: {0}:{1}", theTest.cid, theTest.uid)) ;
         this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid) ;
         if (test) {
             this.moveErrorsToEvents(test);
         }
     }
+    onHookStart(hook: HookStats) {
+        this.options.LOG.info(String.Format("onHookStart: {0}:{1}", hook.cid, hook.uid)) ;
+    }
 
     onHookEnd(hook: HookStats) {
-        this.options.LOG.info(String.Format("onHookEnd: {0}", hook.cid)) ;
+        this.options.LOG.info(String.Format("onHookEnd: {0}:{1}", hook.cid, hook.uid)) ;
         if (hook.error) {
             this.metrics.failed++;
         }
     }
     onSuiteEnd(suite : SuiteStats  ) {
-        this.options.LOG.info(String.Format("onSuiteEnd: {0}", suite.cid)) ;
+        this.options.LOG.info(String.Format("onSuiteEnd: {0}:{1}", suite.cid, suite.uid)) ;
         this.options.LOG.debug(JSON.stringify(suite));
         this._indents--;
         // this is to display suite end time and duration in master report.
@@ -180,7 +186,7 @@ export default class HtmlReporter extends WDIOReporter {
             if (this.isScreenshotCommand(command) && command.result.value) {
                 let timestamp = dayjs().format('YYYYMMDD-HHmmss.SSS');
                 const filepath = path.join(this.options.outputDir, '/screenshots/', encodeURIComponent(this._currentCid), timestamp, this.options.filename + '.png');
-                this.options.LOG.info(String.Format("onAfterCommand: {0} taking screenshot {1}" , this._currentTestUid, filepath));
+                this.options.LOG.info(String.Format("onAfterCommand: {0}:{1} taking screenshot {2}" , this._currentCid, this._currentTestUid, filepath));
                 fs.outputFileSync(filepath, Buffer.from(command.result.value, 'base64'));
 
                 let test = this.getTest(this._currentTestUid);
@@ -205,7 +211,7 @@ export default class HtmlReporter extends WDIOReporter {
         if (! this._currentCid) {
             this._currentCid = "cid" ;
         }
-
+        this.filterSuites(this._suiteStats) ;
         let reportFile = path.join(process.cwd(), this.options.outputDir, encodeURIComponent(this._currentSuiteUid) , encodeURIComponent(this._currentCid), this.options.filename);
         let reportData = new ReportData(
             this.options.reportTitle,
@@ -230,7 +236,24 @@ export default class HtmlReporter extends WDIOReporter {
         }
         return undefined ;
     }
-
+    pushSuite(suite:SuiteStats ) {
+        let suiteInfo = this.getSuite(suite.uid);
+        if (suiteInfo) {
+            suiteInfo = suite;
+        } else {
+            this._suiteStats.push(suite);
+        }
+    }
+    removeSuite(uid:string|undefined)  {
+        if (uid) {
+            for (let i = this._suiteStats.length-1; i >= 0; i--) {
+                if (uid === this._suiteStats[i].uid) {
+                    this._suiteStats.splice(i,1);
+                    break;
+                }
+            }
+        }
+    }
     getTest(uid:string ) : TestStats | undefined {
         let suiteInfo = this.getSuite(this._currentSuiteUid);
         if (suiteInfo) {
@@ -245,7 +268,12 @@ export default class HtmlReporter extends WDIOReporter {
     pushTest(test:TestStats ) {
         let suiteInfo = this.getSuite(this._currentSuiteUid);
         if (suiteInfo) {
-            suiteInfo.tests.push(test) ;
+            let existingTest = this.getTest(test.uid) ;
+            if (existingTest) {
+                existingTest = test;
+            } else {
+                suiteInfo.tests.push(test);
+            }
         }
     }
     //this is a hack.  we have to move all the things in test.errors before they get blown away
@@ -280,6 +308,20 @@ export default class HtmlReporter extends WDIOReporter {
         }
     }
 
+    filterSuites(suites:SuiteStats[]) {
+        for (let i = suites.length-1; i >= 0; i--) {
+            let parentSuite = suites[i];
+            if (parentSuite.type === 'feature') {
+                for (let k= parentSuite.suites.length-1; k >= 0; k--) {
+                    let suite = parentSuite.suites[k] ;
+                    if (suite.type === 'scenario') {
+                        this.removeSuite(suite.uid) ;
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Get suites in the order they were called
      * @return {Array} Ordered suites
@@ -298,6 +340,7 @@ export default class HtmlReporter extends WDIOReporter {
                 this._orderedSuites.push(suite);
             }
         }
+
         return this._orderedSuites;
     }
 

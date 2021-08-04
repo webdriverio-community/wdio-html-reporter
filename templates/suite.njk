@@ -25,6 +25,7 @@
     {% endif %}
 
     {% if suite.tests %}
+    {% if suite.type.includes('suite') or suite.type.includes('scenario') %}
         <tr>
             <td>Suite Start</td>
             <td>{{suite.start}}</td>
@@ -48,6 +49,7 @@
                 </td>
             </tr>
         {% endif %}
+    {% endif %}
     {% endif %}
 
     {% for aSuite in suite.suites %}
