@@ -23,6 +23,10 @@ The following code shows the default wdio test runner configuration. Just add an
 
 below are snippets from that file.  
 
+```typescript
+
+if you use npm install, you can have duplicate types installed.  yarn does not have this issue.
+
 For a typescript compile in your test project you may have to add the script below to your package.json and rerun the npm install if you are getting duplicate types.
 
 Add to devDependencies:
@@ -31,11 +35,11 @@ Add to devDependencies:
 
 Add to scripts:
 
-"postinstall": "rimraf -rm node_modules/wdio-nice-html-reporter/node_modules/@wdio/types"
+    "postinstall": "rimraf -rm node_modules/wdio-html-nice-reporter/node_modules/@wdio/types"
 
-```typescript
+
 // wdio.config.ts
-import {ReportAggregator, HtmlReporter} from '@wdio/html-reporter';
+import {ReportAggregator, HtmlReporter} from 'wdio-html-nice-reporter';
 let reportAggregator: ReportAggregator;
 
 const BaseConfig: WebdriverIO.Config = {

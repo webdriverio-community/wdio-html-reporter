@@ -138,7 +138,7 @@ const BaseConfig: WebdriverIO.Config = {
         ui: 'tdd',
         timeout: 120000,
         compilers: ['tsconfig-paths/register'],
-        require: 'ts-node/register'
+        require: ['ts-node/register']
     },
 
     reporters: [
