@@ -1,4 +1,7 @@
 # Changelog:  
+    7.8.1:
+        Cleanup: update dependencies, remove cucumber warning 
+        Add note on how to resolve the multiple types ts error
     7.8.0:
         Changes:  changes in webdriverio reporting broke the cucumber support.
                    handlebars is not capable of supporting the recursion needed to 

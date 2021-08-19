@@ -5,12 +5,10 @@ The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7
 
-# *** Special Test Release to make Cucumber work in latest webdriverio.
-Do not download unless you want to test this version.
+### See note below if getting duplicate type errors on TS compile
 
 
-
-## [Changelog](./changelog.md)
+## [Changelog](./changes.md)
 
 ## Information
 
@@ -23,7 +21,17 @@ The following code shows the default wdio test runner configuration. Just add an
 
 ### A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
 
-below are snippets from that file
+below are snippets from that file.  
+
+For a typescript compile in your test project you may have to add the script below to your package.json and rerun the npm install if you are getting duplicate types.
+
+Add to devDependencies:
+
+"@wdio/types": "^7.8.0",
+
+Add to scripts:
+
+"postinstall": "rimraf -rm node_modules/wdio-nice-html-reporter/node_modules/@wdio/types"
 
 ```typescript
 // wdio.config.ts
