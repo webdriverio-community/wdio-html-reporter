@@ -1,4 +1,6 @@
 # Changelog:  
+    7.8.4:
+        Feature: [add logic to show/hide failed/passed tests #69])(https://github.com/rpii/wdio-html-reporter/pull/69)
     7.8.3:
         Bugfix: [Fix logic for 'expandable-control' elements 'click' event #6])(https://github.com/rpii/wdio-html-reporter/pull/68)
 
