@@ -1,4 +1,7 @@
 # Changelog:  
+    7.8.3:
+        Bugfix: [Fix logic for 'expandable-control' elements 'click' event #6])(https://github.com/rpii/wdio-html-reporter/pull/68)
+
     7.8.1:
         Cleanup: update dependencies, remove cucumber warning 
         Add note on how to resolve the multiple types ts error
