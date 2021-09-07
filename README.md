@@ -15,15 +15,10 @@ Compatible with webdriverio version 7.7
 This project is a rewrite of [@rpii/wdio-html-reporter](https://www.npmjs.com/package/wdio-html-reporter)
 It is written in typescript with many enhancements.
 
-## Configuration
 
-The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array:
+### Duplicate Types NOTE:
 
-### A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
-
-below are snippets from that file.  
-
-```typescript
+The problem below is in latest  version of npm and yarn!!!
 
 if you use npm install, you can have duplicate types installed.  yarn does not have this issue.
 
@@ -37,6 +32,18 @@ Add to scripts:
 
     "postinstall": "rimraf -rm node_modules/wdio-html-nice-reporter/node_modules/@wdio/types"
 
+
+## Configuration
+
+### WDIO.config.ts
+
+The following code shows the default wdio test runner configuration. Just add an HtmlReporter object as another reporter to the reporters array:
+
+### A functioning wdio.config.ts is provided in the [/samples/wdio.config.ts](/samples/wdio.config.ts)
+
+below are snippets from that file.
+
+```typescript
 
 // wdio.config.ts
 import {ReportAggregator, HtmlReporter} from 'wdio-html-nice-reporter';
