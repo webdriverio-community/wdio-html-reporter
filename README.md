@@ -18,7 +18,7 @@ It is written in typescript with many enhancements.
 
 ### Duplicate Types NOTE:
 
-The problem below is in latest  version of npm and yarn!!!
+The problem below is in NOT latest  version of npm and yarn!!!
 
 if you use npm install, you can have duplicate types installed.  yarn does not have this issue.
 
