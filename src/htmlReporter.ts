@@ -283,8 +283,10 @@ export default class HtmlReporter extends WDIOReporter {
             //@ts-ignore
             for (let i = test.errorIndex; i < test.errors.length; i++) {
                 let errorObj = test.errors[i];
-                if (test.errors[i].stack.includes("AssertionError")) {
+                let stack = test.errors[i].stack ;
+                if (stack && stack.includes("AssertionError")) {
                   errorObj = {
+                    //@ts-ignore
                     message: test.errors[i].message.split("      \n").shift(),
                     stack: test.errors[i].stack,
                   };

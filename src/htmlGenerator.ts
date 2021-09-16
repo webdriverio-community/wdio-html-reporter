@@ -162,7 +162,7 @@ class HtmlGenerator {
                 try {
                     let json = JSON.stringify(reportData);
                     fs.outputFileSync(jsonFile, json);
-                } catch (ex) {
+                } catch (ex:any) {
                     reportOptions.LOG.error("Json write failed: " + ex.toString());
                 }
             }

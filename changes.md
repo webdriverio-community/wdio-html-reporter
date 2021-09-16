@@ -1,4 +1,7 @@
 # Changelog:  
+    7.8.5:
+        Bugfix: [Fixes empty Assertion block due to AssertionError #71])(https://github.com/rpii/wdio-html-reporter/pull/71)
+
     7.8.4:
         Feature: [add logic to show/hide failed/passed tests #69])(https://github.com/rpii/wdio-html-reporter/pull/69)
     7.8.3:
