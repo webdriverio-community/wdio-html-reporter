@@ -1,6 +1,6 @@
 {
   "name": "wdio-html-nice-reporter",
-  "version": "7.8.5",
+  "version": "7.8.7",
   "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/%40rpii/wdio-html-reporter.git"
+    "url": "git+ssh://git@github.com/rpii/wdio-html-reporter.git"
   },
   "directories": {
     "lib": "lib",
@@ -41,33 +41,34 @@
   "homepage": "http://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
+    "@rpii/wdio-report-events": "^0.1.4",
     "copyfiles": "^2.3.0",
-    "fs-extra": "^9.0.0",
-    "nunjucks": "^3.2.3",
-    "image-to-base64": "^2.2.0",
     "dayjs": "^1.10.5",
+    "fs-extra": "^10.0.0",
+    "image-to-base64": "^2.2.0",
+    "nunjucks": "^3.2.3",
     "open": "^8.2.0",
     "typescript-string-operations": "^1.4.1"
   },
   "devDependencies": {
-    "@types/node": "^14.14.31",
     "@types/chai": "^4.2.18",
     "@types/mocha": "^8.2.2",
+    "@types/node": "^14.14.31",
     "@types/nunjucks": "^3.1.5",
-    "@wdio/types": "^7.8.0",
-    "@rpii/wdio-report-events": "^0.1.4",
-    "@wdio/reporter": "^7.9.0",
     "@wdio/cli": "^7.9.1",
-    "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.9.0",
-    "typescript": "^4.3.2",
-    "concat": "^1.0.3",
+    "@wdio/reporter": "^7.9.0",
+    "@wdio/types": "^7.8.0",
     "chai": "^4.3.4",
+    "concat": "^1.0.3",
     "log4js": "^6.3.0",
     "mocha": "^8.4.0",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^4.3.2"
   },
   "contributors": [
     "Rich Peters <16782353+rpii@users.noreply.github.com>"
-  ]
+  ],
+  "packageManager": "yarn@3.1.0"
 }

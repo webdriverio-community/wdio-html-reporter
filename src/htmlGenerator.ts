@@ -25,7 +25,7 @@ class HtmlGenerator {
             });
 
 
-            environment.addGlobal('imageAsBase64', function (screenshotFile: string, screenshotPath: string) {
+            environment.addGlobal('renderImage', function (screenshotFile: string, screenshotPath: string) {
                 // occurs when there is an error file
                 if (!fs.existsSync(screenshotFile)) {
                     if (screenshotPath) {
@@ -34,7 +34,14 @@ class HtmlGenerator {
                         screenshotFile = `${screenshotFile}`;
                     }
                 }
-                return encode(path.resolve(screenshotFile));
+
+                if (reportOptions.linkScreenshots) {
+                    let relPath =  path.relative(reportOptions.outputDir,screenshotFile);
+                    reportOptions.LOG.info("Relative Path: " + relPath);
+                    return relPath ;
+                } else {
+                    return encode(path.resolve(screenshotFile));
+                }
             });
 
             environment.addGlobal('displaySpecFile', (suiteInfo:SuiteStats) => {

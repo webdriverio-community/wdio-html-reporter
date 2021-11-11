@@ -13,6 +13,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
     debug ?: boolean | undefined;
     browserName:string;
     removeOutput?: boolean | undefined;
+    linkScreenshots?: boolean ;
 
     constructor() {
         this.outputDir = "";
@@ -26,6 +27,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.debug = false;
         this.browserName = "not specified" ;
         this.removeOutput = true ;
+        this.linkScreenshots = false ;
     }
 }
 

@@ -1,4 +1,8 @@
 # Changelog:  
+    7.8.7:
+        Bugfix: [Address issues caused by JSON.stringify running out of string memory.  Now saves screenshots as links to drastically reduce menory usage #71])(https://github.com/rpii/wdio-html-reporter/pull/71)
+        set reporterOption linkScreenshots:true
+
     7.8.5:
         Bugfix: [Fixes empty Assertion block due to AssertionError #71])(https://github.com/rpii/wdio-html-reporter/pull/71)
 

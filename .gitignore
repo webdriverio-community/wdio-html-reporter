@@ -1,4 +1,5 @@
 .yarnclean
+.yarn/cache
 build
 build-test
 dist

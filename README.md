@@ -8,7 +8,7 @@ Compatible with webdriverio version 7.7
 ### See note below if getting duplicate type errors on TS compile
 
 
-## [Changelog](./changes.md)
+## [Changelog](https://github.com/rpii/wdio-html-reporter/blob/master/changes.md)
 
 ## Information
 
