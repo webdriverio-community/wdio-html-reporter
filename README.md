@@ -56,7 +56,7 @@ const BaseConfig: WebdriverIO.Config = {
             outputDir: './reports/html-reports/',
             filename: 'report.html',
             reportTitle: 'Test Report Title',
-            
+            linkScreenshots: true,
             //to show the report in a browser when done
             showInBrowser: true,
             collapseTests: false,
