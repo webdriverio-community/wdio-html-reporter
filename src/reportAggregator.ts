@@ -116,23 +116,25 @@ class ReportAggregator {
                 metrics.skipped += report.metrics.skipped;
                 for (let k = 0; k < report.suites.length; k++) {
                     let suiteInfo = report.suites[k];
-                    let start = dayjs.utc(suiteInfo.start);
-                    if (metrics.start) {
-                        if (start.isBefore(metrics.start)) {
+                    if(suiteInfo.parent === '') {
+                        let start = dayjs.utc(suiteInfo.start);
+                        if (metrics.start) {
+                            if (start.isBefore(metrics.start)) {
+                                metrics.start = start.utc().format(timeFormat);
+                            }
+                        } else {
                             metrics.start = start.utc().format(timeFormat);
                         }
-                    } else {
-                        metrics.start = start.utc().format(timeFormat);
-                    }
-                    let end = dayjs.utc(suiteInfo.end);
-                    if (metrics.end) {
-                        if (end.isAfter(dayjs.utc(metrics.end))) {
-                        metrics.end = end.utc().format(timeFormat);
+                        let end = dayjs.utc(suiteInfo.end);
+                        if (metrics.end) {
+                            if (end.isAfter(dayjs.utc(metrics.end))) {
+                            metrics.end = end.utc().format(timeFormat);
+                            }
+                        } else {
+                            metrics.end = end.utc().format(timeFormat);
                         }
-                    } else {
-                        metrics.end = end.utc().format(timeFormat);
+                        suites.push(suiteInfo);
                     }
-                    suites.push(suiteInfo);
                 }
             } catch (ex) {
                 console.error(ex);
