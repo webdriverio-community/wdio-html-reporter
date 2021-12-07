@@ -40,6 +40,18 @@
                                 </td>
                             </tr>
                         {% endif %}
+                        {% if event.type and event.type === 'video-capture' %}
+                            <tr class="test-row video">
+                                <td colspan="2">
+                                    <div class="videoWrapper">
+                                        <video controls class="video">
+                                            <source src="{{ renderVideo(event.value) }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
                         {% if event.type === 'log' %}
                             <tr class="test-row log">
                                 <td colspan="2">

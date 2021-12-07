@@ -1,6 +1,6 @@
 {
   "name": "wdio-html-nice-reporter",
-  "version": "7.9.0",
+  "version": "7.9.1",
   "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -42,7 +42,7 @@
   "homepage": "http://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
-    "@rpii/wdio-report-events": "^0.1.4",
+    "@rpii/wdio-report-events": "^0.2.0",
     "copyfiles": "^2.3.0",
     "dayjs": "^1.10.5",
     "fs-extra": "^10.0.0",

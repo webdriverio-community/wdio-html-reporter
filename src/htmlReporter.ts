@@ -17,7 +17,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const log4js = require('@log4js-node/log4js-api');
 
-let proxy = new ReportEvents();
+let reportProxy = new ReportEvents();
 const timeFormat = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
 
 export default class HtmlReporter extends WDIOReporter {
@@ -45,7 +45,7 @@ export default class HtmlReporter extends WDIOReporter {
                 outputDir: 'reports/html-reports/',
                 filename: 'report.html',
                 reportTitle: 'Test Report Title',
-                useOnAfterCommandForScreenshot: true
+                useOnAfterCommandForScreenshot: false
             };
 
         this.options = Object.assign(opts, options);
@@ -65,8 +65,9 @@ export default class HtmlReporter extends WDIOReporter {
         this._currentSuiteUid = "suite uid";
         this._currentTestUid = "test uid";
         this._currentCid = "cid";
-        proxy.connectMessageEvent(this.saveMessage.bind(this));
-        proxy.connectScreenshotEvent(this.saveScreenshot.bind(this))
+        reportProxy.connectMessageEvent(this.saveMessage.bind(this));
+        reportProxy.connectScreenshotEvent(this.saveScreenshot.bind(this))
+        reportProxy.connectVideoCaptureEvent(this.saveVideo.bind(this))
     }
 
     get isSynchronised() {
@@ -278,6 +279,14 @@ export default class HtmlReporter extends WDIOReporter {
         }
     }
 
+    saveVideo(filepath: string) {
+        let test = this.getTest(this._currentTestUid);
+        if (test) {
+            this.moveErrorsToEvents(test);
+            //@ts-ignore
+            test.events.push(new InternalReportEvent('video-capture', filepath));
+        }
+    }
     saveMessage(message: string) {
         const test = this.getTest(this._currentTestUid);
         if (test) {

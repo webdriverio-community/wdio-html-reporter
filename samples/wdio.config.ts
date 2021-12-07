@@ -4,6 +4,7 @@ import {String, StringBuilder} from 'typescript-string-operations';
 
 const localEnv =  require('dotenv');
 localEnv.config();
+const video = require('wdio-video-reporter');
 
 
 const LOG = require('log4js');
@@ -143,7 +144,13 @@ const BaseConfig: WebdriverIO.Config = {
 
     reporters: [
         "spec",
-        //@ts-ignore
+        [video, {
+            saveAllVideos: true,       // If true, also saves videos for successful test cases
+            videoSlowdownMultiplier: 3, // Higher to get slower videos, lower for faster videos [Value 1-100]
+            videoRenderTimeout: 5,      // Max seconds to wait for a video to finish rendering\
+            outputDir: 'reports/html-reports/screenshots',
+        }],
+
         ["html-nice", {
             debug: false,
             outputDir: './reports/html-reports/',
@@ -151,6 +158,7 @@ const BaseConfig: WebdriverIO.Config = {
             reportTitle: 'Web Test Report',
             showInBrowser: false,
             useOnAfterCommandForScreenshot: false,
+            linkScreenshots: true,
             LOG: logger
         }]
     ],

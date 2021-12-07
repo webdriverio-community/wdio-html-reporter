@@ -37,13 +37,17 @@ class HtmlGenerator {
 
                 if (reportOptions.linkScreenshots) {
                     let relPath =  path.relative(reportOptions.outputDir,screenshotFile);
-                    reportOptions.LOG.info("Relative Path: " + relPath);
+                    reportOptions.LOG.info("Screenshot Relative Path: " + relPath);
                     return relPath ;
                 } else {
                     return encode(path.resolve(screenshotFile));
                 }
             });
-
+            environment.addGlobal('renderVideo', function (videoCaptureFile: string) {
+                let relPath =  path.relative(reportOptions.outputDir,videoCaptureFile).split(path.sep).join(path.posix.sep);
+                reportOptions.LOG.info("Video Relative Path: " + relPath);
+                return relPath ;
+            });
             environment.addGlobal('displaySpecFile', (suiteInfo:SuiteStats) => {
                 if (suiteInfo && suiteInfo.file) {
                     if (specFileReferences && !specFileReferences.includes(suiteInfo.file)) {

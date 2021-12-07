@@ -423,6 +423,18 @@ span.pending    {
     width: 100%;
 }
 
+.videoWrapper {
+    max-width: 1024px;
+    margin-left:24px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.video {
+    height: 40%;
+    width: 100%;
+}
+
 .table-test {
     margin: 0px;
     margin-bottom: 2px;

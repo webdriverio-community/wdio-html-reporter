@@ -5,6 +5,8 @@ The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7 and up
 
+### Great new feature:  take videos of each test
+
 
 ## [Changelog](https://github.com/rpii/wdio-html-reporter/blob/master/changes.md)
 

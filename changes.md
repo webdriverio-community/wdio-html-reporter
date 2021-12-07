@@ -1,4 +1,10 @@
 # Changelog:  
+    7.9.1:
+        Feature: [Add support for taking videos of each test] 
+                    See sample/wdio.config.ts for configuration. 
+                    Requires updated or patched wdio-video-reporter
+                    (https://github.com/rpii/wdio-video-reporter)
+
     7.9.0:
         Bugfix: [Address duplicate tests and suites being displayed when using nested suites #74] 
         (https://github.com/rpii/wdio-html-reporter/issues/74)

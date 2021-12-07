@@ -74,10 +74,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rpii/wdio-report-events@npm:^0.1.4":
-  version: 0.1.4
-  resolution: "@rpii/wdio-report-events@npm:0.1.4"
-  checksum: ccb647aaa4164bb247031dbaeb02471b8d990720111aa50c566077152effc793323e88bff717e21ee11a0ab12c8bf9c83e4102e97e26b1866c94339983806e66
+"@rpii/wdio-report-events@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@rpii/wdio-report-events@npm:0.2.0"
+  checksum: 450f778934dcf62768fe22f3be9b59300f024ee80779fe44d4c007a0c7035cf00f970d6de87ab3868f43f41ffe196d920c81276129cab5a7cf2f6b10fa54b08f
   languageName: node
   linkType: hard
 
@@ -3903,7 +3903,7 @@ __metadata:
 
 "typescript@patch:typescript@^4.3.2#~builtin<compat/typescript>":
   version: 4.4.3
-  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=ddd1e8"
+  resolution: "typescript@patch:typescript@npm%3A4.4.3#~builtin<compat/typescript>::version=4.4.3&hash=493e53"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
@@ -4007,7 +4007,7 @@ __metadata:
   resolution: "wdio-html-nice-reporter@workspace:."
   dependencies:
     "@log4js-node/log4js-api": ^1.0.2
-    "@rpii/wdio-report-events": ^0.1.4
+    "@rpii/wdio-report-events": ^0.2.0
     "@types/chai": ^4.2.18
     "@types/mocha": ^8.2.2
     "@types/node": ^14.14.31
