@@ -1,4 +1,6 @@
 # Changelog:  
+    7.9.0:
+        Bugfix: [Address duplicate tests and suites being displayed when using nested suites]
     7.8.7:
         Bugfix: [Address issues caused by JSON.stringify running out of string memory.  Now saves screenshots as links to drastically reduce menory usage #71])(https://github.com/rpii/wdio-html-reporter/pull/71)
         set reporterOption linkScreenshots:true

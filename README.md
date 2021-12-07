@@ -3,9 +3,7 @@
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
 
-Compatible with webdriverio version 7.7
-
-### See note below if getting duplicate type errors on TS compile
+Compatible with webdriverio version 7.7 and up
 
 
 ## [Changelog](https://github.com/rpii/wdio-html-reporter/blob/master/changes.md)
@@ -20,7 +18,7 @@ It is written in typescript with many enhancements.
 
 The problem below is in NOT latest  version of npm and yarn!!!
 
-if you use npm install, you can have duplicate types installed.  yarn does not have this issue.
+if you use an old npm install, you can have duplicate types installed.  yarn does not have this issue.
 
 For a typescript compile in your test project you may have to add the script below to your package.json and rerun the npm install if you are getting duplicate types.
 

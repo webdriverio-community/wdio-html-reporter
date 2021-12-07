@@ -151,14 +151,14 @@ class ReportAggregator {
                     "config": {
                         "hostname": "localhost"
                     },
-                "specs": [],
-                "suites": [
-                    {
-                        "uid": "Test Start Failure",
-                        "title": "Test Start Failure",
-                        "type": "suite",
-                        "tests": [],
-                    }
+                    "specs": [],
+                    "suites": [
+                        {
+                            "uid": "Test Start Failure",
+                            "title": "Test Start Failure",
+                            "type": "suite",
+                            "tests": [],
+                        }
                     ]
                 }
             };
