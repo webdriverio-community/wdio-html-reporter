@@ -5,4 +5,5 @@ test
 reports
 lib/test
 logs
+.yarn
 
