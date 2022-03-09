@@ -76,7 +76,6 @@ export default class HtmlReporter extends WDIOReporter {
 
     onRunnerStart(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerStart: {0}", runner.cid));
-        this.options.LOG.debug(JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this._currentCid = runner.cid;
         this.metrics.passed = 0;
@@ -96,12 +95,10 @@ export default class HtmlReporter extends WDIOReporter {
         this._currentSuiteUid = suite.uid;
         suite.start = new Date();
         this.options.LOG.info(String.Format("onSuiteStart: {0}:{1}", suite.cid, suite.uid));
-        this.options.LOG.debug(JSON.stringify(suite));
     }
 
     onTestStart(theTest: TestStats) {
         this.options.LOG.info(String.Format("onTestStart: {0}:{1}", theTest.cid, theTest.uid));
-        this.options.LOG.debug(JSON.stringify(theTest));
         this._currentTestUid = theTest.uid;
         //@ts-ignore
         theTest.events = [];
@@ -112,7 +109,6 @@ export default class HtmlReporter extends WDIOReporter {
 
     onTestPass(theTest: TestStats) {
         this.options.LOG.info(String.Format("onTestPass: {0}:{1}", theTest.cid, theTest.uid));
-        this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid);
         if (test) {
             this.moveErrorsToEvents(test);
@@ -122,13 +118,11 @@ export default class HtmlReporter extends WDIOReporter {
 
     onTestSkip(test: TestStats) {
         this.options.LOG.info(String.Format("onTestSkip: {0}:{1}", test.cid, test.uid));
-        this.options.LOG.debug(JSON.stringify(test));
         this.metrics.skipped++;
     }
 
     onTestFail(theTest: TestStats) {
         this.options.LOG.info(String.Format("onTestFail: {0}:{1}", theTest.cid, theTest.uid));
-        this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid);
         if (test) {
             this.moveErrorsToEvents(test);
@@ -138,7 +132,6 @@ export default class HtmlReporter extends WDIOReporter {
 
     onTestEnd(theTest: TestStats) {
         this.options.LOG.info(String.Format("onTestEnd: {0}:{1}", theTest.cid, theTest.uid));
-        this.options.LOG.debug(JSON.stringify(theTest));
         let test = this.getTest(theTest.uid);
         if (test) {
             this.moveErrorsToEvents(test);
@@ -158,7 +151,6 @@ export default class HtmlReporter extends WDIOReporter {
 
     onSuiteEnd(suite: SuiteStats) {
         this.options.LOG.info(String.Format("onSuiteEnd: {0}:{1}", suite.cid, suite.uid));
-        this.options.LOG.debug(JSON.stringify(suite));
         this._indents--;
         suite.end = new Date();
         // this is to display suite end time and duration in master report.
@@ -202,7 +194,6 @@ export default class HtmlReporter extends WDIOReporter {
 
     onRunnerEnd(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerEnd: {0}", runner.cid));
-        this.options.LOG.debug(JSON.stringify(runner));
         this.openInProgress = true;
         this.metrics.end = dayjs().utc().format();
         this.metrics.duration = runner._duration;
