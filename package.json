@@ -1,6 +1,6 @@
 {
   "name": "@livelyhearing/wdio-html-nice-reporter",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "FORKED: WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
