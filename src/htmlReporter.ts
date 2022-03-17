@@ -306,4 +306,3 @@ export default class HtmlReporter extends WDIOReporter {
 
 
 }
-
