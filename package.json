@@ -1,6 +1,6 @@
 {
   "name": "@livelyhearing/wdio-html-nice-reporter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "FORKED: WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -43,6 +43,7 @@
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
     "@rpii/wdio-report-events": "^0.2.0",
+    "big-json": "^3.1.0",
     "copyfiles": "^2.3.0",
     "dayjs": "^1.10.5",
     "fs-extra": "^10.0.0",

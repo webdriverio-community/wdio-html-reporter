@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports" : true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "outDir": "./lib/",
     "types": [
       "node",
