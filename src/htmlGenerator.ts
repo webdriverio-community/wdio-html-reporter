@@ -172,15 +172,13 @@ class HtmlGenerator {
                 }
                 let jsonFile = reportData.reportFile.replace('.html', '.json');
                 try {
-                    // let json = JSON.stringify(reportData);
-                    // fs.outputFileSync(jsonFile, json);
                     fs.outputFileSync(jsonFile, "");
                     const stringifyStream = json.createStringifyStream({
                         body: reportData
                     });
                     
                     stringifyStream.on('data', function(strChunk) {
-                        // => BIG_POJO will be sent out in JSON chunks as the object is traversed
+                        // => reportData will be sent out in JSON chunks as the object is traversed
                         fs.appendFile('body.txt', strChunk, function (err) {
                             if(err) throw err;
                         });   

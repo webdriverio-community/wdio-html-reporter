@@ -83,9 +83,9 @@ class ReportAggregator {
             try {
                 let filename = files[i];
                 let report = JSON.parse(fs.readFileSync(filename));
-                // if (!report.info || !report.info.specs) {
-                //     this.options.LOG.error("report structure in question, no info or info.specs ", JSON.stringify(report));
-                // }
+                if (!report.info || !report.info.specs) {
+                    this.options.LOG.error("report structure in question, no info or info.specs ", JSON.stringify(report));
+                }
                 report.info.specs.forEach((spec: any) => {
                     specs.push(spec);
                 });
