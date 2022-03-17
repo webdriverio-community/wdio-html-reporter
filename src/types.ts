@@ -1,10 +1,12 @@
 import {Reporters} from "@wdio/types";
 import {RunnerStats, SuiteStats} from "@wdio/reporter";
+import internal from "stream";
 
 export class HtmlReporterOptions implements Reporters.Options  {
     outputDir: string;
     filename: string;
     reportTitle: string;
+    pr: string;
     showInBrowser?: boolean | undefined;
     collapseTests?: boolean | undefined;
     collapseSuites?: boolean | undefined;
@@ -15,10 +17,12 @@ export class HtmlReporterOptions implements Reporters.Options  {
     removeOutput?: boolean | undefined;
     linkScreenshots?: boolean ;
 
+
     constructor() {
         this.outputDir = "";
         this.filename =  "";
         this.reportTitle =  "Please add a Title";
+        this.pr = "";
         this.showInBrowser = false;
         this.collapseTests = false;
         this.collapseSuites = false;
