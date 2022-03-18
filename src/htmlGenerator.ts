@@ -3,6 +3,7 @@ import nunjucks from "nunjucks";
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import {SuiteStats, TestStats} from "@wdio/reporter";
+const json = require('big-json');
 
 const fs = require('fs-extra');
 const _ = require('lodash');
@@ -171,8 +172,17 @@ class HtmlGenerator {
                 }
                 let jsonFile = reportData.reportFile.replace('.html', '.json');
                 try {
-                    let json = JSON.stringify(reportData);
-                    fs.outputFileSync(jsonFile, json);
+                    fs.outputFileSync(jsonFile, "");
+                    const stringifyStream = json.createStringifyStream({
+                        body: reportData
+                    });
+                    
+                    stringifyStream.on('data', function(strChunk) {
+                        // => reportData will be sent out in JSON chunks as the object is traversed
+                        fs.appendFile('body.txt', strChunk, function (err) {
+                            if(err) throw err;
+                        });   
+                    });
                 } catch (ex:any) {
                     reportOptions.LOG.error("Json write failed: " + ex.toString());
                 }
