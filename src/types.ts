@@ -6,8 +6,8 @@ export class HtmlReporterOptions implements Reporters.Options  {
     filename: string;
     reportTitle: string;
     showInBrowser?: boolean | undefined;
-    collapseTests?: boolean | undefined;
-    collapseSuites?: boolean | undefined;
+    collapseTests?: boolean;
+    collapseSuites?: boolean;
     useOnAfterCommandForScreenshot?: boolean | undefined;
     LOG?: any ;
     debug ?: boolean | undefined;
@@ -28,6 +28,8 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.browserName = "not specified" ;
         this.removeOutput = true ;
         this.linkScreenshots = false ;
+        this.collapseTests = false ;
+        this.collapseSuites = false ;
     }
 }
 

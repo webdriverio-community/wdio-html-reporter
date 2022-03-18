@@ -1,4 +1,9 @@
 # Changelog:  
+    7.9.2:
+        Security Update: log4js 
+        add default for report options:
+            collapseTests = false ;
+            collapseSuites = false ;
     7.9.1:
         Feature: [Add support for taking videos of each test] 
                     See sample/wdio.config.ts for configuration. 
