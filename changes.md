@@ -1,4 +1,7 @@
 # Changelog:  
+    8.0.0:
+        major fix for out of memory errors --thanks to (https://github.com/owens-ben)
+        (https://github.com/rpii/wdio-html-reporter/issues/84)
     7.9.2:
         Security Update: log4js 
         add default for report options:

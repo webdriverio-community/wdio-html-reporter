@@ -74,7 +74,7 @@ class ReportAggregator {
         this.options.LOG.info("Report Aggregation started");
         let metrics = new Metrics () ;
 
-        let suites = [];
+        let suites:any = [];
         let specs : string[] =  [];
 
         let files = this.readJsonFiles();

@@ -300,9 +300,11 @@ export default class HtmlReporter extends WDIOReporter {
         let suites = Array.from(this._suiteUids.values());
         for (let i = suites.length - 1; i >= 0; i--) {
             let parentSuite = suites[i];
-            for (let k = parentSuite.suites.length - 1; k >= 0; k--) {
-                let suite = parentSuite.suites[k];
-                this.removeSuite(suite.uid);
+            if (parentSuite.suites) {
+                for (let k = parentSuite.suites.length - 1; k >= 0; k--) {
+                    let suite = parentSuite.suites[k];
+                    this.removeSuite(suite.uid);
+                }
             }
         }
         return Array.from(this._suiteUids.values());

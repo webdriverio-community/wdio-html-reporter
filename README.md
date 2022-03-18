@@ -5,6 +5,7 @@ The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7 and up
 
+### Great new improvement:  no more out of mememory errors due to json.STRIINGIFY
 ### Great new feature:  take videos of each test
 
 

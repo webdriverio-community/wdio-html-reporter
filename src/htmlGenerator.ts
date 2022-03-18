@@ -172,17 +172,19 @@ class HtmlGenerator {
                 }
                 let jsonFile = reportData.reportFile.replace('.html', '.json');
                 try {
-                    fs.outputFileSync(jsonFile, "");
-                    const stringifyStream = json.createStringifyStream({
-                        body: reportData
-                    });
-                    
-                    stringifyStream.on('data', function(strChunk) {
-                        // => reportData will be sent out in JSON chunks as the object is traversed
-                        fs.appendFile('body.txt', strChunk, function (err) {
-                            if(err) throw err;
-                        });   
-                    });
+                    (async () => {
+                        await json.stringify({
+                            body: reportData
+                        })
+                            .then(function(stringified) {
+                                fs.outputFileSync(jsonFile, stringified);
+                            })
+                            .catch((error) => {
+                                reportOptions.LOG.error("Json write failed: " + error );
+                            });
+                    })();
+
+
                 } catch (ex:any) {
                     reportOptions.LOG.error("Json write failed: " + ex.toString());
                 }

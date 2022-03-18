@@ -79,8 +79,8 @@ describe('HtmlReporter', () => {
             htmlReporter.onRunnerStart(RUNNER);
         });
         //This will fail.
-        it('fail to set cid test', function () {
-            expect(htmlReporter._currentCid).to.be.null;
+        it('set cid test', function () {
+            expect(htmlReporter._currentCid).to.equal("0-0");
         });
     });
     describe('onRunnerEnd', function () {

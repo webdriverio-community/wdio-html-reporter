@@ -70,8 +70,7 @@ describe('HtmlReporter', () => {
 
     describe('on create', function () {
         it('should verify initial properties', function () {
-            expect(Array.isArray(htmlReporter._suiteStats)).to.equal(true);
-            expect(htmlReporter._suiteStats.length).to.deep.equal(0);
+            expect(htmlReporter._suiteUids.size).to.deep.equal(0);
             expect(htmlReporter._indents).to.equal(0);
             expect(htmlReporter._suiteIndents).to.deep.equal({});
             expect(htmlReporter.defaultTestIndent).to.equal('   ');
@@ -180,8 +179,7 @@ describe('HtmlReporter', () => {
         });
 
         it('should add the suite to the suites array', function () {
-            expect(htmlReporter._suiteStats.length).to.equal(1)
-            // expect(htmlReporter.suites[0]).to.equal(SUITES[0])
+            expect(htmlReporter._suiteUids.size).to.equal(1)
         })
     });
 
