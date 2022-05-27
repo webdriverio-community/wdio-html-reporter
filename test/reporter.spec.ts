@@ -186,9 +186,11 @@ describe('HtmlReporter', () => {
 
     describe('onRunnerEnd', function () {
         it('should call htmlOutput method', function () {
-            htmlReporter.onRunnerEnd(RUNNER);
-            let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir,  encodeURIComponent(htmlReporter._currentSuiteUid),  encodeURIComponent(htmlReporter._currentCid), htmlReporter.options.filename);
-            expect(fs.existsSync(reportFile)).to.equal(true);
+            (async () => {
+                await htmlReporter.onRunnerEnd(RUNNER);
+                let reportFile = path.join(process.cwd(), htmlReporter.options.outputDir,  encodeURIComponent(htmlReporter._currentSuiteUid),  encodeURIComponent(htmlReporter._currentCid), htmlReporter.options.filename);
+                expect(fs.existsSync(reportFile)).to.equal(true);
+            })();
         });
         it('should invoke the reportAggregator', function () {
             (async () => {
