@@ -3,6 +3,7 @@ import nunjucks from "nunjucks";
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import {SuiteStats, TestStats} from "@wdio/reporter";
+import log4js from "@log4js-node/log4js-api";
 const json = require('big-json');
 
 const fs = require('fs-extra');
@@ -15,8 +16,12 @@ dayjs.extend(duration);
 
 class HtmlGenerator {
 
-    static htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done: boolean) => {
+    static async htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done: boolean) => {
     }) {
+        if (! reportOptions.LOG) {
+            reportOptions.LOG = log4js.getLogger(reportOptions.debug ? 'debug' : 'default');
+        }
+
         const specFileReferences: string[] = [];
         try {
             reportOptions.LOG.info("Html Generation started");
@@ -172,31 +177,30 @@ class HtmlGenerator {
                 }
                 let jsonFile = reportData.reportFile.replace('.html', '.json');
                 try {
-                    (async () => {
-                        await json.stringify({
-                            body: reportData
-                        })
-                            .then(function(stringified) {
-                                fs.outputFileSync(jsonFile, stringified);
-                            })
-                            .catch((error) => {
-                                reportOptions.LOG.error("Json write failed: " + error );
-                            });
-                    })();
+                    reportOptions.LOG.info("Json write starting: " + jsonFile );
+                    json.stringify({ body: reportData })
+                        .then(stringified => {
+                            fs.outputFileSync(jsonFile, stringified);
+                            reportOptions.LOG.info("Json write completed: " + jsonFile );
+                            let html = nunjucks.render("report.html", reportData);
 
+                            if (fs.pathExistsSync(reportOptions.outputDir)) {
+                                fs.outputFileSync(reportData.reportFile, html);
+                            }
+                            reportOptions.LOG.info("Html Generation completed");
+                            callback(true);
+                            }, reason => {
+                                reportOptions.LOG.error("Json write failed: " + reason );
+                            })
+                        .catch((error) => {
+                            reportOptions.LOG.error("Json write failed: " + error );
+                        });
 
                 } catch (ex:any) {
                     reportOptions.LOG.error("Json write failed: " + ex.toString());
                 }
             }
 
-            let html = nunjucks.render("report.html", reportData);
-
-            if (fs.pathExistsSync(reportOptions.outputDir)) {
-                fs.outputFileSync(reportData.reportFile, html);
-            }
-            reportOptions.LOG.info("Html Generation completed");
-            callback(true);
         } catch (ex) {
             reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
             callback(false);

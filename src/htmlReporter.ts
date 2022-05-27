@@ -200,7 +200,7 @@ export default class HtmlReporter extends WDIOReporter {
         }
     }
 
-    onRunnerEnd(runner: RunnerStats) {
+    async onRunnerEnd(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerEnd: {0}", runner.cid));
         this.options.LOG.debug(JSON.stringify(runner));
         this.openInProgress = true;

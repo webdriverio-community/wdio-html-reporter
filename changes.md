@@ -1,4 +1,7 @@
-# Changelog:  
+# Changelog: 
+    8.0.1:
+        async json write was not awaited correctly and could be missed.
+        (https://github.com/rpii/wdio-html-reporter/issues/86)
     8.0.0:
         major fix for out of memory errors --thanks to (https://github.com/owens-ben)
         (https://github.com/rpii/wdio-html-reporter/issues/84)

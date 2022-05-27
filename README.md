@@ -4,6 +4,7 @@ A reporter for webdriver.io which generates a nice HTML report.
 The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7 and up
+### Bug fix:  json write wasnt awaited for correctly
 
 ### Great new improvement:  no more out of memory errors due to json.stringify
 
