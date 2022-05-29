@@ -107,7 +107,9 @@ class ReportAggregator {
             }
             return  0;
         }) ;
-
+        if (!this.reports.length) {
+            this.options.LOG.error(String.Format("Empty report array"));
+        }
         for (let j = 0; j < this.reports.length; j++) {
             try {
                 let report = this.reports[j];
@@ -133,6 +135,7 @@ class ReportAggregator {
                         metrics.end = end.utc().format(timeFormat);
                     }
                     suites.push(suiteInfo);
+                    this.options.LOG.info(String.Format("Included metrics for suite: {0}" , suiteInfo.cid));
                 }
             } catch (ex) {
                 console.error(ex);
@@ -187,28 +190,32 @@ class ReportAggregator {
             this.reportFile,
             this.options.browserName) ;
 
-        HtmlGenerator.htmlOutput(this.options,reportData) ;
-
-        this.options.LOG.info("Report Aggregation completed");
-        let jsFiles = path.join(__dirname, '../css/');
-        let reportDir = path.join(process.cwd(), this.options.outputDir);
-        await copyFiles( jsFiles, reportDir ) ;
-        this.options.LOG.info( 'copyfiles complete : ' + jsFiles  + " to " + reportDir) ;
-        try {
-            if (this.options.showInBrowser) {
-                let childProcess = await open(reportData.reportFile
-                    // ,{ app:
-                    //         {
-                    //         name: 'google chrome',
-                    //         arguments: ['--incognito']
-                    //         }
-                    // }
-                    );
-                this.options.LOG.info('browser launched');
-            }
-        } catch (ex) {
-            this.options.LOG.error('Error opening browser:' + ex);
-        }
+        await HtmlGenerator.htmlOutput(this.options,reportData)
+            .then(async () =>
+        {
+            let jsFiles = path.join(__dirname, '../css/');
+            let reportDir = path.join(process.cwd(), this.options.outputDir);
+            await copyFiles(jsFiles, reportDir)
+                .then(async () => {
+                    this.options.LOG.info('copyfiles complete : ' + jsFiles + " to " + reportDir);
+                    try {
+                        if (this.options.showInBrowser) {
+                            let childProcess = await open(reportData.reportFile
+                                // ,{ app:
+                                //         {
+                                //         name: 'google chrome',
+                                //         arguments: ['--incognito']
+                                //         }
+                                // }
+                            );
+                            this.options.LOG.info('browser launched');
+                        }
+                    } catch (ex) {
+                        this.options.LOG.error('Error opening browser:' + ex);
+                    }
+                    this.options.LOG.info("Report Aggregation completed");
+                });
+        });
     }
 }
 

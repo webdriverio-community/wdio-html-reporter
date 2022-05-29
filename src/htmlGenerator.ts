@@ -191,13 +191,16 @@ class HtmlGenerator {
                             callback(true);
                             }, reason => {
                                 reportOptions.LOG.error("Json write failed: " + reason );
+                                callback(false);
                             })
                         .catch((error) => {
                             reportOptions.LOG.error("Json write failed: " + error );
+                            callback(false);
                         });
 
                 } catch (ex:any) {
                     reportOptions.LOG.error("Json write failed: " + ex.toString());
+                    callback(false);
                 }
             }
 

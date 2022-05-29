@@ -200,7 +200,7 @@ export default class HtmlReporter extends WDIOReporter {
         }
     }
 
-    async onRunnerEnd(runner: RunnerStats) {
+    onRunnerEnd(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerEnd: {0}", runner.cid));
         this.options.LOG.debug(JSON.stringify(runner));
         this.openInProgress = true;
@@ -223,10 +223,12 @@ export default class HtmlReporter extends WDIOReporter {
             this.metrics,
             reportFile,
             this.options.browserName);
-
-        HtmlGenerator.htmlOutput(this.options, reportData, () => {
-            this.openInProgress = false;
-        })
+        (async () => {
+            await HtmlGenerator.htmlOutput(this.options, reportData)
+                .then(() => {
+                    this.openInProgress = false;
+                });
+        })();
     }
 
     getSuite(uid: string | undefined): SuiteStats | undefined {
