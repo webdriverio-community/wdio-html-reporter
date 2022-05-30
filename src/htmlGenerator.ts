@@ -16,6 +16,18 @@ dayjs.extend(duration);
 
 class HtmlGenerator {
 
+
+    static writeJson(jsonFile:string , stringified:string , reportOptions:HtmlReporterOptions, reportData: ReportData) {
+        fs.outputFileSync(jsonFile, stringified);
+        reportOptions.LOG.info("Json write completed: " + jsonFile );
+        let html = nunjucks.render("report.html", reportData);
+
+        if (fs.pathExistsSync(reportOptions.outputDir)) {
+            fs.outputFileSync(reportData.reportFile, html);
+        }
+        reportOptions.LOG.info("Html Generation completed");
+    }
+
     static async htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done: boolean) => {
     }) {
         if (! reportOptions.LOG) {
@@ -177,26 +189,16 @@ class HtmlGenerator {
                 }
                 let jsonFile = reportData.reportFile.replace('.html', '.json');
                 try {
-                    reportOptions.LOG.info("Json write starting: " + jsonFile );
-                    json.stringify({ body: reportData })
-                        .then(stringified => {
-                            fs.outputFileSync(jsonFile, stringified);
-                            reportOptions.LOG.info("Json write completed: " + jsonFile );
-                            let html = nunjucks.render("report.html", reportData);
-
-                            if (fs.pathExistsSync(reportOptions.outputDir)) {
-                                fs.outputFileSync(reportData.reportFile, html);
-                            }
-                            reportOptions.LOG.info("Html Generation completed");
-                            callback(true);
-                            }, reason => {
-                                reportOptions.LOG.error("Json write failed: " + reason );
-                                callback(false);
+                    reportOptions.LOG.info("Json report write starting: " + jsonFile );
+                    await json.stringify({body: reportData})
+                            .then((stringified) => {
+                                HtmlGenerator.writeJson(jsonFile, stringified, reportOptions, reportData);
+                                callback(true);
                             })
-                        .catch((error) => {
-                            reportOptions.LOG.error("Json write failed: " + error );
-                            callback(false);
-                        });
+                            .catch((error) => {
+                                reportOptions.LOG.error("Json write failed: " + error);
+                                callback(false);
+                            });
 
                 } catch (ex:any) {
                     reportOptions.LOG.error("Json write failed: " + ex.toString());
@@ -209,6 +211,8 @@ class HtmlGenerator {
             callback(false);
         }
     }
+
+
 }
 
 export default HtmlGenerator;

@@ -22,7 +22,7 @@ const timeFormat = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
 
 export default class HtmlReporter extends WDIOReporter {
     options: HtmlReporterOptions;
-    openInProgress: boolean;
+    inProgress: boolean;
     defaultTestIndent: string;
     metrics: Metrics;
     _indents: number;
@@ -60,7 +60,7 @@ export default class HtmlReporter extends WDIOReporter {
         this._indents = 0;
         this._suiteIndents = {};
         this.metrics = new Metrics();
-        this.openInProgress = false;
+        this.inProgress = true;
         this.defaultTestIndent = '   ';
         this._currentSuiteUid = "suite uid";
         this._currentTestUid = "test uid";
@@ -71,7 +71,7 @@ export default class HtmlReporter extends WDIOReporter {
     }
 
     get isSynchronised() {
-        return !this.openInProgress;
+        return !this.inProgress;
     }
 
     onRunnerStart(runner: RunnerStats) {
@@ -203,7 +203,7 @@ export default class HtmlReporter extends WDIOReporter {
     onRunnerEnd(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerEnd: {0}", runner.cid));
         this.options.LOG.debug(JSON.stringify(runner));
-        this.openInProgress = true;
+        this.inProgress = true;
         this.metrics.end = dayjs().utc().format();
         this.metrics.duration = runner._duration;
         //error handling protection
@@ -226,9 +226,13 @@ export default class HtmlReporter extends WDIOReporter {
         (async () => {
             await HtmlGenerator.htmlOutput(this.options, reportData)
                 .then(() => {
-                    this.openInProgress = false;
-                });
-        })();
+                    this.inProgress = false;
+                })
+                .catch((ex) => {
+                    this.options.LOG.info(String.Format("error in htmlOutput: {0}",ex));
+                    this.inProgress = false;
+                })
+            })();
     }
 
     getSuite(uid: string | undefined): SuiteStats | undefined {
