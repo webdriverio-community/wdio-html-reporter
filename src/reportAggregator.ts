@@ -189,34 +189,23 @@ class ReportAggregator {
             metrics,
             this.reportFile,
             this.options.browserName) ;
-
-        await HtmlGenerator.htmlOutput(this.options,reportData)
-            .then(async () =>
-        {
+        try {
+            await HtmlGenerator.htmlOutput(this.options,reportData) ;
             let jsFiles = path.join(__dirname, '../css/');
             let reportDir = path.join(process.cwd(), this.options.outputDir);
-            await copyFiles(jsFiles, reportDir)
-                .then(async () => {
-                    this.options.LOG.info('copyfiles complete : ' + jsFiles + " to " + reportDir);
-                    try {
-                        if (this.options.showInBrowser) {
-                            let childProcess = await open(reportData.reportFile
-                                // ,{ app:
-                                //         {
-                                //         name: 'google chrome',
-                                //         arguments: ['--incognito']
-                                //         }
-                                // }
-                            );
-                            this.options.LOG.info('browser launched');
-                        }
-                    } catch (ex) {
-                        this.options.LOG.error('Error opening browser:' + ex);
-                    }
-                    this.options.LOG.info("Report Aggregation completed");
-                });
-        });
+            await copyFiles(jsFiles, reportDir) ;
+            this.options.LOG.info('copyfiles complete : ' + jsFiles + " to " + reportDir);
+            if (this.options.showInBrowser) {
+                await open(reportData.reportFile)
+                this.options.LOG.info("browser launched");
+                }
+            this.options.LOG.info("Report Aggregation completed");
+        } catch (ex) {
+            console.error("Report Aggregation failed: " + ex);
+        }
     }
+
 }
 
 export default ReportAggregator;
+

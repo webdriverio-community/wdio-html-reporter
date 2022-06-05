@@ -25,11 +25,10 @@ class HtmlGenerator {
         if (fs.pathExistsSync(reportOptions.outputDir)) {
             fs.outputFileSync(reportData.reportFile, html);
         }
-        reportOptions.LOG.info("Html Generation completed");
+        reportOptions.LOG.info("Html Generation completed for " + jsonFile);
     }
 
-    static async htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData, callback = (done: boolean) => {
-    }) {
+    static async htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData) {
         if (! reportOptions.LOG) {
             reportOptions.LOG = log4js.getLogger(reportOptions.debug ? 'debug' : 'default');
         }
@@ -63,7 +62,7 @@ class HtmlGenerator {
             });
             environment.addGlobal('renderVideo', function (videoCaptureFile: string) {
                 let relPath =  path.relative(reportOptions.outputDir,videoCaptureFile).split(path.sep).join(path.posix.sep);
-                reportOptions.LOG.info("Video Relative Path: " + relPath);
+                reportOptions.LOG.debug("Video Relative Path: " + relPath);
                 return relPath ;
             });
             environment.addGlobal('displaySpecFile', (suiteInfo:SuiteStats) => {
@@ -188,31 +187,18 @@ class HtmlGenerator {
                     }
                 }
                 let jsonFile = reportData.reportFile.replace('.html', '.json');
+                reportOptions.LOG.info("Json report write starting: " + jsonFile);
                 try {
-                    reportOptions.LOG.info("Json report write starting: " + jsonFile );
-                    await json.stringify({body: reportData})
-                            .then((stringified) => {
-                                HtmlGenerator.writeJson(jsonFile, stringified, reportOptions, reportData);
-                                callback(true);
-                            })
-                            .catch((error) => {
-                                reportOptions.LOG.error("Json write failed: " + error);
-                                callback(false);
-                            });
-
-                } catch (ex:any) {
-                    reportOptions.LOG.error("Json write failed: " + ex.toString());
-                    callback(false);
+                    let stringified = await json.stringify({body: reportData}) ;
+                    HtmlGenerator.writeJson(jsonFile, stringified, reportOptions, reportData);
+                } catch(error) {
+                        reportOptions.LOG.error("Json write failed: " + error);
+                    }
                 }
-            }
-
         } catch (ex) {
             reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
-            callback(false);
         }
     }
-
-
 }
 
 export default HtmlGenerator;
