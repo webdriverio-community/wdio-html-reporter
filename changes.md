@@ -1,4 +1,7 @@
 # Changelog: 
+    8.0.3:
+        further fixes to async json write in html reporter.
+        (https://github.com/rpii/wdio-html-reporter/issues/86)
     8.0.2:
         further fix to async json write in html reporter.
         (https://github.com/rpii/wdio-html-reporter/issues/86)
