@@ -3,7 +3,7 @@
 declare global {
     export namespace NodeJS {
         interface Global {
-            reportAggregator: ReportAggregator;
+            reportAggregator: ReportGenerator;
         }
     }
 }

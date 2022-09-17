@@ -49,8 +49,8 @@ below are snippets from that file.
 ```typescript
 
 // wdio.config.ts
-import {ReportAggregator, HtmlReporter} from 'wdio-html-nice-reporter';
-let reportAggregator: ReportAggregator;
+import {ReportGenerator, HtmlReporter} from 'wdio-html-nice-reporter';
+let reportAggregator: ReportGenerator;
 
 const BaseConfig: WebdriverIO.Config = {
     
@@ -81,25 +81,32 @@ const BaseConfig: WebdriverIO.Config = {
 
 webdriver.io will call the reporter for each test suite.  It does not aggregate the reports.  To do this, add the following event handlers to your wdio.config.js
 
+Add to browser config file:
+```
+let reportAggregator : ReportAggregator;
+```
+Add to browser config object:
 ```javascript
     onPrepare: function (config, capabilities) {
 
-        reportAggregator = new ReportAggregator({
-            outputDir: './reports/html-reports/',
-            filename: 'master-report.html',
-            reportTitle: 'Master Report',
-            browserName : capabilities.browserName,
-            collapseTests: true
-          });
-        reportAggregator.clean() ;
-    },
-    
-    onComplete: function(exitCode, config, capabilities, results) {
-        (async () => {
-            await reportAggregator.createReport();
-        })();
-    },
-    
+    reportAggregator = new ReportGenerator({
+        outputDir: './reports/html-reports/',
+        filename: 'master-report.html',
+        reportTitle: 'Master Report',
+        browserName: capabilities.browserName,
+        collapseTests: true
+    });
+    reportAggregator.clean();
+}
+
+
+onComplete: function (exitCode, config, capabilities, results) {
+    (async () => {
+        await reportAggregator.createReport();
+    })();
+}
+
+
 ``` 
 ### To use a logger for debugging
 
@@ -126,42 +133,4 @@ see [@rpii/wdio-html-reporter-pdf](https://www.npmjs.com/package/@rpii/wdio-html
 
 This must be set manually.  Its not available at config time since the browser object doesnt exist until you start a session.
 
-Add to browser config object:
-```
-let baseConfig = require('./base.config') ;
-exports.config = Object.assign({}, baseConfig.config, {
-    path: '/',
-    capabilities: [
-        {
-            // Set maxInstances to 1 if screen recordings are enabled:
-            // maxInstances: 1,
-            browserName: 'chrome',
-            'goog:chromeOptions': {
-                args: [process.env.CHROME_ARGS]
-            }
-        }
-    ],
-    port: 9515, // default for ChromeDriver
-    services: ['chromedriver'],
-    chromeDriverLogs: './logs'
-});
-```
 
-Add to onPrepare:
-```
-    onPrepare: function (config, capabilities) {
-
-        reportAggregator = new ReportAggregator({
-            outputDir: './reports/html-reports/',
-            filename: 'master-report.html',
-            reportTitle: 'Master Report',
-            LOG: logger,
-            showInBrowser: true,
-            collapseTests: true,
-            browserName : capabilities.browserName,
-        });
-        reportAggregator.clean() ;
-
-        reportAggregator = reportAggregator;
-    },
-```

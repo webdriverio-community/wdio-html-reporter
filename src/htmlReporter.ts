@@ -8,10 +8,11 @@ import WDIOReporter, {
 } from '@wdio/reporter'
 
 import HtmlGenerator from './htmlGenerator'
-import {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData} from "./types";
+import  {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData} from "./types";
 import dayjs from 'dayjs';
 import ReportEvents from "@rpii/wdio-report-events";
 import {String} from 'typescript-string-operations';
+import ReportGenerator from "./reportGenerator";
 
 const fs = require('fs-extra');
 const path = require('path');
@@ -22,22 +23,28 @@ const timeFormat = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
 
 export default class HtmlReporter extends WDIOReporter {
     options: HtmlReporterOptions;
-    inProgress: boolean;
     defaultTestIndent: string;
     metrics: Metrics;
     _indents: number;
     _suiteIndents: Record<string, number> = {};
     _suiteUids = new Map();
     _testUids = new Map();
+    _specs = new Map();
     _currentSuiteUid: string;
     _currentTestUid: string;
     _currentCid: string;
+
+    private _suites: SuiteStats[] = [] ;
+    private reportGenerator?: ReportGenerator  ;
+
 
     constructor(options: HtmlReporterOptions) {
         super(Object.assign(
             {
                 stdout: true,
                 logFile: './logs/reporter.log',
+                reporterSyncTimeout: 120000,
+                reporterSyncInterval: 1000,
             }, options))
         let opts =
             {
@@ -48,10 +55,11 @@ export default class HtmlReporter extends WDIOReporter {
                 useOnAfterCommandForScreenshot: false
             };
 
+
         this.options = Object.assign(opts, options);
         if (!this.options.LOG) {
             this.options.LOG = log4js.getLogger(this.options.debug ? 'debug' : 'default');
-            ;
+;
         }
 
         const dir = this.options.outputDir + 'screenshots';
@@ -60,7 +68,6 @@ export default class HtmlReporter extends WDIOReporter {
         this._indents = 0;
         this._suiteIndents = {};
         this.metrics = new Metrics();
-        this.inProgress = true;
         this.defaultTestIndent = '   ';
         this._currentSuiteUid = "suite uid";
         this._currentTestUid = "test uid";
@@ -68,21 +75,27 @@ export default class HtmlReporter extends WDIOReporter {
         reportProxy.connectMessageEvent(this.saveMessage.bind(this));
         reportProxy.connectScreenshotEvent(this.saveScreenshot.bind(this))
         reportProxy.connectVideoCaptureEvent(this.saveVideo.bind(this))
+        this.reportGenerator = new ReportGenerator(this.options) ;
+
     }
 
-    get isSynchronised() {
-        return !this.inProgress;
-    }
+    get isSynchronised() : boolean {
 
+        //@ts-ignore
+        let inSync = this.reportGenerator.isSynchronised()   ;
+        this.options.LOG.debug("isSynchronized: " + inSync);
+        return inSync ;
+    }
     onRunnerStart(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerStart: {0}", runner.cid));
-        this.options.LOG.debug(JSON.stringify(runner));
+        // this.options.LOG.debug(JSON.stringify(runner));
         //todo look at fix, not async safe. but one cid per report file
         this._currentCid = runner.cid;
         this.metrics.passed = 0;
         this.metrics.skipped = 0;
         this.metrics.failed = 0;
         this.metrics.start = dayjs().utc().format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+        this._specs.set(runner.cid, runner);
     }
 
     onSuiteStart(suite: SuiteStats) {
@@ -161,14 +174,7 @@ export default class HtmlReporter extends WDIOReporter {
         this.options.LOG.debug(JSON.stringify(suite));
         this._indents--;
         suite.end = new Date();
-        // this is to display suite end time and duration in master report.
-        // for (const suiteInfo of this._suiteStats) {
-        //     if (suiteInfo.uid == suite.uid) {
-        //         suiteInfo.end = suite.end;
-        //         suiteInfo._duration = suite._duration;
-        //         break;
-        //     }
-        // }
+        this._suites.push(suite) ;
     }
 
     isScreenshotCommand(command: CommandArgs) {
@@ -202,18 +208,9 @@ export default class HtmlReporter extends WDIOReporter {
 
     onRunnerEnd(runner: RunnerStats) {
         this.options.LOG.info(String.Format("onRunnerEnd: {0}", runner.cid));
-        // this.options.LOG.debug(JSON.stringify(runner));
-        this.inProgress = true;
+        this.options.LOG.debug(JSON.stringify(runner));
         this.metrics.end = dayjs().utc().format();
         this.metrics.duration = runner._duration;
-        //error handling protection
-        if (!this._currentSuiteUid) {
-            this._currentSuiteUid = "suite";
-        }
-        if (!this._currentCid) {
-            this._currentCid = "cid";
-        }
-
         let suites = this.filterChildSuites();
         let reportFile = path.join(process.cwd(), this.options.outputDir, encodeURIComponent(this._currentSuiteUid), encodeURIComponent(this._currentCid), this.options.filename);
         let reportData = new ReportData(
@@ -223,16 +220,8 @@ export default class HtmlReporter extends WDIOReporter {
             this.metrics,
             reportFile,
             this.options.browserName);
-        (async () => {
-            await HtmlGenerator.htmlOutput(this.options, reportData)
-                .then(() => {
-                    this.inProgress = false;
-                })
-                .catch((ex) => {
-                    this.options.LOG.info(String.Format("error in htmlOutput: {0}",ex));
-                    this.inProgress = false;
-                })
-            })();
+       this.reportGenerator?.createReport(reportData) ;
+
     }
 
     getSuite(uid: string | undefined): SuiteStats | undefined {

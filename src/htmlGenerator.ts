@@ -5,7 +5,7 @@ import duration from 'dayjs/plugin/duration';
 import {SuiteStats, TestStats} from "@wdio/reporter";
 import log4js from "@log4js-node/log4js-api";
 const json = require('big-json');
-
+import {String} from 'typescript-string-operations';
 const fs = require('fs-extra');
 const _ = require('lodash');
 const path = require('path');
@@ -20,12 +20,6 @@ class HtmlGenerator {
     static writeJson(jsonFile:string , stringified:string , reportOptions:HtmlReporterOptions, reportData: ReportData) {
         fs.outputFileSync(jsonFile, stringified);
         reportOptions.LOG.info("Json write completed: " + jsonFile );
-        let html = nunjucks.render("report.html", reportData);
-
-        if (fs.pathExistsSync(reportOptions.outputDir)) {
-            fs.outputFileSync(reportData.reportFile, html);
-        }
-        reportOptions.LOG.info("Html Generation completed for " + jsonFile);
     }
 
     static async htmlOutput(reportOptions: HtmlReporterOptions, reportData: ReportData) {
@@ -36,11 +30,9 @@ class HtmlGenerator {
         const specFileReferences: string[] = [];
         try {
             reportOptions.LOG.info("Html Generation started");
-
             let environment = nunjucks.configure([path.join(__dirname, '../templates/')], { // set folders with templates
                 autoescape: true,
             });
-
 
             environment.addGlobal('renderImage', function (screenshotFile: string, screenshotPath: string) {
                 // occurs when there is an error file
@@ -186,15 +178,25 @@ class HtmlGenerator {
                         }
                     }
                 }
-                let jsonFile = reportData.reportFile.replace('.html', '.json');
-                reportOptions.LOG.info("Json report write starting: " + jsonFile);
-                try {
-                    let stringified = await json.stringify({body: reportData}) ;
-                    HtmlGenerator.writeJson(jsonFile, stringified, reportOptions, reportData);
-                } catch(error) {
+                let html = nunjucks.render("report.html", reportData);
+
+                if (fs.pathExistsSync(reportOptions.outputDir))
+                {
+                    fs.outputFileSync(reportData.reportFile, html);
+                }
+
+                if (reportOptions.produceJson) {
+                    let jsonFile = reportData.reportFile.replace('.html', '.json');
+                    reportOptions.LOG.info("Json report write starting: " + jsonFile);
+                    try {
+                        let stringified = await json.stringify({body: reportData});
+                        HtmlGenerator.writeJson(jsonFile, stringified, reportOptions, reportData);
+                    } catch (error) {
                         reportOptions.LOG.error("Json write failed: " + error);
                     }
                 }
+            }
+            reportOptions.LOG.info("Html Generation Completed");
         } catch (ex) {
             reportOptions.LOG.error("Html Generation processing ended in error: " + ex);
         }

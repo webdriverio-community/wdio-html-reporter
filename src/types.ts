@@ -1,5 +1,10 @@
 import {Reporters} from "@wdio/types";
 import {RunnerStats, SuiteStats} from "@wdio/reporter";
+import ReportGenerator from "./reportGenerator";
+import RunnableStats from "@wdio/reporter/build/stats/runnable";
+import {Tag} from "@wdio/reporter/build/types";
+import HookStats from "@wdio/reporter/build/stats/hook";
+import {Suite} from "@wdio/reporter/build/stats/suite";
 
 export class HtmlReporterOptions implements Reporters.Options  {
     outputDir: string;
@@ -14,6 +19,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
     browserName:string;
     removeOutput?: boolean | undefined;
     linkScreenshots?: boolean ;
+    produceJson?:boolean | undefined;
 
     constructor() {
         this.outputDir = "";
@@ -30,6 +36,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.linkScreenshots = false ;
         this.collapseTests = false ;
         this.collapseSuites = false ;
+        this.produceJson = false ;
     }
 }
 
@@ -69,6 +76,7 @@ export class ReportData {
     info: RunnerStats;
     metrics: Metrics;
     suites: SuiteStats[];
+    // specs: RunnerStats[] ;
     title: string;
     reportFile: string ;
     browserName: string;

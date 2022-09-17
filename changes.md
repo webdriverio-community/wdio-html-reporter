@@ -1,4 +1,7 @@
 # Changelog: 
+    8.0.4:
+        Total rework to remove issue with webdriverio cutting off the report generation
+        (https://github.com/rpii/wdio-html-reporter/issues/86)
     8.0.3:
         further fixes to async json write in html reporter.
         (https://github.com/rpii/wdio-html-reporter/issues/86)

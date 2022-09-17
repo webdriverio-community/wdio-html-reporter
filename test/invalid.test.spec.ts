@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 import {expect} from 'chai';
-import {HtmlReporter, ReportAggregator} from '../src/index';
+import {HtmlReporter, ReportGenerator} from '../src/index';
 import {RUNNER, SUITES} from './testdata';
 const log4js = require ('log4js') ;
 
@@ -25,7 +25,7 @@ log4js.configure({ // configure to use all types in different files.
 });
 
 let logger = log4js.getLogger("default") ;
-let reportAggregator : ReportAggregator;
+let reportAggregator : ReportGenerator;
 
 let htmlReporter  = new HtmlReporter({
 
@@ -41,7 +41,7 @@ let htmlReporter  = new HtmlReporter({
 
 describe('HtmlReporter', () => {
     before(function () {
-        reportAggregator = new ReportAggregator({
+        reportAggregator = new ReportGenerator({
             debug: false,
             outputDir: './reports/html-reports/invalid/',
             filename: 'master-report.html',
