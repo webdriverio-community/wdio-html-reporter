@@ -90,12 +90,15 @@ class ReportAggregator {
     }
 
     async createReport( ) {
-        this.options.LOG.info("Report Generation started");
+        this.options.LOG.info("Report Aggregation started");
         let metrics = new Metrics () ;
         let suites : SuiteStats[] = [];
         let specs : string[] =  [];
 
         let files = this.readJsonFiles();
+        if (files.length == 0) {
+            this.options.LOG.error(String.Format("No Json files found in: {0}. Make sure produceJson is not false",  this.options.outputDir));
+        }
         for (let i = 0; i < files.length; i++) {
             try {
                 let filename = files[i];

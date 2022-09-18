@@ -36,7 +36,7 @@ export class HtmlReporterOptions implements Reporters.Options  {
         this.linkScreenshots = false ;
         this.collapseTests = false ;
         this.collapseSuites = false ;
-        this.produceJson = false ;
+        this.produceJson = true ;
     }
 }
 

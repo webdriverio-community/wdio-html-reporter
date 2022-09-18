@@ -44,6 +44,9 @@ class ReportGenerator {
     }
     updateSuiteMetrics(metrics: Metrics, suiteInfo : SuiteStats)
     {
+        // metrics.passed += suite.metrics.passed;
+        // metrics.failed += suite.metrics.failed;
+        // metrics.skipped += suite.metrics.skipped;
         let start = dayjs.utc(suiteInfo.start);
         if (metrics.start) {
             if (start.isBefore(metrics.start)) {
@@ -71,28 +74,11 @@ class ReportGenerator {
         let suites = reportData.suites ;
         let specs : string[] =  reportData.info.specs;
 
-        // this.reports.sort((report1:any,report2:any) => {
-        //     let first = dayjs.utc(report1.info.start);
-        //     let second = dayjs.utc(report2.info.start);
-        //     if (first.isAfter(second)) {
-        //         return 1;
-        //     }
-        //     else if (first.isBefore(second)) {
-        //         return -1;
-        //     }
-        //     return  0;
-        // }) ;
-        // if (!this.reports.length) {
-        //     this.options.LOG.error(String.Format("Empty report array"));
-        // }
-
         for (let j = 0; j < suites.length; j++) {
             try {
                 let suite = suites[j];
                 this.updateSuiteMetrics(metrics, suite) ;
-                // metrics.passed += suite.metrics.passed;
-                // metrics.failed += suite.metrics.failed;
-                // metrics.skipped += suite.metrics.skipped;
+
                 for (let k = 0; k < suite.suites.length; k++) {
                     let suiteInfo = suite.suites[k];
                     this.updateSuiteMetrics(metrics, suiteInfo) ;
