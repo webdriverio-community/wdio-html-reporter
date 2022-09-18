@@ -97,7 +97,7 @@ class ReportAggregator {
 
         let files = this.readJsonFiles();
         if (files.length == 0) {
-            this.options.LOG.error(String.Format("No Json files found in: {0}. Make sure produceJson is not false",  this.options.outputDir));
+            this.options.LOG.error(String.Format("No Json files found in: {0}. Make sure options.produceJson is not false",  this.options.outputDir));
         }
         for (let i = 0; i < files.length; i++) {
             try {

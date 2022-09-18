@@ -46,15 +46,9 @@ export default class HtmlReporter extends WDIOReporter {
                 reporterSyncTimeout: 120000,
                 reporterSyncInterval: 1000,
             }, options))
-        let opts =
-            {
-                stdout: true,
-                outputDir: 'reports/html-reports/',
-                filename: 'report.html',
-                reportTitle: 'Test Report Title',
-                useOnAfterCommandForScreenshot: false
-            };
-
+        let opts = new HtmlReporterOptions();
+        //@ts-ignore
+        opts.stdout = true,
 
         this.options = Object.assign(opts, options);
         if (!this.options.LOG) {

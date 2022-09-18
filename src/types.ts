@@ -22,9 +22,9 @@ export class HtmlReporterOptions implements Reporters.Options  {
     produceJson?:boolean | undefined;
 
     constructor() {
-        this.outputDir = "";
-        this.filename =  "";
-        this.reportTitle =  "Please add a Title";
+        this.outputDir = 'reports/html-reports/';
+        this.filename =  'report.html';
+        this.reportTitle =  'Test Report Title';
         this.showInBrowser = false;
         this.collapseTests = false;
         this.collapseSuites = false;
