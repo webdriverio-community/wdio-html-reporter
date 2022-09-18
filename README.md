@@ -4,6 +4,12 @@ A reporter for webdriver.io which generates a nice HTML report.
 The name is silly but provides integration with webdriverio
 
 Compatible with webdriverio version 7.7 and up
+### Bug fix:  webdriverio was shutting down in the middle of json async write.
+Note: if you are not getting your report generated in the cucumber or jasmine test runners, you can add the following to package.json scripts and generate the report this way after the test completes :
+```
+    "report": "node node_modules/wdio-html-nice-reporter/lib/makeReport.js master-report.html 'reports/html-reports/'",
+```
+If you do this you do not need to create a ReportAggregator in your wdio.config.ts
 ### Bug fix:  json write wasnt awaited for correctly
 
 ### Great new improvement:  no more out of memory errors due to json.stringify

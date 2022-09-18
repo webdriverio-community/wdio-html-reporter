@@ -1,4 +1,4 @@
-import {ReportAggregator, HtmlReporter} from 'wdio-html-nice-reporter';
+import {ReportAggregator } from 'wdio-html-nice-reporter';
 import commands from "@rpii/wdio-commands" ;
 import {String, StringBuilder} from 'typescript-string-operations';
 
