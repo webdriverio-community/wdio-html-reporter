@@ -1,6 +1,6 @@
 {
   "name": "wdio-html-nice-reporter",
-  "version": "8.0.4",
+  "version": "8.0.5",
   "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -50,16 +50,16 @@
     "image-to-base64": "^2.2.0",
     "nunjucks": "^3.2.3",
     "open": "^8.4.0",
-    "typescript-string-operations": "^1.4.1"
+    "typescript-string-operations": "^1.5.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.18",
     "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.31",
-    "@types/nunjucks": "^3.1.5",
-    "@wdio/cli": "^7.9.1",
-    "@wdio/reporter": "^7.9.0",
-    "@wdio/types": "^7.8.0",
+    "@types/nunjucks": "^3.2.1",
+    "@wdio/cli": "7.25.1",
+    "@wdio/reporter": "7.25.1",
+    "@wdio/types": "7.25.1",
     "chai": "^4.3.4",
     "concat": "^1.0.3",
     "log4js": "^6.5.2",

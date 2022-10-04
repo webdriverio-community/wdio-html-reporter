@@ -86,7 +86,7 @@ class ReportAggregator {
         } else {
             metrics.end = end.utc().format(timeFormat);
         }
-        this.options.LOG.info(String.Format("Included metrics for suite: {0} {1}" , suiteInfo.cid, suiteInfo.uid) );
+        this.options.LOG.info(String.format("Included metrics for suite: {0} {1}" , suiteInfo.cid, suiteInfo.uid) );
     }
 
     async createReport( ) {
@@ -97,7 +97,7 @@ class ReportAggregator {
 
         let files = this.readJsonFiles();
         if (files.length == 0) {
-            this.options.LOG.error(String.Format("No Json files found in: {0}. Make sure options.produceJson is not false",  this.options.outputDir));
+            this.options.LOG.error(String.format("No Json files found in: {0}. Make sure options.produceJson is not false",  this.options.outputDir));
         }
         for (let i = 0; i < files.length; i++) {
             try {
@@ -144,7 +144,7 @@ class ReportAggregator {
         }
 
         if (!metrics.start || !metrics.end) {
-            this.options.LOG.error(String.Format("Invalid Metrics computed: {0} -- {1}" , metrics.start, metrics.end));
+            this.options.LOG.error(String.format("Invalid Metrics computed: {0} -- {1}" , metrics.start, metrics.end));
         }
         metrics.duration = dayjs.duration(dayjs(metrics.end).utc().diff(dayjs(metrics.start).utc())).as('milliseconds');
 

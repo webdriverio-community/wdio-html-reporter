@@ -35,21 +35,27 @@ class HtmlGenerator {
             });
 
             environment.addGlobal('renderImage', function (screenshotFile: string, screenshotPath: string) {
-                // occurs when there is an error file
-                if (!fs.existsSync(screenshotFile)) {
-                    if (screenshotPath) {
-                        screenshotFile = `${screenshotPath}/${screenshotFile}`;
-                    } else {
-                        screenshotFile = `${screenshotFile}`;
-                    }
-                }
+                // occurs when there is an image to render
+                let relPath ;
+                try {
 
-                if (reportOptions.linkScreenshots) {
-                    let relPath =  path.relative(reportOptions.outputDir,screenshotFile);
-                    reportOptions.LOG.info("Screenshot Relative Path: " + relPath);
-                    return relPath ;
-                } else {
-                    return encode(path.resolve(screenshotFile));
+                    if (!fs.existsSync(screenshotFile)) {
+                        if (screenshotPath) {
+                            screenshotFile = `${screenshotPath}/${screenshotFile}`;
+                        } else {
+                            screenshotFile = `${screenshotFile}`;
+                        }
+                    }
+
+                    if (reportOptions.linkScreenshots) {
+                        relPath =  path.relative(reportOptions.outputDir,screenshotFile);
+                        reportOptions.LOG.info("Screenshot Relative Path: " + relPath);
+                        return relPath ;
+                    } else {
+                        return encode(path.resolve(screenshotFile));
+                    }
+                } catch(err) {
+                    reportOptions.LOG.error("Error processing file: " + relPath);
                 }
             });
             environment.addGlobal('renderVideo', function (videoCaptureFile: string) {

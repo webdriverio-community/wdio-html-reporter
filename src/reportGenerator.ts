@@ -63,7 +63,7 @@ class ReportGenerator {
         } else {
             metrics.end = end.utc().format(timeFormat);
         }
-        this.options.LOG.info(String.Format("Included metrics for suite: {0} {1}" , suiteInfo.cid, suiteInfo.uid) );
+        this.options.LOG.info(String.format("Included metrics for suite: {0} {1}" , suiteInfo.cid, suiteInfo.uid) );
     }
 
     async createReport(reportData: ReportData ) {
@@ -89,7 +89,7 @@ class ReportGenerator {
             }
         }
         if (!metrics.start || !metrics.end) {
-            this.options.LOG.error(String.Format("Invalid Metrics computed: {0} -- {1}" , metrics.start, metrics.end));
+            this.options.LOG.error(String.format("Invalid Metrics computed: {0} -- {1}" , metrics.start, metrics.end));
         }
         metrics.duration = dayjs.duration(dayjs(metrics.end).utc().diff(dayjs(metrics.start).utc())).as('milliseconds');
 
@@ -119,7 +119,7 @@ class ReportGenerator {
         reportData.reportFile = this.reportFile ;
 
         try {
-            reportData.reportFile = reportData.reportFile.replace('.html', String.Format('-{0}.html',reportData.info.cid));
+            reportData.reportFile = reportData.reportFile.replace('.html', String.format('-{0}.html',reportData.info.cid));
             await HtmlGenerator.htmlOutput(this.options,reportData) ;
             this.options.LOG.info("Report Generation completed");
             this.synchronised = true ;

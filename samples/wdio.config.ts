@@ -252,7 +252,7 @@ const BaseConfig: WebdriverIO.Config = {
             return;
         }
         //@ts-ignore
-        driver.logScreenshot(String.Format("Test Ended in {0}", result.error.stack));
+        driver.logScreenshot(String.format("Test Ended in {0}", result.error.stack));
     },
 
 
