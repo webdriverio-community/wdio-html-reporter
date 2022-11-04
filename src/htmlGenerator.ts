@@ -55,13 +55,20 @@ class HtmlGenerator {
                         return encode(path.resolve(screenshotFile));
                     }
                 } catch(err) {
-                    reportOptions.LOG.error("Error processing file: " + relPath);
+                    reportOptions.LOG.error("Error processing file: " + relPath + " " + err);
+                    return relPath;
                 }
             });
             environment.addGlobal('renderVideo', function (videoCaptureFile: string) {
+
                 let relPath =  path.relative(reportOptions.outputDir,videoCaptureFile).split(path.sep).join(path.posix.sep);
-                reportOptions.LOG.debug("Video Relative Path: " + relPath);
-                return relPath ;
+                try {
+                    reportOptions.LOG.debug("Video Relative Path: " + relPath);
+                    return relPath ;
+                } catch(err) {
+                    reportOptions.LOG.error("Error processing file: " + relPath + " " + err);
+                    return relPath;
+                }
             });
             environment.addGlobal('displaySpecFile', (suiteInfo:SuiteStats) => {
                 if (suiteInfo && suiteInfo.file) {
@@ -184,11 +191,16 @@ class HtmlGenerator {
                         }
                     }
                 }
-                let html = nunjucks.render("report.html", reportData);
-
-                if (fs.pathExistsSync(reportOptions.outputDir))
+                try
                 {
-                    fs.outputFileSync(reportData.reportFile, html);
+                    let html = nunjucks.render("report.html", reportData);
+
+                    if (fs.pathExistsSync(reportOptions.outputDir))
+                    {
+                        fs.outputFileSync(reportData.reportFile, html);
+                    }
+                } catch (error) {
+                    reportOptions.LOG.error("Html Generation failed: " + error);
                 }
 
                 if (reportOptions.produceJson) {

@@ -1,6 +1,8 @@
 # Changelog: 
+    8.0.6:
+        Protect against missing video file if nunjucks html generation
     8.0.5:
-        Protect against missing file if nunjucks html generation
+        Protect against missing image file if nunjucks html generation
     8.0.4:
         Total rework to remove issue with webdriverio cutting off the report generation
         (https://github.com/rpii/wdio-html-reporter/issues/86)
