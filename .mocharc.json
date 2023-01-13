@@ -1,4 +1,5 @@
 {
   "require": "./register.js",
-  "reporter": "spec"
+  "reporter": "spec",
+  "ui": "tdd"
 }

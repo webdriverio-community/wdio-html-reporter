@@ -3,7 +3,9 @@
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
 
-Compatible with webdriverio version 7.7 and up
+### New:  rewritten as an ES module for webdriverio 8 compatibility.
+    You may need changes in your test app
+
 ### Bug fix:  webdriverio was shutting down in the middle of json async write.
 Note: if you are not getting your report generated in the cucumber or jasmine test runners, you can add the following to package.json scripts and generate the report this way after the test completes :
 ```
@@ -24,22 +26,6 @@ If you do this you do not need to create a ReportAggregator in your wdio.config.
 This project is a rewrite of [@rpii/wdio-html-reporter](https://www.npmjs.com/package/wdio-html-reporter)
 It is written in typescript with many enhancements.
 
-
-### Duplicate Types NOTE:
-
-The problem below is in NOT latest  version of npm and yarn!!!
-
-if you use an old npm install, you can have duplicate types installed.  yarn does not have this issue.
-
-For a typescript compile in your test project you may have to add the script below to your package.json and rerun the npm install if you are getting duplicate types.
-
-Add to devDependencies:
-
-"@wdio/types": "^7.8.0",
-
-Add to scripts:
-
-    "postinstall": "rimraf -rm node_modules/wdio-html-nice-reporter/node_modules/@wdio/types"
 
 
 ## Configuration

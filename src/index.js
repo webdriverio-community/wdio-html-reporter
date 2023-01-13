@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+exports.ReportAggregator = exports.ReportGenerator = exports.HtmlGenerator = exports.HtmlReporter = void 0;
+var htmlReporter_js_1 = require("./htmlReporter.js");
+exports.HtmlReporter = htmlReporter_js_1["default"];
+var htmlGenerator_js_1 = require("./htmlGenerator.js");
+exports.HtmlGenerator = htmlGenerator_js_1["default"];
+var reportGenerator_js_1 = require("./reportGenerator.js");
+exports.ReportGenerator = reportGenerator_js_1["default"];
+var reportAggregator_js_1 = require("./reportAggregator.js");
+exports.ReportAggregator = reportAggregator_js_1["default"];
+exports["default"] = htmlReporter_js_1["default"];

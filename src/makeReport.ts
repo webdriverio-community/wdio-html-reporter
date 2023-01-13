@@ -1,8 +1,9 @@
-const path = require("path") ;
-const fs = require("fs-extra") ;
-import {ReportAggregator} from './index' ;
-const LOG = require('log4js');
-LOG.configure({
+import {ReportAggregator} from './index.js' ;
+import path from 'node:path';
+import url from 'node:url';
+
+import log4js from 'log4js' ;
+log4js.configure({
     appenders: {
         fileLog: {
             type: 'file',
@@ -24,7 +25,7 @@ LOG.configure({
     }
 });
 
-let logger = LOG.getLogger("debug");
+let logger = log4js.getLogger("debug");
 
 (async () => {
     let args = process.argv.slice(2) ;
@@ -32,7 +33,8 @@ let logger = LOG.getLogger("debug");
     let reportFolder = args[1] ? args[1] : 'reports/html-reports/';
     try {
         // need full paths
-        let htmlReportFile = path.resolve(__dirname, reportFolder + reportName );
+        const dirname = url.fileURLToPath(new URL('../', import.meta.url));
+        let htmlReportFile = path.resolve(dirname, reportFolder + reportName );
         let options = [];
         let reportAggregator = new ReportAggregator(
           {

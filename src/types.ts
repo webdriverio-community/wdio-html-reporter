@@ -1,10 +1,6 @@
-import {Reporters} from "@wdio/types";
-import {RunnerStats, SuiteStats} from "@wdio/reporter";
-import ReportGenerator from "./reportGenerator";
-import RunnableStats from "@wdio/reporter/build/stats/runnable";
-import {Tag} from "@wdio/reporter/build/types";
-import HookStats from "@wdio/reporter/build/stats/hook";
-import {Suite} from "@wdio/reporter/build/stats/suite";
+import type {
+    SuiteStats, Tag, HookStats, RunnerStats } from "@wdio/reporter";
+import type { Reporters, Capabilities, Options } from '@wdio/types';
 
 export class HtmlReporterOptions implements Reporters.Options  {
     outputDir: string;

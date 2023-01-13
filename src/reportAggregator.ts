@@ -1,17 +1,20 @@
-import HtmlGenerator from "./htmlGenerator";
-import {HtmlReporterOptions, Metrics, ReportData} from "./types";
+import HtmlGenerator from "./htmlGenerator.js";
+import {HtmlReporterOptions, Metrics, ReportData} from "./types.js";
 import {String } from 'typescript-string-operations';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import utc from 'dayjs/plugin/utc.js';
 dayjs.extend(utc);
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 dayjs.extend(isSameOrBefore);
-import copyFiles from "./copyFiles";
+import copyFiles from "./copyFiles.js";
 import {SuiteStats} from "@wdio/reporter";
-const open = require('open');
-const fs = require('fs-extra');
-const path = require('path');
-const log4js = require('@log4js-node/log4js-api');
+import open from 'open';
+import fs from 'fs-extra';
+import path from 'path';
+import log4js from '@log4js-node/log4js-api' ;
+import url from 'node:url';
+import JsonGenerator from "./jsonGenerator.js";
+
 const timeFormat ="YYYY-MM-DDTHH:mm:ss.SSS[Z]";
 
 function  walk(dir:string, extensions: string[] , filelist: string[] = []) {
@@ -39,19 +42,12 @@ function  walk(dir:string, extensions: string[] , filelist: string[] = []) {
 class ReportAggregator {
 
     constructor(opts: HtmlReporterOptions) {
-        opts = Object.assign({}, {
+        this.options  = Object.assign(new HtmlReporterOptions(), {
             outputDir: 'reports/html-reports/',
             filename: 'master-report.html',
-            reportTitle: 'Test Master Report',
-            showInBrowser: false,
-            browserName: "not specified",
-            collapseTests: false,
-            collapseSuites: false,
-            LOG: null,
-            removeOutput: true
+            reportTitle: 'Test Master Report'
         }, opts);
 
-        this.options = opts;
         if (!this.options.LOG) {
             this.options.LOG = log4js.getLogger(this.options.debug ? 'debug' : 'default');
         }
@@ -183,8 +179,9 @@ class ReportAggregator {
             this.options.browserName)
 
         try {
+            await JsonGenerator.jsonOutput(this.options,reportData) ;
             await HtmlGenerator.htmlOutput(this.options,reportData) ;
-            this.finalize() ;
+            await this.finalize() ;
             this.options.LOG.info("Report Aggregation completed");
 
         } catch (ex) {
@@ -192,10 +189,11 @@ class ReportAggregator {
         }
     }
     async finalize() {
-        let jsFiles = path.join(__dirname, '../css/');
+        const cssDir = url.fileURLToPath(new URL('../css/', import.meta.url));
+        let jsFiles = cssDir ;
         let reportDir = path.join(process.cwd(), this.options.outputDir);
         await copyFiles(jsFiles, reportDir) ;
-        this.options.LOG.info('copyfiles complete : ' + jsFiles + " to " + reportDir);
+        this.options.LOG.info('copyied css : ' + jsFiles + " to " + reportDir);
         if (this.options.showInBrowser) {
             await open(this.reportFile)
             this.options.LOG.info("browser launched");

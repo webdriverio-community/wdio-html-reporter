@@ -1,11 +1,11 @@
-import {RunnerStats, SuiteStats} from "@wdio/reporter";
-
-export const RUNNER = new RunnerStats(
-
-    {
+"use strict";
+exports.__esModule = true;
+exports.SUITES_NESTED = exports.SUITES_NO_TESTS_WITH_HOOK_ERROR = exports.SUITES_NO_TESTS = exports.SUITES_MULTIPLE_ERRORS = exports.SUITES = exports.SUITE_UIDS = exports.RUNNER = void 0;
+var reporter_1 = require("@wdio/reporter");
+exports.RUNNER = new reporter_1.RunnerStats({
     "start": "2021-06-11T16:24:27.910Z",
     "_duration": 22079,
-    "cid" : '0-0',
+    cid: '0-0',
     "capabilities": {
         "acceptInsecureCerts": false,
         "browserName": "chrome",
@@ -15,52 +15,46 @@ export const RUNNER = new RunnerStats(
             "chromedriverVersion": "90.0.4430.24 (4c6d850f087da467d926e8eddb76550aed655991-refs/branch-heads/4430@{#429})",
             "userDataDir": "C:\\Users\\rpii\\AppData\\Local\\Temp\\scoped_dir3692_1178567250"
         },
-    "logLevel": "warn",
-    "outputDir": "./logs",
-    "connectionRetryTimeout": 160000,
-    "connectionRetryCount": 3,
-    "logLevels": {},
-    "strictSSL": true,
+        "logLevel": "warn",
+        "outputDir": "./logs",
+        "connectionRetryTimeout": 160000,
+        "connectionRetryCount": 3,
+        "logLevels": {},
+        "strictSSL": true
     },
-
-    specs : ['/foo/bar/baz.js']
+    specs: ['/foo/bar/baz.js']
 });
-
-export const SUITE_UIDS = [
+exports.SUITE_UIDS = [
     'Foo test1',
     'Bar test2',
     'Baz test3',
-]
-
-export const SUITES : SuiteStats[] = [
+];
+exports.SUITES = [
     {
-        cid : SUITE_UIDS[0],
-        uid : SUITE_UIDS[0],
-        title : SUITE_UIDS[0].slice(0, -1),
+        uid: exports.SUITE_UIDS[0],
+        title: exports.SUITE_UIDS[0].slice(0, -1),
         file: "dummy",
-        type : "suite",
+        type: "suite",
         hooks: [],
         start: new Date("2019-04-13T00:10:05.191Z"),
-        end :  new Date("2019-04-13T00:10:15.191Z"),
-        tests : [
+        end: new Date("2019-04-13T00:10:15.191Z"),
+        tests: [
             //@ts-ignore
             {
-                type :"test",
-                cid : 'foo1',
-                uid : 'foo1',
-                title : 'foo',
-                state : 'passed',
+                type: "test",
+                uid: 'foo1',
+                title: 'foo',
+                state: 'passed',
                 "start": new Date("2021-06-11T01:28:24.778Z"),
-                "_duration":9009,
-                "cid":"0-0",
-                "fullTitle":"full foo",
-                "parent": "login test valid logins suite",
+                "_duration": 9009,
+                "cid": "0-0",
+                "fullTitle": "full foo",
+                "parent": "login test valid logins suite"
             },
             {
-                cid : 'bar1',
-                uid : 'bar1',
-                title : 'bar',
-                state : 'failed',
+                uid: 'bar1',
+                title: 'bar',
+                state: 'failed',
                 "start": new Date("2021-06-11T01:28:24.778Z"),
                 "_duration": 15809,
                 //@ts-ignore
@@ -82,113 +76,98 @@ export const SUITES : SuiteStats[] = [
             },
             //@ts-ignore
             {
-                cid : 'three',
-                uid : 'three',
-                state : 'skipped',
-                title : 'skip',
+                uid: 'three',
+                state: 'skipped',
+                title: 'skip'
             }
-        ],
+        ]
     },
     {
-        cid : SUITE_UIDS[1],
-        uid : SUITE_UIDS[1],
-        title : SUITE_UIDS[1].slice(0, -1),
+        uid: exports.SUITE_UIDS[1],
+        title: exports.SUITE_UIDS[1].slice(0, -1),
         hooks: [],
-        type : "suite",
-        tests : [
+        type: "suite",
+        tests: [
             //@ts-ignore
             {
-                cid : 'some test1',
-                uid : 'some test1',
-                title : 'some test',
-                state : 'passed',
+                uid: 'some test1',
+                title: 'some test',
+                state: 'passed'
             },
             //@ts-ignore
             {
-                cid : 'a failed test2',
-                uid : 'a failed test2',
-                title : 'a failed test',
-                state : 'failed',
-                error : {
+                uid: 'a failed test2',
+                title: 'a failed test',
+                state: 'failed',
+                error: {
                     name: "error",
-                    message : 'expected foo to equal bar',
-                    stack : 'Failed test stack trace'
+                    message: 'expected foo to equal bar',
+                    stack: 'Failed test stack trace'
                 }
             }
-        ],
+        ]
     },
     {
-        cid : SUITE_UIDS[2],
-        uid : SUITE_UIDS[2],
-        title : SUITE_UIDS[2].slice(0, -1),
-        type : "suite",
+        uid: exports.SUITE_UIDS[2],
+        title: exports.SUITE_UIDS[2].slice(0, -1),
+        type: "suite",
         hooks: [],
-        tests : [
+        tests: [
             //@ts-ignore
             {
-                cid : 'foo bar baz1',
-                uid : 'foo bar baz1',
-                title : 'foo bar baz',
-                state : 'passed',
+                uid: 'foo bar baz1',
+                title: 'foo bar baz',
+                state: 'passed'
             },
             //@ts-ignore
             {
-                cid : 'a skipped test2',
-                uid : 'a skipped test2',
-                title : 'a skipped test',
-                state : 'skipped',
-            }],
-    }
-]
-
-export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
-    {
-        cid : SUITE_UIDS[0],
-        uid : SUITE_UIDS[0],
-        title : SUITE_UIDS[0].slice(0, -1),
-        type : "suite",
-        file: "dummy",
-        hooks: [],
-        tests : [
-            //@ts-ignore
-            {
-                cid : 'foo1',
-                uid : 'foo1',
-                title : 'foo',
-                state : 'passed',
-            },
-            //@ts-ignore
-            {
-                cid : 'bar1',
-                uid : 'bar1',
-                title : 'bar',
-                state : 'passed',
+                uid: 'a skipped test2',
+                title: 'a skipped test',
+                state: 'skipped'
             }
-        ],
-    },
+        ]
+    }
+];
+exports.SUITES_MULTIPLE_ERRORS = [
     {
-        cid : SUITE_UIDS[1],
-        uid : SUITE_UIDS[1],
-        title : SUITE_UIDS[1].slice(0, -1),
-        type : "suite",
+        uid: exports.SUITE_UIDS[0],
+        title: exports.SUITE_UIDS[0].slice(0, -1),
+        type: "suite",
         file: "dummy",
         hooks: [],
-        tests : [
+        tests: [
             //@ts-ignore
             {
-                cid : 'some test1',
-                uid : 'some test1',
-                title : 'some test',
-                state : 'passed',
+                uid: 'foo1',
+                title: 'foo',
+                state: 'passed'
+            },
+            //@ts-ignore
+            {
+                uid: 'bar1',
+                title: 'bar',
+                state: 'passed'
+            }
+        ]
+    },
+    {
+        uid: exports.SUITE_UIDS[1],
+        title: exports.SUITE_UIDS[1].slice(0, -1),
+        type: "suite",
+        file: "dummy",
+        hooks: [],
+        tests: [
+            //@ts-ignore
+            {
+                uid: 'some test1',
+                title: 'some test',
+                state: 'passed'
             },
             {
-                cid : 'a failed test',
-                uid : 'a failed test',
-                title : 'a test with two failures',
-                state : 'failed',
-
-                errors : [
-
+                uid: 'a failed test',
+                title: 'a test with two failures',
+                state: 'failed',
+                errors: [
                     {
                         "name": "Error",
                         "message": "expected the party on the first part to be the party on the first part",
@@ -196,59 +175,54 @@ export const SUITES_MULTIPLE_ERRORS : SuiteStats[] = [
                         //@ts-ignore
                         "type": "Error"
                     },
-
                     //@ts-ignore
                     {
                         name: "Error",
-                        message : 'expected the party on the second part to be the party on the second part',
-                        stack : 'Second failed stack trace',
+                        message: 'expected the party on the second part to be the party on the second part',
+                        stack: 'Second failed stack trace',
                         //@ts-ignore
                         type: "Error"
                     }
                 ]
             }
-        ],
+        ]
     },
-]
-
-export const SUITES_NO_TESTS : SuiteStats[] = [
+];
+exports.SUITES_NO_TESTS = [
     //@ts-ignore
     {
-        cid : SUITE_UIDS[0],
-        uid: SUITE_UIDS[0],
-        title: SUITE_UIDS[0].slice(0, -1),
+        uid: exports.SUITE_UIDS[0],
+        title: exports.SUITE_UIDS[0].slice(0, -1),
         file: "dummy",
         tests: [],
         suites: [],
         hooks: []
     },
-]
-
-export const SUITES_NO_TESTS_WITH_HOOK_ERROR : SuiteStats[] = [
+];
+exports.SUITES_NO_TESTS_WITH_HOOK_ERROR = [
     {
-        cid : SUITE_UIDS[0],
-        uid: SUITE_UIDS[0],
-        title: SUITE_UIDS[0].slice(0, -1),
+        uid: exports.SUITE_UIDS[0],
+        title: exports.SUITE_UIDS[0].slice(0, -1),
         file: "dummy",
         tests: [],
         suites: [],
         hooks: [
             //@ts-ignore
             {
-            uid : 'a failed hook2',
-            title : 'a failed hook',
-            state : 'failed',
-            error : {
-                name: "Error",
-                message : 'expected foo to equal bar',
-                stack : 'Failed test stack trace'
+                uid: 'a failed hook2',
+                title: 'a failed hook',
+                state: 'failed',
+                error: {
+                    name: "Error",
+                    message: 'expected foo to equal bar',
+                    stack: 'Failed test stack trace'
+                }
             }
-        }]
+        ]
     },
-]
-export const SUITES_NESTED : SuiteStats[] = [
-{
-        "cid" : "Foo test1",
+];
+exports.SUITES_NESTED = [
+    {
         "uid": "Foo test1",
         "title": "Foo test",
         "type": "suite",
@@ -258,7 +232,6 @@ export const SUITES_NESTED : SuiteStats[] = [
         "tests": [
             {
                 "type": "test",
-                "cid": "foo1",
                 "uid": "foo1",
                 "title": "foo",
                 "state": "passed",
@@ -269,7 +242,6 @@ export const SUITES_NESTED : SuiteStats[] = [
                 "parent": "login test valid logins suite"
             },
             {
-                "cid": "bar1",
                 "uid": "bar1",
                 "title": "bar",
                 "state": "failed",
@@ -294,7 +266,6 @@ export const SUITES_NESTED : SuiteStats[] = [
         ],
         "suites": [
             {
-                "cid" : "nested Foo test1",
                 "uid": "nested Foo test1",
                 "title": "Nested Foo test1",
                 "type": "suite",
@@ -304,7 +275,6 @@ export const SUITES_NESTED : SuiteStats[] = [
                 "tests": [
                     {
                         "type": "test",
-                        "cid": "foo1",
                         "uid": "foo1",
                         "title": "foo",
                         "state": "passed",
@@ -317,7 +287,6 @@ export const SUITES_NESTED : SuiteStats[] = [
                 ]
             },
             {
-                "cid" : "Nested Foo test2",
                 "uid": "Nested Foo test2",
                 "title": "Nested Foo test2",
                 "type": "suite",
@@ -327,7 +296,6 @@ export const SUITES_NESTED : SuiteStats[] = [
                 "tests": [],
                 "suites": [
                     {
-                        "cid" : "Foo test2",
                         "uid": "Foo test2",
                         "title": "nested Foo test2",
                         "type": "suite",
@@ -337,12 +305,12 @@ export const SUITES_NESTED : SuiteStats[] = [
                         "tests": [
                             {
                                 "type": "test",
-                                "cid": "foo1",
                                 "uid": "foo1",
                                 "title": "foo",
                                 "state": "passed",
                                 "start": "2021-06-11T01:28:24.778Z",
                                 "_duration": 9009,
+                                "cid": "0-0",
                                 "fullTitle": "full foo",
                                 "parent": "login test valid logins suite"
                             }
@@ -352,4 +320,4 @@ export const SUITES_NESTED : SuiteStats[] = [
             }
         ]
     }
-]
+];

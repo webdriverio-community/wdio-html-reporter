@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
-    "target": "es6",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution":"nodenext",
     "declaration": true,
     "allowJs": true,
     "noEmit": false,
@@ -16,8 +16,7 @@
     "outDir": "./lib/",
     "types": [
       "node",
-      "@wdio/types",
-      "webdriverio/sync",
+      "@wdio/globals/types",
       "@rpii/wdio-report-events"
     ]
   },

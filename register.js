@@ -3,18 +3,10 @@
  * In the test environment we need some tweaks.
  */
 
-const tsNode = require('ts-node');
-const tsConfigPaths = require('tsconfig-paths');
-const mainTSConfig = require('./tsconfig.json');
-const testTSConfig = require('./test/tsconfig.json');
+import tsNode from 'ts-node' ;
+import mainTSConfig from './tsconfig.json' assert {type: "json"};
+import testTSConfig from './test/tsconfig.json' assert {type: "json"};
 
-tsConfigPaths.register({
-    baseUrl: './test',
-    paths: {
-        ...mainTSConfig.compilerOptions.paths,
-        ...testTSConfig.compilerOptions.paths
-    }
-});
 
 tsNode.register({
     files: true,

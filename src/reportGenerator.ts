@@ -1,16 +1,15 @@
-import HtmlGenerator from "./htmlGenerator";
-import {HtmlReporterOptions, Metrics, ReportData} from "./types";
+import HtmlGenerator from "./htmlGenerator.js";
+import {HtmlReporterOptions, Metrics, ReportData} from "./types.js";
 import {String } from 'typescript-string-operations';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import utc from 'dayjs/plugin/utc.js';
 dayjs.extend(utc);
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import isSameOrBefore from 'dayjs/plugin/isSameOrBefore.js';
 dayjs.extend(isSameOrBefore);
 import {SuiteStats} from "@wdio/reporter";
-const open = require('open');
-const fs = require('fs-extra');
-const path = require('path');
-const log4js = require('@log4js-node/log4js-api');
+import path from 'path';
+import log4js from '@log4js-node/log4js-api' ;
+import JsonGenerator from "./jsonGenerator.js";
 const timeFormat ="YYYY-MM-DDTHH:mm:ss.SSS[Z]";
 
 
@@ -78,10 +77,11 @@ class ReportGenerator {
             try {
                 let suite = suites[j];
                 this.updateSuiteMetrics(metrics, suite) ;
-
-                for (let k = 0; k < suite.suites.length; k++) {
-                    let suiteInfo = suite.suites[k];
-                    this.updateSuiteMetrics(metrics, suiteInfo) ;
+                if (suite.suites) {
+                    for (let k = 0; k < suite.suites.length; k++) {
+                        let suiteInfo = suite.suites[k];
+                        this.updateSuiteMetrics(metrics, suiteInfo);
+                    }
                 }
 
             } catch (ex) {
@@ -120,7 +120,11 @@ class ReportGenerator {
 
         try {
             reportData.reportFile = reportData.reportFile.replace('.html', String.format('-{0}.html',reportData.info.cid));
-            await HtmlGenerator.htmlOutput(this.options,reportData) ;
+            await JsonGenerator.jsonOutput(this.options,reportData) ;
+            //@ts-ignore
+            if (this.options.produceHtml) {
+                await HtmlGenerator.htmlOutput(this.options, reportData);
+            }
             this.options.LOG.info("Report Generation completed");
             this.synchronised = true ;
 

@@ -1,21 +1,22 @@
-import {HtmlReporterOptions, ReportData} from "./types";
+import {HtmlReporterOptions, ReportData} from "./types.js";
 import nunjucks from "nunjucks";
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
+import duration from 'dayjs/plugin/duration.js';
 import {SuiteStats, TestStats} from "@wdio/reporter";
 import log4js from "@log4js-node/log4js-api";
-const json = require('big-json');
+import json from 'big-json';
 import {String} from 'typescript-string-operations';
-const fs = require('fs-extra');
-const _ = require('lodash');
-const path = require('path');
-const encode = require('./encode').default;
+import fs from 'fs-extra';
+import _ from 'lodash';
+import path from 'node:path';
+import encode from './encode.js' ;
 
 
 dayjs.extend(duration);
 
-class HtmlGenerator {
+import url from 'node:url';
 
+class HtmlGenerator {
 
     static writeJson(jsonFile:string , stringified:string , reportOptions:HtmlReporterOptions, reportData: ReportData) {
         fs.outputFileSync(jsonFile, stringified);
@@ -29,8 +30,10 @@ class HtmlGenerator {
 
         const specFileReferences: string[] = [];
         try {
-            reportOptions.LOG.info("Html Generation started");
-            let environment = nunjucks.configure([path.join(__dirname, '../templates/')], { // set folders with templates
+            const rootdirname = path.dirname(url.fileURLToPath(new URL('.', import.meta.url)));
+            reportOptions.LOG.info("Html Generation started in " + rootdirname);
+            const templateDir = rootdirname + '/templates/';
+            let environment = nunjucks.configure([templateDir ], { // set folders with templates
                 autoescape: true,
             });
 
@@ -46,16 +49,19 @@ class HtmlGenerator {
                             screenshotFile = `${screenshotFile}`;
                         }
                     }
+                    if (!fs.existsSync(screenshotFile)) {
+                        reportOptions.LOG.error("renderImage: file doesnt exist: " + relPath );
+                    }
 
+                    relPath =  path.relative(reportOptions.outputDir,screenshotFile);
                     if (reportOptions.linkScreenshots) {
-                        relPath =  path.relative(reportOptions.outputDir,screenshotFile);
-                        reportOptions.LOG.info("Screenshot Relative Path: " + relPath);
+                        reportOptions.LOG.info("renderImage: Screenshot Relative Path: " + relPath);
                         return relPath ;
                     } else {
                         return encode(path.resolve(screenshotFile));
                     }
                 } catch(err) {
-                    reportOptions.LOG.error("Error processing file: " + relPath + " " + err);
+                    reportOptions.LOG.error("renderImage: Error processing file: " + relPath + " " + err);
                     return relPath;
                 }
             });
@@ -66,7 +72,7 @@ class HtmlGenerator {
                     reportOptions.LOG.debug("Video Relative Path: " + relPath);
                     return relPath ;
                 } catch(err) {
-                    reportOptions.LOG.error("Error processing file: " + relPath + " " + err);
+                    reportOptions.LOG.error("renderVideo: Error processing file: " + relPath + " " + err);
                     return relPath;
                 }
             });
@@ -182,15 +188,6 @@ class HtmlGenerator {
             });
 
             if (fs.pathExistsSync(reportOptions.outputDir)) {
-                if (reportOptions.removeOutput) {
-                    for (let i = 0; i < reportData.suites.length; i++) {
-                        let suite = reportData.suites[i];
-                        for (let j = 0; j < suite.tests.length; j++) {
-                            let test = suite.tests[j];
-                            test.output = [];
-                        }
-                    }
-                }
                 try
                 {
                     let html = nunjucks.render("report.html", reportData);
@@ -201,17 +198,6 @@ class HtmlGenerator {
                     }
                 } catch (error) {
                     reportOptions.LOG.error("Html Generation failed: " + error);
-                }
-
-                if (reportOptions.produceJson) {
-                    let jsonFile = reportData.reportFile.replace('.html', '.json');
-                    reportOptions.LOG.info("Json report write starting: " + jsonFile);
-                    try {
-                        let stringified = await json.stringify({body: reportData});
-                        HtmlGenerator.writeJson(jsonFile, stringified, reportOptions, reportData);
-                    } catch (error) {
-                        reportOptions.LOG.error("Json write failed: " + error);
-                    }
                 }
             }
             reportOptions.LOG.info("Html Generation Completed");

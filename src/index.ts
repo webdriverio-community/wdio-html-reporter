@@ -1,11 +1,13 @@
-import HtmlReporter from "./htmlReporter";
-import HtmlGenerator from "./htmlGenerator";
-import ReportGenerator from "./reportGenerator";
-import ReportAggregator from "./reportAggregator";
+import HtmlReporter from "./htmlReporter.js";
+import HtmlGenerator from "./htmlGenerator.js";
+import ReportGenerator from "./reportGenerator.js";
+import ReportAggregator from "./reportAggregator.js";
+import JsonGenerator from "./jsonGenerator.js";
 
 export {
     HtmlReporter,
     HtmlGenerator,
+    JsonGenerator,
     ReportGenerator,
     ReportAggregator
 }

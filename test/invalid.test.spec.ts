@@ -1,9 +1,9 @@
-const fs = require('fs-extra');
-const path = require('path');
+import fs from 'fs-extra';
+import path from 'path';
 import {expect} from 'chai';
-import {HtmlReporter, ReportGenerator, ReportAggregator} from '../src/index';
-import {RUNNER, SUITES} from './testdata';
-const log4js = require ('log4js') ;
+import {HtmlReporter, ReportGenerator, ReportAggregator} from '../src/index.js';
+import {RUNNER, SUITES} from './testdata.js';
+import log4js from 'log4js' ;
 
 log4js.configure({ // configure to use all types in different files.
     appenders: {

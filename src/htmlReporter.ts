@@ -7,16 +7,15 @@ import WDIOReporter, {
     TestStats
 } from '@wdio/reporter'
 
-import HtmlGenerator from './htmlGenerator'
-import  {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData} from "./types";
+import  {HtmlReporterOptions, InternalReportEvent, Metrics, ReportData} from "./types.js";
 import dayjs from 'dayjs';
 import ReportEvents from "@rpii/wdio-report-events";
 import {String} from 'typescript-string-operations';
-import ReportGenerator from "./reportGenerator";
+import ReportGenerator from "./reportGenerator.js";
 
-const fs = require('fs-extra');
-const path = require('path');
-const log4js = require('@log4js-node/log4js-api');
+import fs from 'fs-extra';
+import path from 'path';
+import log4js from '@log4js-node/log4js-api' ;
 
 let reportProxy = new ReportEvents();
 const timeFormat = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
@@ -200,7 +199,7 @@ export default class HtmlReporter extends WDIOReporter {
         }
     }
 
-    onRunnerEnd(runner: RunnerStats) {
+    async onRunnerEnd(runner: RunnerStats) {
         this.options.LOG.info(String.format("onRunnerEnd: {0}", runner.cid));
         // this.options.LOG.debug(JSON.stringify(runner));
         this.metrics.end = dayjs().utc().format();
@@ -214,7 +213,7 @@ export default class HtmlReporter extends WDIOReporter {
             this.metrics,
             reportFile,
             this.options.browserName);
-       this.reportGenerator?.createReport(reportData) ;
+       await this.reportGenerator?.createReport(reportData) ;
 
     }
 

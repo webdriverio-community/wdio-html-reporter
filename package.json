@@ -1,9 +1,10 @@
 {
   "name": "wdio-html-nice-reporter",
-  "version": "8.0.6-beta",
-  "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
+  "version": "8.1.0",
+  "description": "WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 8",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "symlink": "npm link",
@@ -12,9 +13,9 @@
     "clean:build": "rimraf ./lib",
     "clean:reports": "rimraf ./reports",
     "clean:logs": "rimraf ./logs",
-    "test": "mocha ./test/**/*.ts",
-    "test:invalid": "mocha ./test/invalid.test.spec.ts",
-    "test:reporter": "mocha ./test/reporter.spec.ts",
+    "test": "cd test ;tsc",
+    "test:invalid": "mocha ./lib/test/invalid.test.spec.js",
+    "test:reporter": "mocha ./lib/test/reporter.spec.js",
     "test:nested": "mocha ./test/nested.test.spec.ts"
   },
   "repository": {
@@ -42,11 +43,11 @@
   "homepage": "http://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
-    "@rpii/wdio-report-events": "^0.2.0",
+    "@rpii/wdio-report-events": "latest",
     "big-json": "^3.1.0",
     "copyfiles": "^2.3.0",
     "dayjs": "^1.11.2",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^11.1.0",
     "image-to-base64": "^2.2.0",
     "nunjucks": "^3.2.3",
     "open": "^8.4.0",
@@ -55,22 +56,18 @@
   "devDependencies": {
     "@types/chai": "^4.2.18",
     "@types/mocha": "^8.2.2",
-    "@types/node": "^14.14.31",
+    "@types/node": "^18.11.18",
     "@types/nunjucks": "^3.2.1",
-    "@wdio/cli": "7.25.1",
-    "@wdio/reporter": "7.25.1",
-    "@wdio/types": "7.25.1",
+    "@wdio/cli": "^8.1.2",
+    "@wdio/reporter": "^8.1.2",
+    "@wdio/types": "^8.1.2",
     "chai": "^4.3.4",
     "concat": "^1.0.3",
     "log4js": "^6.5.2",
     "mocha": "^8.4.0",
     "rimraf": "^3.0.2",
-    "ts-node": "^10.8.0",
-    "tsconfig-paths": "^4.0.0",
-    "typescript": "^4.7.2"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
   },
-  "contributors": [
-    "Rich Peters <16782353+rpii@users.noreply.github.com>"
-  ],
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.3.1"
 }

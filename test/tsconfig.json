@@ -1,20 +1,32 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution":"nodenext",
+    "declaration": true,
+    "allowJs": true,
+    "noEmit": false,
+    "strict": true,
+    "isolatedModules": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports" : true,
+    "noImplicitAny": false,
+    "outDir": "../lib/",
     "types": [
       "node",
-      "@wdio/types",
-      "webdriverio/sync",
+      "@wdio/globals/types",
       "@rpii/wdio-report-events",
       "@types/chai",
       "@types/mocha"
     ]
   },
   "include": [
-    "./**/*.ts"
+    "../test/*.ts"
   ],
   "exclude": [
-    "../node_modules"
+    "node_modules"
   ],
   "compileOnSave": false
 }

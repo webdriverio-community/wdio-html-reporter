@@ -1,5 +1,4 @@
-const util = require('util');
-const fs = require('fs-extra');
+import fs from 'fs-extra';
 
 //fs.copy filter function
 type FilterFunction = (src:string, dest:string)  => boolean;
