@@ -131,11 +131,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rpii/wdio-report-events@portal:/C:/Users/rpii/Development/automated-test/wdio-report-events::locator=wdio-html-nice-reporter%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "@rpii/wdio-report-events@portal:/C:/Users/rpii/Development/automated-test/wdio-report-events::locator=wdio-html-nice-reporter%40workspace%3A."
+"@rpii/wdio-report-events@npm:latest":
+  version: 8.0.2
+  resolution: "@rpii/wdio-report-events@npm:8.0.2"
+  checksum: 74889339bfe2e454b74fe2ab315704e3a3ae0ba0ec7de357d4254c5e456f2bfde7e4b90324eada9215a5ac5ecf60a4a8a7d025378faebbcffd73936772dded57
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "@sinclair/typebox@npm:^0.24.1":
   version: 0.24.51
@@ -884,17 +885,17 @@ __metadata:
   linkType: hard
 
 "cacheable-request@npm:^10.2.1":
-  version: 10.2.5
-  resolution: "cacheable-request@npm:10.2.5"
+  version: 10.2.7
+  resolution: "cacheable-request@npm:10.2.7"
   dependencies:
     "@types/http-cache-semantics": ^4.0.1
     get-stream: ^6.0.1
-    http-cache-semantics: ^4.1.0
+    http-cache-semantics: ^4.1.1
     keyv: ^4.5.2
     mimic-response: ^4.0.0
     normalize-url: ^8.0.0
     responselike: ^3.0.0
-  checksum: 9bf7443792072a50b5c5e17bd8e080e11d91b72a45ec7f287ffe47c96e9d64a4e60b7d7835114ef75b9667db45a85be1b16fa692cf31cf9a9c9fabae0ab3f098
+  checksum: 25cfbe0cab755bcee3bf6610b0253414e583289f795a28035616bf3186ecb303e8caf1943cbf42d92410b3f24124a1cdd663dd8ff52ac2c997a5129de5e9557a
   languageName: node
   linkType: hard
 
@@ -2205,6 +2206,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"http-cache-semantics@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "http-cache-semantics@npm:4.1.1"
+  checksum: 83ac0bc60b17a3a36f9953e7be55e5c8f41acc61b22583060e8dedc9dd5e3607c823a88d0926f9150e571f90946835c7fe150732801010845c72cd8bbff1a236
+  languageName: node
+  linkType: hard
+
 "http-proxy-agent@npm:^5.0.0":
   version: 5.0.0
   resolution: "http-proxy-agent@npm:5.0.0"
@@ -2796,15 +2804,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^2.2.2":
-  version: 2.2.3
-  resolution: "json5@npm:2.2.3"
-  bin:
-    json5: lib/cli.js
-  checksum: 2a7436a93393830bce797d4626275152e37e877b265e94ca69c99e3d20c2b9dab021279146a39cdb700e71b2dd32a4cebd1514cd57cee102b1af906ce5040349
-  languageName: node
-  linkType: hard
-
 "jsonfile@npm:^4.0.0":
   version: 4.0.0
   resolution: "jsonfile@npm:4.0.0"
@@ -3185,7 +3184,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0, minimist@npm:^1.2.6":
+"minimist@npm:^1.2.0":
   version: 1.2.7
   resolution: "minimist@npm:1.2.7"
   checksum: 7346574a1038ca23c32e02252f603801f09384dd1d78b69a943a4e8c2c28730b80e96193882d3d3b22a063445f460e48316b29b8a25addca2d7e5e8f75478bec
@@ -4442,13 +4441,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-bom@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "strip-bom@npm:3.0.0"
-  checksum: 8d50ff27b7ebe5ecc78f1fe1e00fcdff7af014e73cf724b46fb81ef889eeb1015fc5184b64e81a2efe002180f3ba431bdd77e300da5c6685d702780fbf0c8d5b
-  languageName: node
-  linkType: hard
-
 "strip-final-newline@npm:^3.0.0":
   version: 3.0.0
   resolution: "strip-final-newline@npm:3.0.0"
@@ -4654,17 +4646,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfig-paths@npm:^4.1.0":
-  version: 4.1.2
-  resolution: "tsconfig-paths@npm:4.1.2"
-  dependencies:
-    json5: ^2.2.2
-    minimist: ^1.2.6
-    strip-bom: ^3.0.0
-  checksum: 3d9151ecea139594e25618717de15769ab9f38f8e6d510ac16e592b23e7f7105ea13cec5694c3de7e132c98277b775e18edd1651964164ee6d75737c408494cc
-  languageName: node
-  linkType: hard
-
 "tslib@npm:^2.1.0":
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
@@ -4830,7 +4811,7 @@ __metadata:
   resolution: "wdio-html-nice-reporter@workspace:."
   dependencies:
     "@log4js-node/log4js-api": ^1.0.2
-    "@rpii/wdio-report-events": ^8.0.0-beta
+    "@rpii/wdio-report-events": latest
     "@types/chai": ^4.2.18
     "@types/mocha": ^8.2.2
     "@types/node": ^18.11.18
@@ -4851,7 +4832,6 @@ __metadata:
     open: ^8.4.0
     rimraf: ^3.0.2
     ts-node: ^10.9.1
-    tsconfig-paths: ^4.1.0
     typescript: ^4.8.4
     typescript-string-operations: ^1.5.0
   languageName: unknown
