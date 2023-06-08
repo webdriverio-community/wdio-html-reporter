@@ -1,5 +1,5 @@
 {
-  "name": "@livelyhearing/wdio-html-nice-reporter",
+  "name": "@jabrahearing/wdio-html-nice-reporter",
   "version": "1.0.0",
   "description": "FORKED: WebdriverIO report plugin. Create an HTML formatted report. compatible with webdriverio version 7",
   "main": "lib/index.js",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/livelyhearing/wdio-html-reporter.git"
+    "url": "git+ssh://git@github.com/jabrahearing/wdio-html-reporter.git"
   },
   "directories": {
     "lib": "lib",
