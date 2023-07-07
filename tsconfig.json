@@ -16,7 +16,6 @@
     "outDir": "./lib/",
     "types": [
       "node",
-      "@wdio/globals/types",
       "@rpii/wdio-report-events"
     ]
   },
