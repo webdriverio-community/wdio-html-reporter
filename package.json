@@ -43,7 +43,7 @@
   "homepage": "http://github.com/rpii/wdio-html-reporter#readme",
   "dependencies": {
     "@log4js-node/log4js-api": "^1.0.2",
-    "@rpii/wdio-report-events": "latest",
+    "@rpii/wdio-report-events": "^8.0.2",
     "big-json": "^3.1.0",
     "copyfiles": "^2.3.0",
     "dayjs": "^1.11.2",

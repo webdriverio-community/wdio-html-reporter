@@ -176,7 +176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rpii/wdio-report-events@npm:latest":
+"@rpii/wdio-report-events@npm:^8.0.2":
   version: 8.0.2
   resolution: "@rpii/wdio-report-events@npm:8.0.2"
   checksum: 74889339bfe2e454b74fe2ab315704e3a3ae0ba0ec7de357d4254c5e456f2bfde7e4b90324eada9215a5ac5ecf60a4a8a7d025378faebbcffd73936772dded57
@@ -4984,7 +4984,7 @@ __metadata:
   resolution: "wdio-html-nice-reporter@workspace:."
   dependencies:
     "@log4js-node/log4js-api": ^1.0.2
-    "@rpii/wdio-report-events": latest
+    "@rpii/wdio-report-events": ^8.0.2
     "@types/chai": ^4.2.18
     "@types/mocha": ^8.2.2
     "@types/node": ^18.11.18
