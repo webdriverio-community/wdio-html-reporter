@@ -20,7 +20,8 @@
       "@rpii/wdio-report-events",
       "@types/chai",
       "@types/mocha"
-    ]
+    ],
+    "skipLibCheck": true
   },
   "include": [
     "../test/*.ts"

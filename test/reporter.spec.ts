@@ -63,10 +63,8 @@ let reportAggregator  = new ReportAggregator({
     });
     reportAggregator.clean();
 
-suite('HtmlReporter', async () => {
-
-
-   test('on create should verify initial properties', async () => {
+describe('HtmlReporter', async () => {
+   it('on create should verify initial properties', async () => {
         expect(htmlReporter._suiteUids.size).to.deep.equal(0);
         expect(htmlReporter._indents).to.equal(0);
         expect(htmlReporter._suiteIndents).to.deep.equal({});
@@ -78,11 +76,13 @@ suite('HtmlReporter', async () => {
             duration: 0
         });
     });
-    test('onRunnerStart should set cid', async () =>  {
+
+    it('onRunnerStart should set cid', async () =>  {
         htmlReporter.onRunnerStart(RUNNER);
         expect(htmlReporter._currentCid).to.equal(RUNNER.cid);
      });
-    test('onSuiteStart should add to suiteUids', async () =>  {
+
+     it('onSuiteStart should add to suiteUids', async () =>  {
         htmlReporter.onSuiteStart(SUITES[0])
         expect(htmlReporter._suiteUids.size).to.equal(1);
         // expect(htmlReporter._suiteUids[0]).to.equal('Foo test1')
@@ -90,56 +90,57 @@ suite('HtmlReporter', async () => {
         expect(htmlReporter._suiteIndents['Foo test1']).to.equal(1)
     });
 
-    test('onTestStart', async () =>  {
+    it('onTestStart', async () =>  {
         htmlReporter.onTestStart(SUITES[0].tests[0])
     });
-    test('onTestPass', async () =>  {
+
+    it('onTestPass', async () =>  {
         htmlReporter.onTestPass(SUITES[0].tests[0])
         expect(htmlReporter.metrics.passed).to.equal(1)
         htmlReporter.onTestEnd(SUITES[0].tests[0])
     });
 
-    test('onTestStart', async () =>  {
+    it('onTestStart', async () =>  {
         htmlReporter.onTestStart(SUITES[0].tests[1])
     });
-    test('onTestFail', async () =>  {
+
+    it('onTestFail', async () =>  {
         htmlReporter.onTestFail(SUITES[0].tests[1])
         expect(htmlReporter.metrics.failed).to.equal(1)
         htmlReporter.onTestEnd(SUITES[0].tests[1])
     });
 
-    test('onTestStart', async () =>  {
+    it('onTestStart', async () =>  {
         htmlReporter.onTestStart(SUITES[0].tests[2])
     });
-    test('onTestSkip', async () =>  {
+
+    it('onTestSkip', async () =>  {
         htmlReporter.onTestSkip(SUITES[0].tests[2])
         expect(htmlReporter.metrics.skipped).to.equal(1)
         htmlReporter.onTestEnd(SUITES[0].tests[2])
     });
 
-    test('onTestEnd', async () =>  {
+    it('onTestEnd', async () =>  {
         htmlReporter.onTestEnd(SUITES[0].tests[0]);
         htmlReporter.onTestEnd(SUITES[0].tests[1]);
         htmlReporter.onTestEnd(SUITES[0].tests[2]);
     });
 
-
-    test('onSuiteEnd', async () =>  {
+    describe('onSuiteEnd', async () =>  {
         htmlReporter.onSuiteEnd(SUITES[0])
 
-        test('should decrease indents', async () =>  {
+        it('should decrease indents', async () =>  {
             expect(htmlReporter._indents).to.equal(0)
         });
 
-        test('should add the suite to the suites array', async () =>  {
+        it('should add the suite to the suites array', async () =>  {
             expect(htmlReporter._suiteUids.size).to.equal(1)
         })
     });
 
-    test('call reportAggregator', async () =>  {
+    it('call reportAggregator', async () =>  {
         await htmlReporter.onRunnerEnd(RUNNER);
         await reportAggregator.createReport();
         expect(fs.existsSync(reportAggregator.reportFile)).to.equal(true);
     });
-
 });

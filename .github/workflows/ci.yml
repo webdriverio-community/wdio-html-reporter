@@ -1,0 +1,34 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['16']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js v${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build
+        run: yarn run build
+      - name: Run Tests
+        run: |
+          yarn run test
+          yarn run test:invalid
+          yarn run test:reporter
+
+    timeout-minutes: 10
