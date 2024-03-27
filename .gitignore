@@ -1,12 +1,23 @@
+# yarn
+# See https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored.
+.pnp.*
 .yarnclean
-.yarn/cache
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# npm packages
+node_modules
+
 build
 build-test
 dist
-.idea
 reports
-node_modules
 *.log
 package-lock.json
 lib
 lib-test
+.idea

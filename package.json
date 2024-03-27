@@ -13,10 +13,9 @@
     "clean:build": "rimraf ./lib",
     "clean:reports": "rimraf ./reports",
     "clean:logs": "rimraf ./logs",
-    "test": "cd test ;tsc",
+    "test": "cd test; tsc",
     "test:invalid": "mocha ./lib/test/invalid.test.spec.js",
-    "test:reporter": "mocha ./lib/test/reporter.spec.js",
-    "test:nested": "mocha ./test/nested.test.spec.ts"
+    "test:reporter": "mocha ./lib/test/reporter.spec.js"
   },
   "repository": {
     "type": "git",

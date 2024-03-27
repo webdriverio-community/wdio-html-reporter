@@ -1,4 +1,4 @@
- # wdio-html-nice-reporter
+# wdio-html-nice-reporter
 
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
@@ -12,7 +12,7 @@ Note: if you are not getting your report generated in the cucumber or jasmine te
     "report": "node node_modules/wdio-html-nice-reporter/lib/makeReport.js master-report.html 'reports/html-reports/'",
 ```
 If you do this you do not need to create a ReportAggregator in your wdio.config.ts
-### Bug fix:  json write wasnt awaited for correctly
+### Bug fix:  json write was not awaited for correctly
 
 ### Great new improvement:  no more out of memory errors due to json.stringify
 
@@ -103,7 +103,7 @@ onComplete: function (exitCode, config, capabilities, results) {
 ### To use a logger for debugging
 
 A new feature for developers is to add a log4js logger to see detailed debug output.  See the test/reporter.spec.js for configuration options.
-If you dont want to use the logging, include in your project @log4js-node/log4js-api and you can quiet all debugging.
+If you don't want to use the logging, include in your project @log4js-node/log4js-api and you can quiet all debugging.
 via:
 
     const log4js = require('@log4js-node/log4js-api');
@@ -113,7 +113,7 @@ via:
   
 ### To generate a pdf file from this report
 
-Requires an additional plugin to keep the support lightweight for those that dont want it.
+Requires an additional plugin to keep the support lightweight for those that don't want it.
 see [@rpii/wdio-html-reporter-pdf](https://www.npmjs.com/package/@rpii/wdio-html-reporter-pdf)
 
 
@@ -123,6 +123,4 @@ see [@rpii/wdio-html-reporter-pdf](https://www.npmjs.com/package/@rpii/wdio-html
 
 ## browserName
 
-This must be set manually.  Its not available at config time since the browser object doesnt exist until you start a session.
-
-
+This must be set manually. It is not available at config time since the browser object doesn't exist until you start a session.
