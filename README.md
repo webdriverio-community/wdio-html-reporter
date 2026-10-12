@@ -1,7 +1,8 @@
  # wdio-html-nice-reporter
 
 > [!IMPORTANT]
-> **This repository serves WebdriverIO v9 only.** It gets only maintenance fixes for v9.
+> **This repository is archived and never got a release.** The npm package `wdio-html-nice-reporter` is
+> published from [rpii/wdio-html-reporter](https://github.com/rpii/wdio-html-reporter), not from this repository.
 >
 > For WebdriverIO v10, this reporter moves into the main WebdriverIO repository as
 > [`@wdio/html-reporter`](https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-html-reporter).
