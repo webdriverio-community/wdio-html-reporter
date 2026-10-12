@@ -1,5 +1,12 @@
  # wdio-html-nice-reporter
 
+> [!IMPORTANT]
+> **This repository serves WebdriverIO v9 only.** It gets only maintenance fixes for v9.
+>
+> For WebdriverIO v10, this reporter moves into the main WebdriverIO repository as
+> [`@wdio/html-reporter`](https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-html-reporter).
+> Report v10 issues in [webdriverio/webdriverio](https://github.com/webdriverio/webdriverio/issues).
+
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
 
