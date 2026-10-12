@@ -1,5 +1,11 @@
  # wdio-html-nice-reporter
 
+> [!IMPORTANT]
+> **This repository is archived and never got a release.**
+>
+> - For WebdriverIO v9, see [rpii/wdio-html-reporter](https://github.com/rpii/wdio-html-reporter).
+> - For WebdriverIO v10, see [`@wdio/html-reporter`](https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-html-reporter).
+
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
 
