@@ -1,12 +1,10 @@
  # wdio-html-nice-reporter
 
 > [!IMPORTANT]
-> **This repository is archived and never got a release.** The npm package `wdio-html-nice-reporter` is
-> published from [rpii/wdio-html-reporter](https://github.com/rpii/wdio-html-reporter), not from this repository.
+> **This repository is archived and never got a release.**
 >
-> For WebdriverIO v10, this reporter moves into the main WebdriverIO repository as
-> [`@wdio/html-reporter`](https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-html-reporter).
-> Report v10 issues in [webdriverio/webdriverio](https://github.com/webdriverio/webdriverio/issues).
+> - For WebdriverIO v9, see [rpii/wdio-html-reporter](https://github.com/rpii/wdio-html-reporter).
+> - For WebdriverIO v10, see [`@wdio/html-reporter`](https://github.com/webdriverio/webdriverio/tree/main/packages/wdio-html-reporter).
 
 A reporter for webdriver.io which generates a nice HTML report.  
 The name is silly but provides integration with webdriverio
